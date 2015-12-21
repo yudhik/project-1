@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+  template="/resources/scaffold/pageTemplate.xhtml">
+  <ui:param name="pageTitle" value="Upload Registrant" />
+  <ui:define name="header">
+		Upload Registrants
+	</ui:define>
+  <ui:define name="subheader">
+		Upload Multiple Registrant
+	</ui:define>
+  <ui:define name="footer" />
+  <ui:define name="main">
+    <h:form id="upload" enctype="multipart/form-data">
+      <h:messages globalOnly="true" styleClass="error" />
+      <h:panelGrid columnClasses="label,component,required" columns="3">
+        <h:outputLabel for="registrantBeanCsvFile" value="csv file:" />
+        <h:panelGroup>
+          <h:inputFile id="registrantBeanCsvFile" value="#{registrantBean.file}" />
+          <h:message for="registrantBeanCsvFile" styleClass="error" />
+        </h:panelGroup>
+        <h:commandButton value="Upload" action="#{registrantBean.upload}" />
+      </h:panelGrid>
+    </h:form>
+  </ui:define>
+</ui:composition>

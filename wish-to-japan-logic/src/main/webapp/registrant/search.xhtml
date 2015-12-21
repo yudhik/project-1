@@ -1,0 +1,102 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+  template="/resources/scaffold/pageTemplate.xhtml">
+  <f:metadata>
+    <f:viewParam name="page" value='#{registrantBean.page}' />
+    <f:event type="preRenderView" listener='#{registrantBean.paginate}' />
+  </f:metadata>
+  <ui:param name="pageTitle" value="Search Registrant entities" />
+  <ui:define name="header">
+		Registrant
+	</ui:define>
+  <ui:define name="subheader">
+		Search Registrant entities
+	</ui:define>
+  <ui:define name="footer" />
+  <ui:define name="main">
+    <h:form id="search">
+      <f:validateBean disabled="true">
+        <h:panelGroup styleClass="search">
+          <h:panelGrid columnClasses="label,component,required" columns="3">
+            <h:outputLabel for="registrantBeanExampleVoucherCode" value="Voucher Code:" />
+            <h:panelGroup>
+              <h:inputText id="registrantBeanExampleVoucherCode" value="#{registrantBean.example.voucherCode}" />
+              <h:message for="registrantBeanExampleVoucherCode" styleClass="error" />
+            </h:panelGroup>
+            <h:outputText />
+            <h:outputLabel for="registrantBeanExampleEmailAddress" value="Email Address:" />
+            <h:panelGroup>
+              <h:inputText id="registrantBeanExampleEmailAddress" value="#{registrantBean.example.emailAddress}" />
+              <h:message for="registrantBeanExampleEmailAddress" styleClass="error" />
+            </h:panelGroup>
+            <h:outputText />
+            <h:outputLabel for="registrantBeanExampleOrderId" value="Order Id:" />
+            <h:panelGroup>
+              <h:inputText id="registrantBeanExampleOrderId" value="#{registrantBean.example.orderId}" />
+              <h:message for="registrantBeanExampleOrderId" styleClass="error" />
+            </h:panelGroup>
+            <h:outputText />
+          </h:panelGrid>
+          <h:panelGroup styleClass="buttons">
+            <h:commandLink value="Search" action='#{registrantBean.search}' styleClass="btn btn-primary" />
+            <h:commandLink value="Create New" action='#{registrantBean.create}' styleClass="btn btn-primary" />
+            <h:commandLink value="Upload File" action='#{registrantBean.uploadFile}' styleClass="btn btn-primary" />
+          </h:panelGroup>
+        </h:panelGroup>
+      </f:validateBean>
+      <h:dataTable id="registrantBeanPageItems" styleClass="data-table" value="#{registrantBean.pageItems}" var="_item">
+        <h:column>
+          <f:facet name="header">
+            <h:outputText value="Voucher Code" />
+          </f:facet>
+          <h:link outcome="/registrant/view">
+            <f:param name="id" value="#{_item.voucherCode}" />
+            <h:outputText id="itemVoucherCode" value="#{_item.voucherCode}" />
+          </h:link>
+        </h:column>
+        <h:column>
+          <f:facet name="header">
+            <h:outputText value="Email Address" />
+          </f:facet>
+          <h:link outcome="/registrant/view">
+            <f:param name="id" value="#{_item.voucherCode}" />
+            <h:outputText id="itemEmailAddress" value="#{_item.emailAddress}" />
+          </h:link>
+        </h:column>
+        <h:column>
+          <f:facet name="header">
+            <h:outputText value="First Name" />
+          </f:facet>
+          <h:link outcome="/registrant/view">
+            <f:param name="id" value="#{_item.voucherCode}" />
+            <h:outputText id="itemFirstName" value="#{_item.firstName}" />
+          </h:link>
+        </h:column>
+        <h:column>
+          <f:facet name="header">
+            <h:outputText value="Last Name" />
+          </f:facet>
+          <h:link outcome="/registrant/view">
+            <f:param name="id" value="#{_item.voucherCode}" />
+            <h:outputText id="itemLastName" value="#{_item.lastName}" />
+          </h:link>
+        </h:column>
+        <h:column>
+          <f:facet name="header">
+            <h:outputText value="Order Id" />
+          </f:facet>
+          <h:link outcome="/registrant/view">
+            <f:param name="id" value="#{_item.voucherCode}" />
+            <h:outputText id="itemOrderId" value="#{_item.orderId}" />
+          </h:link>
+        </h:column>
+
+      </h:dataTable>
+      <ui:include src="/resources/scaffold/paginator.xhtml">
+        <ui:param name="paginatorBean" value='#{registrantBean}' />
+      </ui:include>
+    </h:form>
+  </ui:define>
+</ui:composition>

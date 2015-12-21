@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+  <title>#{empty pageTitle ? 'Page Title' : pageTitle}</title>
+  <link rel="icon" href='#{resource["favicon.ico"]}' />
+  <h:outputStylesheet name="bootstrap.css" />
+  <h:outputStylesheet name="forge-style.css" />
+  <h:outputStylesheet name="chosen/chosen.min.css" />
+</h:head>
+<h:body>
+  <ui:debug rendered="#{facesContext.application.projectStage == 'Development'}" />
+  <div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container">
+        <h:link id="brandLink" outcome="/index.xhtml" styleClass="brand">
+          <h:outputText value="Welcome to " rendered=" #{request.userPrincipal !=null} " />
+                    Wish-to-japan-logic
+                    <h:outputText value=",  #{request.userPrincipal.name}" rendered="#{request.userPrincipal !=null} " />
+        </h:link>
+        <div class="nav-collapse collapse">
+          <ul class="nav">
+            <li><a href="http://forge.jboss.org/document/hands-on-lab">How to Customize</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container forgecontainer">
+    <div id="navigation">
+      <h:link id="homeLink" outcome="/index.xhtml">
+        <img src='#{resource["forge-logo.png"]}' alt="Forge... get hammered" border="0" />
+      </h:link>
+      <ul>
+        <li><h:link outcome="/prizeList/search" value="Prize List" /></li>
+        <li><h:link outcome="/registrant/search" value="Registrant" /></li>
+        <li><h:link outcome="/prizeListCandidate/search" value="Grand Prize Candidate" /></li>
+        <li><h:link outcome="/prizeListWinner/search" value="Winner" /></li>
+      </ul>
+    </div>
+    <div id="content">
+      <h1>
+        <ui:insert name="header" />
+      </h1>
+      <h2>
+        <ui:insert name="subheader" />
+      </h2>
+      <ui:insert name="main" />
+    </div>
+  </div>
+  <footer>
+    <div id="footer-wrapper">
+      <p>
+        Powered by <a href="http://jboss.org/forge">Forge</a>
+      </p>
+    </div>
+  </footer>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <h:outputScript name="chosen/chosen.jquery.min.js" />
+  <script>
+        $(function() {
+            $(".chosen-select").chosen({ allow_single_deselect: true });
+
+        });
+    </script>
+</h:body>
+</html>

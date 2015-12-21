@@ -1,0 +1,478 @@
+body {color: #7f7f7f;}
+.com { color: #888; }
+.lit { color: #195f91; }
+.pun, .opn, .clo { color: #93a1a1; }
+.fun { color: #005cb9; }
+.str, .atv { color: #8A6343; }
+.kwd, .linenums, .tag { color: #000; }
+.typ, .atn, .dec, .var { color: #666; }
+.pln { color: #5890AD; }
+
+
+header {
+	/*border-top: 20px solid #e5e5e5;	*/
+}
+
+.top-bar {
+	position: relative !important;
+	top: 0 !important;
+	z-index: 100 !important;
+	padding: 10px 0 0 !important;
+	background-image: url('https://www.static-src.com/resources/images/bg_pattern.png') !important;
+    background-repeat: repeat-x !important;
+    border-bottom: 3px solid #ccc !important;
+	height: 100% !important;
+}
+
+.logo-atas {
+    /* display: block; */
+    margin-top: 10px;
+}
+
+.arrow-up{
+	width:20px;
+	display:inline-block; 
+	float: right;
+    font-size: 25px;
+	cursor: pointer;
+	margin: 10px 10px 0 0;
+}
+.arrow-down{
+	width:20px;
+	display:inline-block;
+	float: right;
+    font-size: 25px;
+	cursor: pointer;
+	margin: 10px 10px 0 0;
+}
+
+h3.title {
+	background-color: #007fc7;
+	color: #fff;
+	display: block;
+	font-weight: bold;
+	padding: 15px 10px 15px 20px;
+	margin-top: 10px !important;	
+	margin-bottom: 0px !important;
+	font-size: 16px;
+	text-align: left;
+}
+
+.syarat {	
+	text-align: left;
+	padding: 10px 10px 15px;
+	font-size: 13px;
+	color: #fff;
+	background:#007fc7;
+	border-bottom: 1px solid #007fc7;
+	border-left: 1px solid #007fc7;
+	border-right: 1px solid #007fc7;
+	overflow: auto;
+}
+
+.syarat ul {
+	color: #fff;
+	padding: 0;
+	margin: 0;
+}
+
+.syarat ul li {
+	list-style: disc;
+	margin-left: 20px;	
+}
+
+.syarat a {
+	color: #45b433;
+}
+
+.blok {
+    background-color: #fff;
+    border: 1px solid #7ebe30;
+    overflow: auto;
+    padding: 10px;
+}
+
+/*-- Product --*/
+.slide_item {
+	position:relative;
+	background:#fff;
+	padding: 0px;
+	margin: 5px;
+	height: auto;
+	display: inline-block;
+	width: 168px;
+	z-index:0;
+	border: 1px solid #e5e5e5;
+}
+.slide_item a {font-size: 13px; text-decoration:none;}
+.slide_item a.item_more {display:none;text-decoration:none; outline:none;}
+.slide_item:hover {
+    border: 1px solid #007dc9;
+}
+.slide_item .pic {padding: 0;}
+.slide_item .txt {
+	border:0;
+	text-align:center;
+	overflow: hidden;
+	position: relative;
+	padding: 10px;
+	background:#eee;
+	z-index:0;
+}
+.item_title, .slide_item .txt .item_title {
+	overflow: hidden;
+	margin: 0px;
+	padding:0px;
+	height: 68px;
+	color: #7f7f7f;
+	font-weight: normal;
+	padding:0;
+	display:block;
+}
+.price {
+	height:60px;
+	display:block;
+	}
+.item_price, .price .price {
+	color:#ff5300;
+	font-weight:bold;
+	font-size:15px;
+	padding:5px 0;
+	line-height: normal;
+}
+.reg_price {
+	text-decoration:line-through;
+	color:#bbb;
+	font-size: 13px;
+}
+.slide_item .txt .item_price {
+	padding:0px !important;
+	line-height:normal;
+	}
+hr.separator {
+	border:none;
+	border-top: 1px solid #ccc;
+	border-bottom: 1px solid #fff;
+	margin: 10px 0;
+}
+#promo .product {
+	padding:0;
+	border: none;
+	}
+	
+#promo .product .pic {padding: 1px; background: #eee;}
+	
+.product .item_title {font-size: 13px; text-decoration: none;}
+.btn.disabled {
+	margin: 5px auto;
+	cursor: default;
+	display: block;
+	width: 130px;
+}
+
+.btn, .btn-buy {
+	margin:0px auto 10px;
+	display:block;
+	}
+	
+.btn-buy {
+	width:100px;
+	text-align:center;
+	color: #ffffff;
+	padding: 6px 0px;
+	background: #f36f21 !important;
+	text-decoration:none;
+	font-size: 13px;
+}
+.btn-buy:hover {
+	color: #ffffff;
+	background: #ff8800 !important;
+}
+
+.btn-buy a:focus {
+	color: #ffffff !important;
+}
+
+.btn-tiket {
+	margin:0px auto;
+	}
+	
+.btn-tiket {
+	width:100px;
+	text-align:center;
+	color: #ffffff;
+	padding: 6px 0px;
+	background: #45b433;
+	text-decoration:none;
+	font-size: 13px;
+}
+
+.btn-tiket:hover {
+	color: #ffffff;
+	background: #2c9b1a;
+}
+
+.btn-tiket {
+	display: inline-block !important;
+	width: 70px !important;	
+}
+
+.btn-cta {
+	background: #ef5823 !important;
+	font-size: 20px;
+	color: #fff;
+	width: 30%;
+	padding: 15px !important;
+	text-align: center;
+	text-decoration:none;
+	display: block;
+	margin: 10px auto;
+	clear: both;
+}
+
+.btn-cta:hover {
+	color: #ffffff;
+	background: #2c9b1a;
+}
+
+.btn-cta span {
+	font-size: 60px;
+	vertical-align: top;
+}
+
+.btn-beli {
+	margin:0px auto 10px;
+	display:block;
+	width:100px;
+	text-align:center;
+	color: #ffffff;
+	padding: 6px 0px;
+	background: #45b433;
+	text-decoration:none;
+	font-size: 13px;
+}
+.btn-beli:hover {
+	color: #ffffff;
+	background: #2c9b1a;
+}
+
+
+a.see-all {
+	background-color: #fff;
+    color: #007dc9;
+    display: block;
+    line-height: 15px;
+	margin: 20px 0;
+    padding-left: 10px;
+    text-decoration: underline;
+	font-size: 18px;
+}
+
+footer {
+	font-size: 13px;
+	margin-top: 3em;
+	padding-top: 1em;
+	border-top: 2px solid #eee;
+}
+#backhome, #backtop {
+	-moz-border-radius: 25px;
+	-webkit-border-radius: 25px;
+	border-radius: 25px;
+	width: 32px;
+	height: 32px;
+	line-height: 50px;
+	text-align: center;
+	padding: 10px;
+	margin-top: -2em;
+	-webkit-box-shadow: 0px -2px 5px rgba(50, 50, 50, 0.25);
+	-moz-box-shadow:    0px -2px 5px rgba(50, 50, 50, 0.25);
+	box-shadow:         0px -2px 5px rgba(50, 50, 50, 0.25);
+	border: none;
+}
+
+.mobile {display: none;}
+
+
+.web-kategori-elektronik, .web-kategori-fashion-pria, .web-kategori-fashion-wanita, .web-kategori-handphone, .web-kategori-ibuanak, .web-kategori-kamera, .web-kategori-kke, .web-kategori-komputer-laptop, .web-kategori-kuliner, .web-kategori-olahraga, .web-kategori-otomotif, .web-akun, .web-akun-white, .web-home, .web-done, .web-bag, .web-bag-white, .web-search, .web-twitter-color, .web-youtube-grey, .web-fb-color, .web-fb-grey, .web-google-color, .web-google-grey, .web-instagram-color, .web-instagram-grey, .web-kategori, .web-kategori-fashion-wanita-black, .web-kategori-fashion-wanita-white, .web-linkedin-color, .web-linkedin-grey, .web-twitter-grey, .web-youtube-color, .web-kategori-komputer-laptop-black, .web-kategori-komputer-laptop-white, .web-menu, .web-kategori-elektronik-black, .web-kategori-elektronik-white, .web-kategori-fashion-pria-black, .web-kategori-fashion-pria-white, .web-kategori-ibuanak-black, .web-kategori-ibuanak-white, .web-kategori-kuliner-black, .web-kategori-kuliner-white, .web-kategori-olahraga-black, .web-kategori-olahraga-white, .web-kategori-otomotif-black, .web-kategori-otomotif-white, .web-checkmark, .web-close, .web-filter, .web-kategori-kamera-black, .web-kategori-kamera-white, .web-kategori-kke-black, .web-kategori-kke-white, .web-kategori-handphone-black, .web-kategori-handphone-white, .web-down-arrow, .web-left-arrow, .web-right-arrow, .web-ic-53184, .web-ic-53203, .web-ic-53270, .web-ic-53400, .web-ic-53704, .web-ic-53834, .web-ic-54593, .web-ic-54650, .web-ic-54817, .web-ic-54912, .web-ic-55076, .mobile-ic-53184, .mobile-ic-53203, .mobile-ic-53270, .mobile-ic-53400, .mobile-ic-53704, .mobile-ic-53834, .mobile-ic-54593, .mobile-ic-54650, .mobile-ic-54817, .mobile-ic-54912, .mobile-ic-55076 {
+		background: rgba(0, 0, 0, 0) url("https://www.blibli.com/promo/_asset/images/_css/revamp-sprite.png") no-repeat scroll 0 0;
+		display: inline-block;
+		overflow: hidden;
+		text-align: left;
+		text-indent: -9999px;
+	}
+	
+	div.c1-menu-list {
+		margin: 10px 10px;
+	}
+	
+	a.c1-menu-list-link {
+		padding: 10px 20px;
+		display: inline-block;
+		font-size: 18px;
+		color: #fff;
+		text-decoration: none;
+	}
+	
+	.icon-wrapper {
+		display: inline-block;
+		margin-right: 5px;
+		text-align: center;
+		width: 20px;
+	}
+	
+	.c1-menu-list-link span {
+		display: inline-block;
+		margin-top: 0;
+		vertical-align: middle;
+	}
+	
+	.web-kategori-handphone-black, .web-ic-54593 {
+		background-position: -28px -746px;
+		height: 21px;
+		width: 14px;
+	}
+	
+	.web-kategori-komputer-laptop-black, .web-ic-53270 {
+		background-position: -3px -1097px;
+		height: 21px;
+		width: 21px;
+	}
+	
+	.web-kategori-kamera-black, .web-ic-53184 {
+		background-position: -3px -1297px;
+		height: 19px;
+		width: 18px;
+	}
+	
+	.web-kategori-elektronik-black, .web-ic-54650 {
+		background-position: -24px -1137px;
+		height: 19px;
+		width: 20px;
+	}
+	
+	.web-kategori-fashion-pria-black, .web-ic-54817 {
+		background-position: -24px -1158px;
+		height: 20px;
+		width: 20px;
+	}
+	
+	.web-kategori-fashion-wanita-black, .web-ic-54912 {
+		background-position: -3px -958px;
+		height: 17px;
+		width: 23px;
+	}
+	
+	.web-kategori-ibuanak-black, .web-ic-55076 {
+		background-position: -24px -1180px;
+		height: 19px;
+		width: 20px;
+	}
+	
+	.web-kategori-kke-black, .web-ic-53203 {
+		background-position: -3px -1318px;
+		height: 19px;
+		width: 19px;
+	}
+	
+	.web-kategori-olahraga-black, .web-ic-53834 {
+		background-position: -24px -1222px;
+		height: 20px;
+		width: 19px;
+	}
+	
+	.web-kategori-otomotif-black, .web-ic-53704 {
+		background-position: -24px -1243px;
+		height: 20px;
+		width: 19px;
+	}
+	
+	.web-kategori-kuliner-black, .web-ic-53400 {
+		background-position: -24px -1201px;
+		height: 20px;
+		width: 19px;
+	}
+	
+	#category-54593 {
+		background-color: #ef413d !important;
+		display: inline-block;
+	}
+	
+	#category-53270{
+		background-color: #3255a6 !important;
+		display: inline-block;
+	}
+	
+	#category-53184 {
+		background-color: #a6ce39 !important;
+		display: inline-block;
+	}
+	
+	#category-54650 {
+		background-color: #b64b85 !important;
+		display: inline-block;
+	}
+	
+	#category-54817 {
+		background-color: #0095da !important;
+		display: inline-block;
+	}
+	
+	#category-54912 {
+		background-color: #ec008c !important;
+		display: inline-block;
+	}
+	
+	#category-55076 {
+		background-color: #fdb813 !important;
+		display: inline-block;
+	}
+	
+	#category-53203 {
+		background-color: #7251a1 !important;
+		display: inline-block;
+	}
+	
+	#category-53834 {
+		background-color: #00b9ad !important;
+		display: inline-block;
+	}
+	
+	#category-53704 {
+		background-color: #3483aa !important;
+		display: inline-block;
+	}
+	
+	#category-53400 {
+		background-color: #f37021 !important;
+		display: inline-block;
+	}
+	
+@media only screen 
+and (min-width : 320px) 
+and (max-width : 480px)
+{
+	.slide_item {
+		width: 100%;
+		margin: 5px 0 !important; 
+	}
+}
+
+@media screen and (min-device-width: 768px) and (max-device-width: 1024px){
+	.row,
+	.container {
+		max-width: 92% !important;
+	}
+}
+
+@media only screen and (max-width: 767px) {	
+	.btn-cta {
+		width: 100%;
+		display: block;
+		max-width: 92%;
+	}
+	
+	h3.title {
+		font-size: 13px !important;	
+	}
+	
+}

@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+  template="/resources/scaffold/pageTemplate.xhtml">
+  <f:metadata>
+    <f:viewParam name="page" value='#{prizeListBean.page}' />
+    <f:event type="preRenderView" listener='#{prizeListBean.paginate}' />
+  </f:metadata>
+  <ui:param name="pageTitle" value="Search Prize List entities" />
+  <ui:define name="header">Grand Prize List</ui:define>
+  <ui:define name="subheader">Search Grand Prize</ui:define>
+  <ui:define name="footer" />
+  <ui:define name="main">
+    <h:form id="search">
+      <f:validateBean disabled="true">
+        <h:panelGroup styleClass="search">
+          <h:panelGrid columnClasses="label,component,required" columns="3">
+            <h:outputLabel for="prizeListBeanExampleName" value="Name:" />
+            <h:panelGroup>
+              <h:inputText id="prizeListBeanExampleName" value="#{prizeListBean.example.name}" />
+              <h:message for="prizeListBeanExampleName" styleClass="error" />
+            </h:panelGroup>
+            <h:outputText />
+          </h:panelGrid>
+          <h:panelGroup styleClass="buttons">
+            <h:commandLink value="Search" action='#{prizeListBean.search}' styleClass="btn btn-primary" />
+            <h:commandLink value="Create New" action='#{prizeListBean.create}' styleClass="btn btn-primary" />
+          </h:panelGroup>
+        </h:panelGroup>
+      </f:validateBean>
+      <h:dataTable id="prizeListBeanPageItems" styleClass="data-table" value="#{prizeListBean.pageItems}" var="_item">
+        <h:column>
+          <f:facet name="header">
+            <h:outputText value="id" />
+          </f:facet>
+          <h:link outcome="/prizeList/view">
+            <f:param name="id" value="#{_item.id}" />
+            <h:outputText id="itemId" value="#{_item.id}" />
+          </h:link>
+        </h:column>
+        <h:column>
+          <f:facet name="header">
+            <h:outputText value="Name" />
+          </f:facet>
+          <h:link outcome="/prizeList/view">
+            <f:param name="id" value="#{_item.id}" />
+            <h:outputText id="itemName" value="#{_item.name}" />
+          </h:link>
+        </h:column>
+      </h:dataTable>
+      <ui:include src="/resources/scaffold/paginator.xhtml">
+        <ui:param name="paginatorBean" value='#{prizeListBean}' />
+      </ui:include>
+    </h:form>
+  </ui:define>
+</ui:composition>

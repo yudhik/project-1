@@ -1,0 +1,74 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:forgeview="http://jboss.org/forge/view" template="/resources/scaffold/pageTemplate.xhtml">
+  <ui:param name="pageTitle" value="Search Grand Prize Candidate" />
+  <ui:define name="header">Grand Prize Candidate</ui:define>
+  <ui:define name="subheader">Search Grand Prize Candidate</ui:define>
+  <ui:define name="footer" />
+  <ui:define name="main">
+    <h:form id="search">
+      <h:dataTable id="prizeListCandidateBeanPageItems" styleClass="data-table"
+        value="#{grandPrizeCandidateViewBean.getCandidates()}" var="_item">
+        <h:column>
+          <f:facet name="header">
+            <h:outputText value="Prize Name" />
+          </f:facet>
+          <h:link outcome="/prizeListCandidate/view">
+            <f:param name="id" value="#{_item.id}" />
+            <h:outputText id="prizelistName" value="#{forgeview:display(_item.prizeList.name)}" />
+          </h:link>
+        </h:column>
+        <h:column>
+          <f:facet name="header">
+            <h:outputText value="Email Address" />
+          </f:facet>
+          <h:link outcome="/prizeListCandidate/view">
+            <f:param name="id" value="#{_item.id}" />
+            <h:outputText id="forgeviewdisplayitemPrizeListWinner" value="#{forgeview:display(_item.emailAddress)}" />
+          </h:link>
+        </h:column>
+        <h:column>
+          <f:facet name="header">
+            <h:outputText value="Registrant First Name" />
+          </f:facet>
+          <h:link outcome="/prizeListCandidate/view">
+            <f:param name="id" value="#{_item.id}" />
+            <h:outputText id="registrantFirstName" value="#{_item.registrant.firstName}" />
+          </h:link>
+        </h:column>
+        <h:column>
+          <f:facet name="header">
+            <h:outputText value="Registrant Last Name" />
+          </f:facet>
+          <h:link outcome="/prizeListCandidate/view">
+            <f:param name="id" value="#{_item.id}" />
+            <h:outputText id="registrantLastName" value="#{_item.registrant.lastName}" />
+          </h:link>
+        </h:column>
+        <h:column>
+          <f:facet name="header">
+            <h:outputText value="is Claimed" />
+          </f:facet>
+          <h:link outcome="/prizeListCandidate/view">
+            <f:param name="id" value="#{_item.id}" />
+            <h:outputText id="isClaimed" value="#{forgeview:display(_item.claimed)}" />
+          </h:link>
+        </h:column>
+        <h:column>
+          <f:facet name="header">
+            <h:outputText value="is Current Turn" />
+          </f:facet>
+          <h:link outcome="/prizeListCandidate/view">
+            <f:param name="id" value="#{_item.id}" />
+            <h:outputText id="isCurrent" value="#{forgeview:display(_item.current)}" />
+          </h:link>
+        </h:column>
+      </h:dataTable>
+      <ui:include src="/resources/scaffold/paginator.xhtml">
+        <ui:param name="paginatorBean" value='#{prizeListCandidateBean}' />
+      </ui:include>
+    </h:form>
+  </ui:define>
+</ui:composition>

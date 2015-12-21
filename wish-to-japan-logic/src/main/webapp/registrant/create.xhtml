@@ -1,0 +1,83 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:c="http://java.sun.com/jsp/jstl/core" template="/resources/scaffold/pageTemplate.xhtml"
+                xmlns:forgeview="http://jboss.org/forge/view">
+  <f:metadata>
+    <f:viewParam name="voucherCode" value='#{registrantBean.voucherCode}' />
+    <f:event type="preRenderView" listener='#{registrantBean.retrieve}' />
+  </f:metadata>
+  <ui:param name="pageTitle" value="Create Registrant" />
+  <ui:define name="header">
+		Registrant
+	</ui:define>
+  <ui:define name="subheader">
+    <c:choose>
+      <c:when test='#{!empty registrantBean.voucherCode}'>
+				Edit existing Registrant
+			</c:when>
+      <c:otherwise>
+				Create a new Registrant
+			</c:otherwise>
+        </c:choose>
+    </ui:define>
+    <ui:define name="footer" />
+    <ui:define name="main">
+        <h:form id="create">
+            <h:messages globalOnly="true" styleClass="error" />
+            <h:panelGrid columnClasses="label,component,required" columns="3">
+                <h:outputLabel for="registrantBeanRegistrantVoucher" value="Voucher Code:" />
+                <h:panelGroup>
+                    <h:inputText id="registrantBeanRegistrantVoucher" value="#{registrantBean.registrant.voucherCode}" />
+                    <h:message for="registrantBeanRegistrantVoucher" styleClass="error" />
+                </h:panelGroup>
+                <h:outputText />
+
+                <h:outputLabel for="registrantBeanRegistrantEmailAddress" value="Email Address:" />
+                <h:panelGroup>
+                    <h:inputText id="registrantBeanRegistrantEmailAddress"
+                        value="#{registrantBean.registrant.emailAddress}" />
+                    <h:message for="registrantBeanRegistrantEmailAddress" styleClass="error" />
+                </h:panelGroup>
+                <h:outputText />
+                <h:outputLabel for="registrantBeanRegistrantFirstName" value="First Name:" />
+                <h:panelGroup>
+                    <h:inputText id="registrantBeanRegistrantFirstName" value="#{registrantBean.registrant.firstName}" />
+                    <h:message for="registrantBeanRegistrantFirstName" styleClass="error" />
+                </h:panelGroup>
+                <h:outputText />
+                <h:outputLabel for="registrantBeanRegistrantLastName" value="Last Name:" />
+                <h:panelGroup>
+                    <h:inputText id="registrantBeanRegistrantLastName" value="#{registrantBean.registrant.lastName}" />
+                    <h:message for="registrantBeanRegistrantLastName" styleClass="error" />
+                </h:panelGroup>
+                <h:outputText />
+                <h:outputLabel for="registrantBeanPlaySession" value="Session:" />
+                <h:panelGroup>
+                    <h:selectOneMenu converter="#{playSessionBean.converter}" id="registrantBeanPlaySession" required="true"
+                                     value="#{registrantBean.registrant.playSession}">
+                        <f:selectItems itemLabel="#{forgeview:display(_item)}" itemValue="#{_item}" value="#{playSessionBean.all}"
+                                       var="_item" />
+                    </h:selectOneMenu>
+                    <h:message for="registrantBeanPlaySession" styleClass="error" />
+                </h:panelGroup>
+                <h:outputText value="*" />
+            </h:panelGrid>
+            <div class="buttons">
+                <h:commandLink value="Save" action='#{registrantBean.update}' styleClass="btn btn-primary" />
+                <c:choose>
+                    <c:when test='#{!empty registrantBean.voucherCode}'>
+                        <h:link value="Cancel" outcome="view" styleClass="btn btn-primary">
+                            <f:param name="id" value='#{registrantBean.voucherCode}' />
+                        </h:link>
+                        <h:commandLink value="Delete" action='#{registrantBean.delete}' styleClass="btn btn-primary" />
+                    </c:when>
+                    <c:otherwise>
+                        <h:link value="Cancel" outcome="search" styleClass="btn btn-primary" />
+                    </c:otherwise>
+                </c:choose>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>

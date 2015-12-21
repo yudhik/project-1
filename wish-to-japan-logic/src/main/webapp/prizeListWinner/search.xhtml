@@ -1,0 +1,120 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:forgeview="http://jboss.org/forge/view"
+	template="/resources/scaffold/pageTemplate.xhtml">
+
+	<f:metadata>
+		<f:viewParam name="page" value='#{prizeListWinnerBean.page}'/>
+		<f:event type="preRenderView" listener='#{prizeListWinnerBean.paginate}'/>
+	</f:metadata>
+
+	<ui:param name="pageTitle" value="Search Prize List Winner entities"/>
+
+	<ui:define name="header">
+		Prize List Winner
+	</ui:define>
+
+	<ui:define name="subheader">
+		Search Prize List Winner entities
+	</ui:define>
+
+	<ui:define name="footer"/>
+
+	<ui:define name="main">
+		<h:form id="search">
+			<f:validateBean disabled="true">
+				<h:panelGroup styleClass="search">
+
+					<h:panelGrid columnClasses="label,component,required" columns="3">
+						<h:outputLabel for="prizeListWinnerBeanExamplePrize" value="Prize:"/>
+						<h:panelGroup>
+							<h:selectOneMenu converter="#{prizeListBean.converter}" id="prizeListWinnerBeanExamplePrize" value="#{prizeListWinnerBean.example.prize}">
+								<f:selectItem/>
+								<f:selectItems itemLabel="#{forgeview:display(_item)}" itemValue="#{_item}" value="#{prizeListBean.all}" var="_item"/>
+							</h:selectOneMenu>
+							<h:message for="prizeListWinnerBeanExamplePrize" styleClass="error"/>
+						</h:panelGroup>
+						<h:outputText/>
+						<h:outputLabel for="prizeListWinnerBeanExampleShowOrder" value="Show Order:"/>
+						<h:panelGroup>
+							<h:inputText id="prizeListWinnerBeanExampleShowOrder" value="#{prizeListWinnerBean.example.showOrder}"/>
+							<h:message for="prizeListWinnerBeanExampleShowOrder" styleClass="error"/>
+						</h:panelGroup>
+						<h:outputText/>
+						<h:outputLabel for="prizeListWinnerBeanExampleWinner" value="Winner:"/>
+						<h:panelGroup>
+							<h:selectOneMenu converter="#{registrantBean.converter}" id="prizeListWinnerBeanExampleWinner" value="#{prizeListWinnerBean.example.winner}">
+								<f:selectItem/>
+								<f:selectItems itemLabel="#{forgeview:display(_item)}" itemValue="#{_item}" value="#{registrantBean.all}" var="_item"/>
+							</h:selectOneMenu>
+							<h:message for="prizeListWinnerBeanExampleWinner" styleClass="error"/>
+						</h:panelGroup>
+						<h:outputText/>
+						<h:outputLabel for="prizeListWinnerBeanExampleWithCandidate" value="With Candidate:"/>
+						<h:panelGroup>
+							<h:selectOneMenu styleClass="chosen-select" id="prizeListWinnerBeanExampleWithCandidate" value="#{prizeListWinnerBean.example.withCandidate}">
+								<f:selectItem/>
+								<f:selectItem itemLabel="Yes" itemValue="true"/>
+								<f:selectItem itemLabel="No" itemValue="false"/>
+							</h:selectOneMenu>
+							<h:message for="prizeListWinnerBeanExampleWithCandidate" styleClass="error"/>
+						</h:panelGroup>
+						<h:outputText/>
+					</h:panelGrid>
+					<h:panelGroup styleClass="buttons">
+						<h:commandLink value="Search" action='#{prizeListWinnerBean.search}' styleClass="btn btn-primary"/>
+						<h:commandLink value="Create New" action='#{prizeListWinnerBean.create}' styleClass="btn btn-primary"/>
+					</h:panelGroup>
+				</h:panelGroup>
+			</f:validateBean>
+			
+			<h:dataTable id="prizeListWinnerBeanPageItems" styleClass="data-table" value="#{prizeListWinnerBean.pageItems}" var="_item">
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Prize"/>
+					</f:facet>
+					<h:link outcome="/prizeListWinner/view">
+						<f:param name="id" value="#{_item.id}"/>
+						<h:outputText id="forgeviewdisplayitemPrize" value="#{forgeview:display(_item.prize)}"/>
+					</h:link>
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Show Order"/>
+					</f:facet>
+					<h:link outcome="/prizeListWinner/view">
+						<f:param name="id" value="#{_item.id}"/>
+						<h:outputText id="itemShowOrder" value="#{_item.showOrder}"/>
+					</h:link>
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Winner"/>
+					</f:facet>
+					<h:link outcome="/prizeListWinner/view">
+						<f:param name="id" value="#{_item.id}"/>
+						<h:outputText id="forgeviewdisplayitemWinner" value="#{forgeview:display(_item.winner)}"/>
+					</h:link>
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="With Candidate"/>
+					</f:facet>
+					<h:link outcome="/prizeListWinner/view">
+						<f:param name="id" value="#{_item.id}"/>
+						<h:outputText id="itemWithCandidate" value="#{_item.withCandidate}"/>
+					</h:link>
+				</h:column>
+			</h:dataTable>
+			<ui:include src="/resources/scaffold/paginator.xhtml">
+				<ui:param name="paginatorBean" value='#{prizeListWinnerBean}'/>
+			</ui:include>
+		</h:form>
+			
+	</ui:define>
+
+</ui:composition>
