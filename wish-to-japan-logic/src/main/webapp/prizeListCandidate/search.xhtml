@@ -9,6 +9,9 @@
   <ui:define name="footer" />
   <ui:define name="main">
     <h:form id="search">
+      <h:panelGroup styleClass="buttons">
+        <h:commandLink value="Create New" action='#{grandPrizeCandidateViewBean.create}' styleClass="btn btn-primary" />
+      </h:panelGroup>
       <h:dataTable id="prizeListCandidateBeanPageItems" styleClass="data-table"
         value="#{grandPrizeCandidateViewBean.getCandidates()}" var="_item">
         <h:column>

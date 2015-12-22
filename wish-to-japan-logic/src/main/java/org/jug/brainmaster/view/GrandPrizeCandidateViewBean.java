@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.enterprise.context.ConversationScoped;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
@@ -21,7 +21,7 @@ import org.jug.brainmaster.model.PrizeList;
 import org.jug.brainmaster.model.Registrant;
 
 @ManagedBean
-@ConversationScoped
+@RequestScoped
 public class GrandPrizeCandidateViewBean implements Serializable {
 
   private static final long serialVersionUID = 6639274139742549413L;
@@ -39,10 +39,18 @@ public class GrandPrizeCandidateViewBean implements Serializable {
   private Logger log;
 
   private GrandPrizeCandidate candidate;
+  private Registrant registrant;
+  private PrizeList prizeList;
 
   private Long id;
+
   private int rowSize = 25;
+
   private int pageNumber = 1;
+
+  public String create() {
+    return "create?faces-redirect=true";
+  }
 
   public String delete() {
     try {
@@ -52,6 +60,10 @@ public class GrandPrizeCandidateViewBean implements Serializable {
       log.log(Level.SEVERE, "can not save candidate : "+ candidate, e);
     }
     return null;
+  }
+
+  public List<PrizeList> getAllPrize() {
+    return prizeListServiceBean.findAll();
   }
 
   public GrandPrizeCandidate getCandidate() {
@@ -66,12 +78,16 @@ public class GrandPrizeCandidateViewBean implements Serializable {
     return viewCandidates;
   }
 
-  public long getId() {
+  public Long getId() {
     return id;
   }
 
   public int getPageNumber() {
     return pageNumber;
+  }
+
+  public PrizeList getPrizeList() {
+    return prizeList;
   }
 
   public Converter getPrizeListConverter() {
@@ -92,12 +108,16 @@ public class GrandPrizeCandidateViewBean implements Serializable {
     };
   }
 
+  public Registrant getRegistrant() {
+    return registrant;
+  }
+
   public Converter getRegistrantConverter() {
     return new Converter() {
 
       @Override
       public Object getAsObject(FacesContext context, UIComponent component, String value) {
-        return registrantServiceBean.findByEmailAddress(value);
+        return registrantServiceBean.findById(value);
       }
 
       @Override
@@ -115,16 +135,28 @@ public class GrandPrizeCandidateViewBean implements Serializable {
     return rowSize;
   }
 
-  public GrandPrizeCandidate retrieve() {
+  public void retrieve() {
     if(id != null) {
-      return grandPrizeCandidateService.findById(id);
+      log.log(Level.INFO,"get existing candidate");
+      candidate = grandPrizeCandidateService.findById(id);
     } else {
-      return new GrandPrizeCandidate();
+      log.log(Level.INFO,"create new candidate");
+      candidate = new GrandPrizeCandidate();
+      registrant = new Registrant();
+      prizeList = new PrizeList();
     }
   }
 
   public String saveOrUpdate() {
     try {
+      if(candidate == null) {
+        candidate = new GrandPrizeCandidate();
+      }
+      if(id != null) {
+        candidate = grandPrizeCandidateService.findById(id);
+      }
+      candidate.setPrizeList(prizeList);
+      candidate.setRegistrant(registrant);
       grandPrizeCandidateService.saveOrUpdate(candidate);
       return "search?faces-redirect=true";
     } catch (Exception e) {
@@ -137,12 +169,20 @@ public class GrandPrizeCandidateViewBean implements Serializable {
     this.candidate = candidate;
   }
 
-  public void setId(long id) {
+  public void setId(Long id) {
     this.id = id;
   }
 
   public void setPageNumber(int pageNumber) {
     this.pageNumber = pageNumber;
+  }
+
+  public void setPrizeList(PrizeList prizeList) {
+    this.prizeList = prizeList;
+  }
+
+  public void setRegistrant(Registrant registrant) {
+    this.registrant = registrant;
   }
 
   public void setRowSize(int rowSize) {

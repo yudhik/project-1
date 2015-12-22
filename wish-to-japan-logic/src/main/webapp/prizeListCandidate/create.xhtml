@@ -21,15 +21,9 @@
     <h:form id="create">
       <h:messages globalOnly="true" styleClass="error" />
       <h:panelGrid columnClasses="label,component,required" columns="3">
-        <h:outputLabel for="prizeListCandidateBeanPrizeListCandidateCandidate" value="Candidate email:" />
+        <h:outputLabel for="prizeListCandidateBeanPrizeListCandidateCandidate" value="Candidate voucher code:" />
         <h:panelGroup>
-          <h:selectOneMenu styleClass="chosen-select" converter="#{grandPrizeCandidateViewBean.registrantConverter}"
-            id="prizeListCandidateBeanPrizeListCandidateCandidate"
-            value="#{grandPrizeCandidateViewBean.candidate.registrant}">
-            <f:selectItem />
-            <f:selectItems itemLabel="#{forgeview:display(_item)}" itemValue="#{_item}" value="#{registrantBean.all}"
-              var="_item" />
-          </h:selectOneMenu>
+          <h:inputText id="prizeListCandidateBeanPrizeListCandidateCandidate" value="#{grandPrizeCandidateViewBean.registrant}" converter="#{grandPrizeCandidateViewBean.registrantConverter}" />
           <h:message for="prizeListCandidateBeanPrizeListCandidateCandidate" styleClass="error" />
         </h:panelGroup>
         <h:outputText />
@@ -37,10 +31,10 @@
         <h:panelGroup>
           <h:selectOneMenu converter="#{grandPrizeCandidateViewBean.prizeListConverter}"
             id="prizeListCandidateBeanPrizeListCandidatePrizeListWinner"
-            value="#{grandPrizeCandidateViewBean.candidate.prizeList}">
+            value="#{grandPrizeCandidateViewBean.prizeList}">
             <f:selectItem />
-            <f:selectItems itemLabel="#{forgeview:display(_item)}" itemValue="#{_item}"
-              value="#{prizeListWinnerBean.all}" var="_item" />
+            <f:selectItems itemLabel="#{forgeview:display(_item.name)}" itemValue="#{_item}"
+              value="#{grandPrizeCandidateViewBean.getAllPrize()}" var="_item" />
           </h:selectOneMenu>
           <h:message for="prizeListCandidateBeanPrizeListCandidatePrizeListWinner" styleClass="error" />
         </h:panelGroup>

@@ -397,7 +397,7 @@ footer p {
 }
 
 #content .button:hover, #content .buttons a:hover {
-	background-color: #979026;
+	background-color: #669999;
 }
 
 #content .paginator {
@@ -596,18 +596,18 @@ button::-moz-focus-inner {
 
 
 .btn-primary {
-  	background-color: #817B10;/* dk gold */
-  	*background-color: #817B10;
-  	background-image: -ms-linear-gradient(top, #B0A826, #979026);/* light gold, med gold */
-  	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#B0A826), to(#979026));
-  	background-image: -webkit-linear-gradient(top, #B0A826, #979026);
-  	background-image: -o-linear-gradient(top, #B0A826, #979026);
-  	background-image: -moz-linear-gradient(top, #B0A826, #979026);
-  	background-image: linear-gradient(top, #B0A826, #979026);
+  	background-color: #669999;/* dk gold */
+  	*background-color: #669999;
+  	background-image: -ms-linear-gradient(top, #669999, #669999);/* light gold, med gold */
+  	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#669999), to(#669999));
+  	background-image: -webkit-linear-gradient(top, #669999, #669999);
+  	background-image: -o-linear-gradient(top, #669999, #669999);
+  	background-image: -moz-linear-gradient(top, #669999, #669999);
+  	background-image: linear-gradient(top, #669999, #669999);
   	background-repeat: repeat-x;
-  	border-color: #979026 #979026 #7C7301;
+  	border-color: #669999 #669999 #7C7301;
   	border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
-  	filter: progid:dximagetransform.microsoft.gradient(startColorstr='#B0A826', endColorstr='#979026', GradientType=0);
+  	filter: progid:dximagetransform.microsoft.gradient(startColorstr='#669999', endColorstr='#669999', GradientType=0);
   	filter: progid:dximagetransform.microsoft.gradient(enabled=false);
 
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important; 
@@ -621,7 +621,7 @@ button::-moz-focus-inner {
 	-webkit-border-radius: 4px;
 	-moz-box-shadow: 0px 1px 2px rgba(137, 137, 137, 0.8);
 	-webkit-box-shadow: 0px 1px 3px rgba(137, 137, 137, 0.8);
-	box-shadow: 0px 1px 3px rgba(137, 137, 137, 0.8);
+	box-shadow: 0px 10px 3px rgba(137, 137, 137, 0.8);
 }
 
 .btn-primary:hover,
@@ -629,20 +629,20 @@ button::-moz-focus-inner {
 .btn-primary.active,
 .btn-primary.disabled,
 .btn-primary[disabled] {
-  	background-color: #979026;
-  	*background-color: #979026;
+  	background-color: #669999;
+  	*background-color: #669999;
 }
 
 .btn-primary:active,
 .btn-primary.active {
-  	background-color: #979026 \9;
+  	background-color: #669999 \9;
 }
 	
 
 a.btn-primary:active { 
 	font-weight:bold;
-	color:#fff!important;
-	background: #817B10;
+	color:#669999!important;
+	background: #fff;
 	padding:8px 10px;
 	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
 	border-radius: 4px;
@@ -655,8 +655,8 @@ a.btn-primary:active {
 a.btn-danger:hover,
 a.btn-primary:hover {
 	font-weight:bold;
-	color:#fff!important;
-	background:#817B10;
+	color:#ffffff!important;
+	background:#669999;
 	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
 }
 
@@ -691,4 +691,55 @@ h4.page-header {
 	font-size: 16px;
 }
 
+.modalDialog {
+    position: fixed;
+    font-family: Arial, Helvetica, sans-serif;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 99999;
+    opacity:0;
+    -webkit-transition: opacity 400ms ease-in;
+    -moz-transition: opacity 400ms ease-in;
+    transition: opacity 400ms ease-in;
+    pointer-events: none;
+}
+.modalDialog:target {
+    opacity:1;
+    pointer-events: auto;
+}
+.modalDialog > div {
+    width: 400px;
+    position: relative;
+    margin: 10% auto;
+    padding: 5px 20px 13px 20px;
+    border-radius: 10px;
+    background: #fff;
+    background: -moz-linear-gradient(#fff, #999);
+    background: -webkit-linear-gradient(#fff, #999);
+    background: -o-linear-gradient(#fff, #999);
+}
+.close {
+    background: #606061;
+    color: #FFFFFF;
+    line-height: 25px;
+    position: absolute;
+    right: -12px;
+    text-align: center;
+    top: -10px;
+    width: 24px;
+    text-decoration: none;
+    font-weight: bold;
+    -webkit-border-radius: 12px;
+    -moz-border-radius: 12px;
+    border-radius: 12px;
+    -moz-box-shadow: 1px 1px 3px #000;
+    -webkit-box-shadow: 1px 1px 3px #000;
+    box-shadow: 1px 1px 3px #000;
+}
+.close:hover {
+    background: #00d9ff;
+}
 

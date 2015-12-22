@@ -21,9 +21,9 @@
       <h:outputText id="registrantBeanRegistrantCreatedDate" value="#{registrantBean.registrant.createdDate}">
         <f:convertDateTime pattern="MMM d, yyyy hh:mm:ss a" type="both" />
       </h:outputText>
+      <h:outputText />
       <h:outputLabel for="registrantBeanRegistrantVoucher" value="Voucher:" />
       <h:outputText id="registrantBeanRegistrantVoucher" value="#{registrantBean.registrant.voucherCode}" />
-      <h:outputText />
       <h:outputText />
       <h:outputLabel for="registrantBeanRegistrantEmailAddress" value="Email Address:" />
       <h:outputText id="registrantBeanRegistrantEmailAddress" value="#{registrantBean.registrant.emailAddress}" />
@@ -37,16 +37,9 @@
       <h:outputLabel for="registrantBeanRegistrantOrderId" value="Order Id:" />
       <h:outputText id="registrantBeanRegistrantOrderId" value="#{registrantBean.registrant.orderId}" />
       <h:outputText />
-      <h:outputLabel for="registrantBeanRegistrantPhoneNumber" value="Phone Number:" />
-      <h:outputText id="registrantBeanRegistrantPhoneNumber" value="#{registrantBean.registrant.phoneNumber}" />
-      <h:outputText />
       <h:outputLabel for="registrantBeanRegistrantTotalProduct" value="Total Product:" />
       <h:outputText id="registrantBeanRegistrantTotalProduct" value="#{registrantBean.registrant.totalProduct}" />
       <h:outputText />
-      <h:outputLabel for="registrantBeanRegistrantSession" value="Session:" />
-      <h:outputText id="registrantBeanRegistrantSession" value="#{registrantBean.registrant.playSession}" />
-      <h:outputText />
-
     </h:panelGrid>
     <div class="buttons">
       <h:link value="View All" outcome="search" styleClass="btn btn-primary" />

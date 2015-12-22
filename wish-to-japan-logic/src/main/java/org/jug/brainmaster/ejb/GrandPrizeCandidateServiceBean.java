@@ -54,8 +54,8 @@ public class GrandPrizeCandidateServiceBean {
     return true;
   }
 
-  @TransactionAttribute(TransactionAttributeType.NEVER)
-  public long countAllCandidate() {
+  @TransactionAttribute(TransactionAttributeType.REQUIRED)
+  public int countAllCandidate() {
     return em.createQuery("select count(candidate.id) from GrandPrizeCandidate candidate").getFirstResult();
   }
 
@@ -66,7 +66,7 @@ public class GrandPrizeCandidateServiceBean {
     em.flush();
   }
 
-  @TransactionAttribute(TransactionAttributeType.NEVER)
+  @TransactionAttribute(TransactionAttributeType.REQUIRED)
   public GrandPrizeCandidate findById(Long id) {
     GrandPrizeCandidate candidate = em.find(GrandPrizeCandidate.class, id);
     if (candidate != null) {
@@ -77,7 +77,7 @@ public class GrandPrizeCandidateServiceBean {
   }
 
 
-  @TransactionAttribute(TransactionAttributeType.NEVER)
+  @TransactionAttribute(TransactionAttributeType.REQUIRED)
   public List<GrandPrizeCandidate> getAllCandidateWithPagination(int rowSize, int pageNumber) {
     List<GrandPrizeCandidate> candidates = new ArrayList<GrandPrizeCandidate>();
     int startPosition = (pageNumber - 1) * rowSize;

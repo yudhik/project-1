@@ -19,14 +19,14 @@
     <h:panelGrid columnClasses="label,component,required" columns="3">
       <h:outputLabel for="prizeListCandidateBeanPrizeListCandidateCandidate" value="Registrant:" />
       <h:link id="prizeListCandidateBeanPrizeListCandidateCandidate" outcome="/registrant/view"
-        rendered="#{!empty grandPrizeCandidateViewBean.candidate.emailAddress}"
-        value="#{prizeListCandidateBean.candidate.emailAddress}">
-        <f:param name="id" value="#{grandPrizeCandidateViewBean.candidate.voucherCode}" />
+        rendered="#{!empty grandPrizeCandidateViewBean.candidate.registrant.voucherCode}"
+        value="#{grandPrizeCandidateViewBean.candidate.registrant.voucherCode}">
+        <f:param name="id" value="#{grandPrizeCandidateViewBean.candidate.registrant.voucherCode}" />
       </h:link>
       <h:outputText />
       <h:outputLabel for="prizeListCandidateBeanPrizeListCandidateShowOrder" value="PriceList:" />
       <h:outputText id="prizeListCandidateBeanPrizeListCandidateShowOrder"
-        value="#{grandPrizeCandidateViewBean.priceList.name}" />
+        value="#{grandPrizeCandidateViewBean.candidate.prizeList.name}" />
       <h:outputText />
     </h:panelGrid>
     <div class="buttons">

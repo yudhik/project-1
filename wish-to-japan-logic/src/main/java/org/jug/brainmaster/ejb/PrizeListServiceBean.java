@@ -1,5 +1,7 @@
 package org.jug.brainmaster.ejb;
 
+import java.util.List;
+
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -15,6 +17,15 @@ public class PrizeListServiceBean {
 
   @PersistenceContext
   private EntityManager em;
+
+  public List<PrizeList> findAll() {
+    return em.createQuery("from PrizeList", PrizeList.class).getResultList();
+  }
+
+  @TransactionAttribute(TransactionAttributeType.REQUIRED)
+  public List<PrizeList> findAllNonGrandPrize() {
+    return em.createQuery("from PrizeList pl where pl.grandPrize = false", PrizeList.class).getResultList();
+  }
 
   @TransactionAttribute(TransactionAttributeType.NEVER)
   public PrizeList findById(Long id) {
