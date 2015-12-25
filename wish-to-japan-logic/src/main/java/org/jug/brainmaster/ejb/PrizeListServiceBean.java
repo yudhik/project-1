@@ -23,6 +23,11 @@ public class PrizeListServiceBean {
   }
 
   @TransactionAttribute(TransactionAttributeType.REQUIRED)
+  public List<PrizeList> findAllGrandPrize() {
+    return em.createQuery("from PrizeList pl where pl.grandPrize = true", PrizeList.class).getResultList();
+  }
+
+  @TransactionAttribute(TransactionAttributeType.REQUIRED)
   public List<PrizeList> findAllNonGrandPrize() {
     return em.createQuery("from PrizeList pl where pl.grandPrize = false", PrizeList.class).getResultList();
   }
