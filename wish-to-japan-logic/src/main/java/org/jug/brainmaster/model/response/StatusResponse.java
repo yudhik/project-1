@@ -1,17 +1,17 @@
 package org.jug.brainmaster.model.response;
 
-//function onMessage(promoState, raffleState, isGrandPrize, sequence, timer, voucherCode, name)
+// function onMessage(promoState, raffleState, isGrandPrize, sequence, timer, voucherCode, name)
 public class StatusResponse {
   private UserResponse currentParticipant;
 
   private String promoState;
 
   private String raffleState;
-  //RAFFLE_RUNNING, RAFFLE_CLAIMING, RAFFLE_OTHERS_RUNNING, RAFFLE_OTHERS_CONGRATULATIONS
+  // RAFFLE_RUNNING, RAFFLE_CLAIMING, RAFFLE_OTHERS_RUNNING, RAFFLE_OTHERS_CONGRATULATIONS
 
   private Integer sequence; // URUTAN HADIAH
 
-  private Integer candidateSequence; //URUTAN PEMENANG
+  private Integer candidateSequence; // URUTAN PEMENANG
 
   private Integer timer;
 
@@ -21,7 +21,6 @@ public class StatusResponse {
 
   public StatusResponse(String promoState, String raffleState, Integer sequence,
       Integer candidateSequence, Integer timer, UserResponse currentParticipant) {
-
     this.promoState = promoState;
     this.raffleState = raffleState;
     this.candidateSequence = candidateSequence;
@@ -80,13 +79,8 @@ public class StatusResponse {
 
   @Override
   public String toString() {
-    return "StatusResponse{" +
-        "currentParticipant=" + currentParticipant +
-        ", promoState='" + promoState + '\'' +
-        ", raffleState='" + raffleState + '\'' +
-        ", sequence=" + sequence +
-        ", candidateSequence=" + candidateSequence +
-        ", timer=" + timer +
-        '}';
+    return "StatusResponse{" + "currentParticipant=" + currentParticipant + ", promoState='"
+        + promoState + '\'' + ", raffleState='" + raffleState + '\'' + ", sequence=" + sequence
+        + ", candidateSequence=" + candidateSequence + ", timer=" + timer + '}';
   }
 }

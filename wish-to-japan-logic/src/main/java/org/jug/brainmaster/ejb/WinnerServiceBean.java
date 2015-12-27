@@ -22,7 +22,7 @@ import org.jug.brainmaster.model.Winners;
 @LocalBean
 public class WinnerServiceBean {
 
-  private static Random random = new Random();
+  private static Random RANDOM = new Random();
 
   @Inject
   private GrandPrizeCandidateServiceBean grandPrizeCandidateServiceBean;
@@ -76,7 +76,7 @@ public class WinnerServiceBean {
       PrizeList existingPrizeList = em.getReference(PrizeList.class, prizeList.getId());
       Registrant registrant = null;
       while(registrant == null) {
-        int position = Math.abs(random.nextInt(totalRegistrant.intValue()));
+        int position = Math.abs(RANDOM.nextInt(totalRegistrant.intValue()));
         log.log(Level.INFO, "position : " + position);
         registrant = em.createQuery("from Registrant registrant", Registrant.class).setFirstResult(position).setMaxResults(1).getSingleResult();
         if(findByRegistrant(registrant).size() > 0) {

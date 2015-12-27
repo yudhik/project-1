@@ -1,3 +1,4 @@
+package org.jug.brainmaster.machine;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -9,7 +10,7 @@ import org.joda.time.DateTime;
 import org.jug.brainmaster.model.GrandPrizeCandidate;
 import org.jug.brainmaster.model.RegionType;
 
-public class RafleMachine {
+public class RafleMachinePrototype {
 
   private static final long WAIT_FOR_WINNER_TIMEOUT = 20;
   private static final long FAKE_RAFLE_TIMEOUT = 10;
@@ -19,7 +20,7 @@ public class RafleMachine {
   private Map<RegionType, List<GrandPrizeCandidate>> regionWinnerCandidateMapping;
   private Map<RegionType, GrandPrizeCandidate> regionWinner = new HashMap<RegionType, GrandPrizeCandidate>();
 
-  public RafleMachine() {
+  public RafleMachinePrototype() {
     Date startDate = new DateTime(2015, 12, 19, 15, 0, 0).toDate();
     getCandidateWinner();
     while(new Date().after(startDate) && regionWinner.size() < 3) {

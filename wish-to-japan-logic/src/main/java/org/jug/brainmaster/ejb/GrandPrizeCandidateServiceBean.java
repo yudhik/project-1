@@ -56,7 +56,8 @@ public class GrandPrizeCandidateServiceBean {
 
   @TransactionAttribute(TransactionAttributeType.REQUIRED)
   public int countAllCandidate() {
-    return em.createQuery("select count(candidate.id) from GrandPrizeCandidate candidate").getFirstResult();
+    return em.createQuery("select count(candidate.id) from GrandPrizeCandidate candidate")
+        .getFirstResult();
   }
 
   @TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -81,8 +82,17 @@ public class GrandPrizeCandidateServiceBean {
   public List<GrandPrizeCandidate> getAllCandidateWithPagination(int rowSize, int pageNumber) {
     List<GrandPrizeCandidate> candidates = new ArrayList<GrandPrizeCandidate>();
     int startPosition = (pageNumber - 1) * rowSize;
-    candidates = em.createQuery("from GrandPrizeCandidate candidate", GrandPrizeCandidate.class).setFirstResult(startPosition).setMaxResults(rowSize).getResultList();
+    candidates = em.createQuery("from GrandPrizeCandidate candidate", GrandPrizeCandidate.class)
+        .setFirstResult(startPosition).setMaxResults(rowSize).getResultList();
     return candidates;
+  }
+
+  public List<GrandPrizeCandidate> getCandidateForGrandPrize(PrizeList prizeList) {
+    PrizeList existingPrizeList = em.find(PrizeList.class, prizeList.getId());
+    return em
+        .createQuery("from GrandPrizeCandidate candidate where candidate.prizeList = :prizeList",
+            GrandPrizeCandidate.class)
+        .setParameter("prizeList", existingPrizeList).getResultList();
   }
 
   @TransactionAttribute(TransactionAttributeType.REQUIRED)

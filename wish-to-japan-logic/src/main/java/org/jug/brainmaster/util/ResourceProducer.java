@@ -1,3 +1,4 @@
+package org.jug.brainmaster.util;
 
 
 import java.util.logging.Logger;
