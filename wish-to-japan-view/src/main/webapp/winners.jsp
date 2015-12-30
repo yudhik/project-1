@@ -202,7 +202,7 @@
 				url: "/api/show-winners"
 			}).done(function(data) {
 				if (!data.valid) {
-					window.location =  "//" +  viewHost + "/index.jsp";
+					window.location =  "//" +  viewHost + "/index.sd";
 				}
 				var fujifilmWinners = data.fujifilmWinners;
 				var japanWinners = data.japanWinners;

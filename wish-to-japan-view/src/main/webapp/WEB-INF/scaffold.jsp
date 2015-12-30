@@ -1,4 +1,3 @@
-<%@ page import="java.util.Date" %>
 <!DOCTYPE html>
 <html prefix="og: http://ogp.me/ns#">
 <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
@@ -26,7 +25,6 @@
             style="display:none;visibility:hidden"></iframe>
   </noscript>
   <script>(function (w, d, s, l, i) {
-    w[l] = w[l] || [];
     w[l].push({'gtm.start': new Date().getTime(), event: 'gtm.js'});
     var f = d.getElementsByTagName(s)[0], j = d.createElement(
       s), dl = l != 'dataLayer' ? '&l=' + l : '';
@@ -72,9 +70,7 @@
   <style type='text/css'>
   </style>
 
-  <!--[if lt IE 9]>
-  <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-  <![endif]-->
+  <!--[if lt IE 9]><script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 </head>
 <body>
 <header id="branding" class="wide top-bar">
@@ -95,47 +91,13 @@
   <div class="slot-wrapper container">
 
     <div class="bg-awan">
-
       <div class="transparant"></div>
-
-      <div id='pre-raffle-countdown-holder' class="hitungmundur" style="display: block;">
-        <p>
-          Bersiaplah! Pengundian pemenang akan dimulai dalam
-        </p>
-        <p><span id='pre-raffle-countdown' class='countdown'></span></p>
-      </div>
-      <script>
-        $(document).ready(function () {
-          var pageOpenTime = <%= (1451448000000L - new Date().getTime()) / 1000 %>;
-
-          setInterval(function () {
-            setTimer(pageOpenTime, $("#pre-raffle-countdown"))
-          }, 1000);
-          function setTimer(seconds, selector) {
-            console.log(seconds);
-            var finalDisplayTime = "";
-            var day = Math.floor(seconds / (3600 * 24));
-            var hour = Math.floor((seconds / 3600) % 24);
-            var min = Math.floor((seconds / 60) % 60);
-            var sec = Math.floor(seconds % 60);
-
-            finalDisplayTime += showOrHideTimerPart(day, "hari");
-            finalDisplayTime += showOrHideTimerPart(hour, "jam");
-            finalDisplayTime += showOrHideTimerPart(min, "menit");
-            finalDisplayTime += showOrHideTimerPart(sec, "detik");
-
-            if (finalDisplayTime == "") {
-              finalDisplayTime = "&nbsp;"
-            }
-            selector.html(finalDisplayTime);
-            pageOpenTime -= 1;
-          }
-          function showOrHideTimerPart(timeDisp, str) {
-            if(timeDisp > 0) return " " + timeDisp + " " + str;
-          }
-        });
-      </script>
-
+      <%
+        String pg = "views/" + request.getAttribute("viewPage").toString() + ".jsp";
+      %>
+      <jsp:include page='<%=pg%>' flush="true">
+        <jsp:param name="request" value="request"/>
+      </jsp:include>
     </div>
   </div>
 </div>

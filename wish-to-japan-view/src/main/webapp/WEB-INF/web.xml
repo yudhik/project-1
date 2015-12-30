@@ -5,13 +5,23 @@
     <listener-class>org.jug.brainmaster.ws.startup.ServerSocketListener</listener-class>
   </listener>
   <filter>
+    <filter-name>staticFileFilter</filter-name>
+    <filter-class>org.jug.brainmaster.filter.StaticFileFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>staticFileFilter</filter-name>
+    <url-pattern>/</url-pattern>
+  </filter-mapping>
+
+  <filter>
     <filter-name>attributeinject</filter-name>
     <filter-class>org.jug.brainmaster.filter.AttributeInjectorFilter</filter-class>
   </filter>
   <filter-mapping>
     <filter-name>attributeinject</filter-name>
-    <url-pattern>*</url-pattern>
+    <url-pattern>/pages/*</url-pattern>
   </filter-mapping>
+
   <mime-mapping>
     <extension>ico</extension>
     <mime-type>image/x-icon</mime-type>

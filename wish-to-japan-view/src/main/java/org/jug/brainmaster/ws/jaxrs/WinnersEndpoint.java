@@ -12,7 +12,6 @@ import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.request.HttpRequest;
 
-@Path("/show-winners")
 public class WinnersEndpoint {
   private String host = System.getProperty("logicHost");
 

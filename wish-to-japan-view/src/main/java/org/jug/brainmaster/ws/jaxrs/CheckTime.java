@@ -8,7 +8,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-@Path("/check-time")
 public class CheckTime {
   private static final Date SESSION_START_TIME;
 
