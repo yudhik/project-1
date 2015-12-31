@@ -33,7 +33,10 @@ public class GrandPrizeCandidate implements Serializable {
   @JoinColumn(name = "prizelist_id")
   private PrizeList prizeList;
 
+  @Column
   private boolean current = false;
+
+  @Column
   private boolean claimed = false;
 
   public GrandPrizeCandidate() {

@@ -24,9 +24,6 @@ public class WinnerServiceBean {
 
   private static Random RANDOM = new Random();
 
-  @Inject
-  private GrandPrizeCandidateServiceBean grandPrizeCandidateServiceBean;
-
   @PersistenceContext
   private EntityManager em;
 
@@ -53,10 +50,10 @@ public class WinnerServiceBean {
     return winners;
   }
 
-  @TransactionAttribute(TransactionAttributeType.NEVER)
+  @TransactionAttribute(TransactionAttributeType.REQUIRED)
   public List<Winners> findByPrize(PrizeList prizeList) {
     return em
-        .createQuery("from Winners winners where winners.prizeList = :prizeList", Winners.class)
+        .createQuery("from Winners winners where winners.prize = :prizeList", Winners.class)
         .setParameter("prizeList", prizeList).getResultList();
   }
 
