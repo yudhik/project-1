@@ -14,6 +14,9 @@ public class ApplicationServletListener implements ServletContextListener {
   @Inject
   private Logger log;
 
+  @Inject
+  private RafleMachine rafleMachine;
+
   @Override
   public void contextDestroyed(ServletContextEvent sce) {
 
@@ -22,7 +25,7 @@ public class ApplicationServletListener implements ServletContextListener {
   @Override
   public void contextInitialized(ServletContextEvent sce) {
     try {
-      new RafleMachine();
+      rafleMachine.start();
     } catch (Exception e) {
       log.log(Level.SEVERE, "can not initialize machine", e);
     }

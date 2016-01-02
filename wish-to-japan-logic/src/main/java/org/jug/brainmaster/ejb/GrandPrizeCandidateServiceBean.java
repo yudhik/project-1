@@ -11,12 +11,14 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 
 import org.hibernate.Hibernate;
 import org.jug.brainmaster.model.GrandPrizeCandidate;
 import org.jug.brainmaster.model.PrizeList;
 import org.jug.brainmaster.model.Registrant;
+import org.jug.brainmaster.model.Winners;
 
 @Stateless
 @LocalBean
@@ -33,17 +35,27 @@ public class GrandPrizeCandidateServiceBean {
 
   @TransactionAttribute(TransactionAttributeType.REQUIRED)
   public boolean claimPrize(String emailAddress) {
-    GrandPrizeCandidate winner =
-        em.createQuery(SELECT_CURRENT_CANDIDATE_WITH_MAIL, GrandPrizeCandidate.class)
-        .setParameter("emailAddress", emailAddress).getSingleResult();
-    if (winner == null) {
+    GrandPrizeCandidate grandPrizeWinner = null;
+    try {
+      grandPrizeWinner = em.createQuery(SELECT_CURRENT_CANDIDATE_WITH_MAIL, GrandPrizeCandidate.class)
+          .setParameter("emailAddress", emailAddress).getSingleResult();
+    } catch (NoResultException e) {
+      return false;
+    }
+    if (grandPrizeWinner == null) {
       return false;
     }
     try {
-      winner.setClaimed(true);
+      grandPrizeWinner.setClaimed(true);
       log.log(Level.INFO,
           "email address : " + emailAddress + " is valid try to save it as claimed");
-      saveOrUpdate(winner);
+      Hibernate.initialize(grandPrizeWinner.getPrizeList());
+      Hibernate.initialize(grandPrizeWinner.getRegistrant());
+      saveOrUpdate(grandPrizeWinner);
+      Winners winner = new Winners();
+      winner.setPrize(grandPrizeWinner.getPrizeList());
+      winner.setRegistrant(grandPrizeWinner.getRegistrant());
+      em.persist(winner);
     } catch (Exception e) {
       log.log(Level.WARNING,
           "something wrong when claim process try to update value for email address : "
@@ -63,8 +75,10 @@ public class GrandPrizeCandidateServiceBean {
   @TransactionAttribute(TransactionAttributeType.REQUIRED)
   public void delete(GrandPrizeCandidate candidate) {
     GrandPrizeCandidate existingCandidate = findById(candidate.getId());
-    em.remove(existingCandidate);
-    em.flush();
+    if (existingCandidate != null) {
+      em.remove(existingCandidate);
+      em.flush();
+    }
   }
 
   @TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -77,7 +91,6 @@ public class GrandPrizeCandidateServiceBean {
     return candidate;
   }
 
-
   @TransactionAttribute(TransactionAttributeType.REQUIRED)
   public List<GrandPrizeCandidate> getAllCandidateWithPagination(int rowSize, int pageNumber) {
     List<GrandPrizeCandidate> candidates = new ArrayList<GrandPrizeCandidate>();
@@ -87,12 +100,29 @@ public class GrandPrizeCandidateServiceBean {
     return candidates;
   }
 
+
   public List<GrandPrizeCandidate> getCandidateForGrandPrize(PrizeList prizeList) {
     PrizeList existingPrizeList = em.find(PrizeList.class, prizeList.getId());
     return em
         .createQuery("from GrandPrizeCandidate candidate where candidate.prizeList = :prizeList",
             GrandPrizeCandidate.class)
         .setParameter("prizeList", existingPrizeList).getResultList();
+  }
+
+  @TransactionAttribute(TransactionAttributeType.REQUIRED)
+  public void putCurrent(GrandPrizeCandidate candidate) {
+    List<GrandPrizeCandidate> candidates = em.createQuery("from GrandPrizeCandidate", GrandPrizeCandidate.class).getResultList();
+    for(GrandPrizeCandidate grandPrizeCandidate : candidates) {
+      grandPrizeCandidate.setCurrent(false);
+      em.persist(grandPrizeCandidate);
+    }
+    em.flush();
+    GrandPrizeCandidate existingCandidate = findById(candidate.getId());
+    if (existingCandidate != null) {
+      existingCandidate.setCurrent(true);
+      em.persist(existingCandidate);
+      em.flush();
+    }
   }
 
   @TransactionAttribute(TransactionAttributeType.REQUIRED)
