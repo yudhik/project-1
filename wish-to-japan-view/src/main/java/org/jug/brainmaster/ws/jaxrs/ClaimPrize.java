@@ -13,7 +13,6 @@ import com.mashape.unirest.request.HttpRequest;
 
 import java.util.logging.Logger;
 
-@Path("/claim-winner")
 public class ClaimPrize {
   private static final Logger LOGGER = Logger.getLogger(ClaimPrize.class.getName());
 

@@ -29,7 +29,6 @@ public class AttributeInjectorFilter implements Filter{
   @Override
   public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse,
       FilterChain filterChain) throws IOException, ServletException {
-//    LOGGER.severe("run this " + System.getProperties().get("viewHost") + System.getProperties().get("logicHost"));
     String useWss = System.getProperty("useWss", "true");
     String viewHost = System.getProperty("viewHost", "localhost:8080");
     String logicHost = System.getProperty("logicHost", "localhost:8181");
