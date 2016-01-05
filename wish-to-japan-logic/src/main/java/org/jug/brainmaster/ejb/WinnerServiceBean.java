@@ -87,7 +87,7 @@ public class WinnerServiceBean {
     em.flush();
   }
 
-  @TransactionAttribute(TransactionAttributeType.REQUIRED)
+  @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
   public List<Winners> getAllWinners() {
     List<Winners> result = em.createQuery("from Winners winners", Winners.class).getResultList();
     if(result != null) {
