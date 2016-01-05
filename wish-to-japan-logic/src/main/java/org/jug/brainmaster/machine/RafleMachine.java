@@ -68,8 +68,7 @@ public class RafleMachine {
   @Inject
   private Logger log;
 
-  public RafleMachine() throws Exception {
-  }
+  public RafleMachine() throws Exception {}
 
   private String combineName(String firstName, String lastName) {
     return firstName + " " + lastName;
@@ -78,8 +77,8 @@ public class RafleMachine {
   private void doShowRandomValue(int registrantCountBeforeShowCandidate, boolean isTheFirst,
       Map<PrizeList, GrandPrizeCandidate> regionWinner) {
     try {
-      List<Registrant> registrants = registrantServiceBean
-          .findFakeRegistrantToShow(RANDOM, registrantCountBeforeShowCandidate);
+      List<Registrant> registrants = registrantServiceBean.findFakeRegistrantToShow(RANDOM,
+          registrantCountBeforeShowCandidate);
       for (Registrant registrant : registrants) {
         GameMessage message =
             new GameMessage(combineName(registrant.getFirstName(), registrant.getLastName()),
@@ -122,7 +121,8 @@ public class RafleMachine {
       List<Winners> winnerList = winnerServiceBean.findByPrize(prizeList);
       if (winnerList != null && winnerList.size() == 1) {
         Winners winners = winnerServiceBean.findById(winnerList.get(0).getId());
-        GrandPrizeCandidate candidate = grandPrizeCandidateServiceBean.findByEmailAddress(winners.getRegistrant().getEmailAddress());
+        GrandPrizeCandidate candidate = grandPrizeCandidateServiceBean
+            .findByEmailAddress(winners.getRegistrant().getEmailAddress());
         data.put(prizeList, candidate);
       }
     }
@@ -139,8 +139,9 @@ public class RafleMachine {
       log.log(Level.FINER, "get winner from database");
       try {
         GrandPrizeCandidate winnerToWait = grandPrizeCandidateServiceBean.findById(winners.getId());
-        GameMessage gm = new GameMessage(combineName(winnerToWait.getRegistrant().getFirstName(),
-            winnerToWait.getRegistrant().getLastName()),
+        GameMessage gm = new GameMessage(
+            combineName(winnerToWait.getRegistrant().getFirstName(),
+                winnerToWait.getRegistrant().getLastName()),
             maskingVoucher(winnerToWait.getRegistrant().getVoucherCode()), GameState.WAITING,
             isTheFirst, time);
         gm.setWinners(getCleanRegionWinner(regionWinner));
@@ -162,9 +163,8 @@ public class RafleMachine {
 
   private Properties loadConfigurationFile() throws Exception {
     Properties applicationProperties = new Properties();
-    FileReader reader = new FileReader(
-        System.getProperty(JBOSS_CONFIG_DIRECTORY_KEY) + File.separator
-            + APPLICATION_CONFIG_FILENAME);
+    FileReader reader = new FileReader(System.getProperty(JBOSS_CONFIG_DIRECTORY_KEY)
+        + File.separator + APPLICATION_CONFIG_FILENAME);
     applicationProperties.load(reader);
     return applicationProperties;
   }
@@ -179,10 +179,18 @@ public class RafleMachine {
     Map<PrizeList, List<GrandPrizeCandidate>> regionWinnerCandidateMapping =
         new HashMap<PrizeList, List<GrandPrizeCandidate>>();
     for (PrizeList prizeList : allGrandPrizes) {
-      regionWinnerCandidateMapping
-          .put(prizeList, grandPrizeCandidateServiceBean.getCandidateForGrandPrize(prizeList));
+      regionWinnerCandidateMapping.put(prizeList,
+          grandPrizeCandidateServiceBean.getCandidateForGrandPrize(prizeList));
     }
     return regionWinnerCandidateMapping;
+  }
+
+  private List<WinnerResponse> populateWinnerData(List<Winners> allWinners) {
+    List<WinnerResponse> winnersData = new ArrayList<WinnerResponse>();
+    for(Winners winner : allWinners) {
+      winnersData.add(new WinnerResponse(winner.getPrize().getGrandPrize(), combineName(winner.getRegistrant().getFirstName(), winner.getRegistrant().getLastName()), winner.getPrize().getName(), winner.getRegistrant().getVoucherCode()));
+    }
+    return winnersData;
   }
 
   private void rafleFakeCandidate(long fakeRafleTimeoutInSecond,
@@ -229,11 +237,10 @@ public class RafleMachine {
               log.log(Level.FINER, "try to rafle fake candidate");
               rafleFakeCandidate(fakeRafleTimeout, registrantCountBeforeShowCandidate, isTheFirst,
                   regionWinner);
-              log.log(Level.FINER,
-                  "put current state for : " + regionWinnerCandidateMapping.get(prizeList)
-                      .get(counter).getEmailAddress());
+              log.log(Level.FINER, "put current state for : "
+                  + regionWinnerCandidateMapping.get(prizeList).get(counter).getEmailAddress());
               grandPrizeCandidateServiceBean
-                  .putCurrent(regionWinnerCandidateMapping.get(prizeList).get(counter));
+              .putCurrent(regionWinnerCandidateMapping.get(prizeList).get(counter));
               log.log(Level.FINER, "wait for winner to clain");
               grandPrizeWinner =
                   getRegionWinner(regionWinnerCandidateMapping.get(prizeList).get(counter),
@@ -250,10 +257,8 @@ public class RafleMachine {
             }
           }
           regionWinner.put(prizeList, grandPrizeWinner);
-
-          log.log(Level.FINER,
-              "put grandprize for " + prizeList.getName() + " to " + grandPrizeWinner
-                  .getEmailAddress());
+          log.log(Level.FINER, "put grandprize for " + prizeList.getName() + " to "
+              + grandPrizeWinner.getEmailAddress());
         }
       }
       if (regionWinner.size() >= allGrandPrizes.size()) {
@@ -261,6 +266,7 @@ public class RafleMachine {
       }
     }
     context.setAttribute("isEnded", true);
+    context.setAttribute("winners", populateWinnerData(winnerServiceBean.getAllWinners()));
     gameEvent.fire(new GameMessage(null, null, GameState.END, false, -1L));
   }
 }
