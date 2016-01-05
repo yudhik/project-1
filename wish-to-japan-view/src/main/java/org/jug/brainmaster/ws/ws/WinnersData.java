@@ -13,11 +13,11 @@ import org.jug.brainmaster.ws.response.LogicWinnerResponse;
 import org.jug.brainmaster.ws.response.UserResponse;
 import org.jug.brainmaster.ws.response.WinnerResponse;
 
-import com.google.gson.Gson;
-import com.mashape.unirest.http.HttpResponse;
-import com.mashape.unirest.http.JsonNode;
-import com.mashape.unirest.http.Unirest;
-import com.mashape.unirest.request.HttpRequest;
+//import com.google.gson.Gson;
+//import com.mashape.unirest.http.HttpResponse;
+//import com.mashape.unirest.http.JsonNode;
+//import com.mashape.unirest.http.Unirest;
+//import com.mashape.unirest.request.HttpRequest;
 
 @Singleton
 public class WinnersData {
@@ -67,13 +67,13 @@ public class WinnersData {
     Date aDay = new Date(this.lastUpdatedAt + TimeUnit.MILLISECONDS.convert(1L, TimeUnit.DAYS));
 
     if (new Date().after(aDay)) {
-      HttpRequest request = Unirest.get("//" + this.host + "/show-winners");
-      HttpResponse<JsonNode> jsonResponse = request.asJson();
-      Gson gson = new Gson();
-      String responseJsonString = jsonResponse.getBody().toString();
-
-      assignWinners(gson.fromJson(responseJsonString, LogicWinnerResponse.class));
-      this.lastUpdatedAt = new Date().getTime();
+//      HttpRequest request = Unirest.get("//" + this.host + "/show-winners");
+//      HttpResponse<JsonNode> jsonResponse = request.asJson();
+//      Gson gson = new Gson();
+//      String responseJsonString = jsonResponse.getBody().toString();
+//
+//      assignWinners(gson.fromJson(responseJsonString, LogicWinnerResponse.class));
+//      this.lastUpdatedAt = new Date().getTime();
     }
     return this.winnerResponse;
   }

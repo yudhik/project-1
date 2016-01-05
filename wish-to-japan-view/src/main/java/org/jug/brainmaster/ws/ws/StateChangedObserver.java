@@ -3,16 +3,12 @@ package org.jug.brainmaster.ws.ws;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import org.jug.brainmaster.model.response.EmailCheckResponse;
 
 import javax.websocket.Session;
 
-public class StateChangedObserver extends Observer{
+public class StateChangedObserver extends Observer {
   private Gson gson;
-
-  @Override
-  public void detach() {
-    this.subject.detach(this);
-  }
 
   public StateChangedObserver(DataSubject subject, Session session) {
     this.subject = subject;
@@ -21,6 +17,12 @@ public class StateChangedObserver extends Observer{
     gson = builder.create();
     this.session = session;
   }
+
+  @Override
+  public void detach() {
+    this.subject.detach(this);
+  }
+
   @Override
   public void update() {
     try {

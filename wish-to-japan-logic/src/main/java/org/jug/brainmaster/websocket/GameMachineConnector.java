@@ -1,22 +1,33 @@
 package org.jug.brainmaster.websocket;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import com.google.gson.Gson;
+import org.jug.brainmaster.ejb.GameMessageListenerServiceBean;
+import org.jug.brainmaster.ejb.GrandPrizeCandidateServiceBean;
+import org.jug.brainmaster.model.request.ClaimRequest;
+import org.jug.brainmaster.model.request.EmailCheckRequest;
+import org.jug.brainmaster.model.response.GameMessage;
+import org.jug.brainmaster.model.response.GameState;
 
 import javax.inject.Inject;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpSession;
+import javax.websocket.EndpointConfig;
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
 import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.jug.brainmaster.ejb.GameMessageListenerServiceBean;
-import org.jug.brainmaster.ejb.GrandPrizeCandidateServiceBean;
-import org.jug.brainmaster.model.request.ClaimRequest;
-
-@ServerEndpoint("/gameMachineConnector")
+@ServerEndpoint(value = "/gameMachineConnector")
 public class GameMachineConnector {
+  @Inject
+  private Gson gson;
+
+  @Inject
+  private Boolean isEnded;
 
   @Inject
   private Logger log;
@@ -27,19 +38,30 @@ public class GameMachineConnector {
   @Inject
   private GrandPrizeCandidateServiceBean grandPrizeCandidateServiceBean;
 
-
   @OnClose
   public void destroy(Session session) throws Exception {
     if (session.isOpen()) {
+      log.log(Level.FINER, "session :" + session.getId() + ", is open closing connection");
       session.close();
-      gameMessageListenerServiceBean.removeListener(session);
     }
+    log.log(Level.FINER, "removing session :" + session.getId() + " from collections");
+    gameMessageListenerServiceBean.removeListener(session);
   }
 
   @OnOpen
   public void monitorLuckyDip(Session session) throws Exception {
     log.log(Level.FINER, "A client connected :" + session.getId() + ", register it as a game listener");
-    gameMessageListenerServiceBean.addListener(session);
+    try {
+      if (isEnded != null) {
+        session.getBasicRemote().sendText(new GameMessage(null, null, GameState.END, false, -1L).toJSON());
+        session.setMaxIdleTimeout(100);
+        session.close();
+      } else {
+        gameMessageListenerServiceBean.addListener(session);
+      }
+    }catch (Exception e) {
+      log.log(Level.SEVERE, "exception when opening connection from client", e);
+    }
   }
 
   @OnError
@@ -52,6 +74,4 @@ public class GameMachineConnector {
     ClaimRequest request = new ClaimRequest(message);
     grandPrizeCandidateServiceBean.claimPrize(request.getEmailAddress());
   }
-
-
 }
