@@ -1,17 +1,16 @@
 package org.jug.brainmaster.ws.ws;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
+import org.jug.brainmaster.ws.response.LogicWinnerResponse;
+import org.jug.brainmaster.ws.response.UserResponse;
+import org.jug.brainmaster.ws.response.WinnerResponse;
 
 import javax.ejb.Singleton;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-
-import org.jug.brainmaster.ws.response.LogicWinnerResponse;
-import org.jug.brainmaster.ws.response.UserResponse;
-import org.jug.brainmaster.ws.response.WinnerResponse;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 //import com.google.gson.Gson;
 //import com.mashape.unirest.http.HttpResponse;

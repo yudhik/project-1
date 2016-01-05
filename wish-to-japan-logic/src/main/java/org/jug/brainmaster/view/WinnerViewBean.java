@@ -15,6 +15,7 @@ import javax.inject.Inject;
 import org.jug.brainmaster.ejb.PrizeListServiceBean;
 import org.jug.brainmaster.ejb.WinnerServiceBean;
 import org.jug.brainmaster.model.PrizeList;
+import org.jug.brainmaster.model.Registrant;
 import org.jug.brainmaster.model.Winners;
 
 @ManagedBean
@@ -31,8 +32,9 @@ public class WinnerViewBean implements Serializable {
 
   @Inject
   private Logger log;
-
+  private Long id;
   private Winners winner;
+  private Registrant registrant;
   private Integer winnerSize;
   private PrizeList prizeList;
 
@@ -45,7 +47,7 @@ public class WinnerViewBean implements Serializable {
       winnerServiceBean.delete(winner);
       return "search?faces-redirect=true";
     } catch (Exception e) {
-      log.log(Level.SEVERE, "can not save winner : "+ winner, e);
+      log.log(Level.SEVERE, "can not save winner : " + winner, e);
     }
     return null;
   }
@@ -90,16 +92,50 @@ public class WinnerViewBean implements Serializable {
     };
   }
 
-  public List<Winners> getWinners() {
-    return winnerServiceBean.getAllWinners();
+  public Registrant getRegistrant() {
+    return registrant;
+  }
+
+  public Winners getWinner() {
+    return winner;
   }
 
   public Integer getWinnerSize() {
     return winnerSize;
   }
 
+  public List<Winners> getWinners() {
+    return winnerServiceBean.getAllWinners();
+  }
+
+  public String saveOrUpdate() {
+    try {
+      if (winner == null) {
+        winner = new Winners();
+      }
+      if (id != null) {
+        winner = winnerServiceBean.findById(id);
+      }
+      winner.setPrize(prizeList);
+      winner.setRegistrant(registrant);
+      winnerServiceBean.saveOrUpdate(winner);
+      return "search?faces-redirect=true";
+    } catch (Exception e) {
+      log.log(Level.SEVERE, "can not save candidate : " + winner, e);
+    }
+    return null;
+  }
+
   public void setPrizeList(PrizeList prizeList) {
     this.prizeList = prizeList;
+  }
+
+  public void setRegistrant(Registrant registrant) {
+    this.registrant = registrant;
+  }
+
+  public void setWinner(Winners winner) {
+    this.winner = winner;
   }
 
   public void setWinnerSize(Integer winnerSize) {

@@ -114,6 +114,7 @@
 <script type="text/javascript">
   var viewHost = "<%=request.getAttribute("viewHost")%>";
   var useWss = "<%=request.getAttribute("useWss")%>";
+  var winnerClaimTimeout = <%=request.getAttribute("winnerClaimTimeout")%>
 </script>
 <script>
 

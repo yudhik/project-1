@@ -260,6 +260,7 @@ public class RafleMachine {
           log.log(Level.FINER, "put grandprize for " + prizeList.getName() + " to "
               + grandPrizeWinner.getEmailAddress());
         }
+        rafleFakeCandidate(fakeRafleTimeout, registrantCountBeforeShowCandidate, false, regionWinner);
       }
       if (regionWinner.size() >= allGrandPrizes.size()) {
         waitingToStart = false;

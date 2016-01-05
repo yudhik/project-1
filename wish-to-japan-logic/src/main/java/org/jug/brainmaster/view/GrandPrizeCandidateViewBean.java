@@ -156,6 +156,7 @@ public class GrandPrizeCandidateViewBean implements Serializable {
         candidate = grandPrizeCandidateService.findById(id);
       }
       candidate.setPrizeList(prizeList);
+      candidate.setEmailAddress(registrant.getEmailAddress());
       candidate.setRegistrant(registrant);
       grandPrizeCandidateService.saveOrUpdate(candidate);
       return "search?faces-redirect=true";

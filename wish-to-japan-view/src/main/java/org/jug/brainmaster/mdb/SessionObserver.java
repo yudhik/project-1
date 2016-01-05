@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import org.jug.brainmaster.model.request.EmailCheckRequest;
 import org.jug.brainmaster.model.response.GameMessage;
 import org.jug.brainmaster.model.response.GameState;
+import org.jug.brainmaster.ws.startup.ApplicationConfig;
 import org.jug.brainmaster.ws.ws.DataSubject;
 
 import javax.annotation.Resource;
@@ -34,7 +35,8 @@ public class SessionObserver {
   private static final long SESSION_CHECKING_INTERVAL = 5000L;
   private static final long WEBSOCKET_RESPONSE_TIMEOUT = 200L;
 
-  private static final String host = System.getProperty("logicHost");
+  @Inject
+  ApplicationConfig applicationConfig;
 
   @Inject
   DataSubject dataSubject;
@@ -82,7 +84,8 @@ public class SessionObserver {
       try {
         WebSocketContainer container = ContainerProvider.getWebSocketContainer();
         container.setAsyncSendTimeout(WEBSOCKET_RESPONSE_TIMEOUT);
-        URI uri = new URI("ws://" + SessionObserver.host + "/gameMachineConnector");
+
+        URI uri = new URI("ws://" + applicationConfig.getLogicHost() + "/gameMachineConnector");
         this.serverSession = container.connectToServer(this, uri);
         this.timerService.createSingleActionTimer(SessionObserver.SESSION_CHECKING_INTERVAL,
             new TimerConfig("schedule next checking interval", false));

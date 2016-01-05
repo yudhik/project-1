@@ -23,9 +23,15 @@
     <quartz.version>2.2.2</quartz.version>
     <commons-io.version>2.4</commons-io.version>
     <joda-time.version>2.1.9</joda-time.version>
+    <jstl.version>1.2</jstl.version>
   </properties>
   <dependencyManagement>
     <dependencies>
+      <dependency>
+        <groupId>javax.servlet</groupId>
+        <artifactId>jstl</artifactId>
+        <version>${jstl.version}</version>
+      </dependency>
       <dependency>
         <groupId>commons-io</groupId>
         <artifactId>commons-io</artifactId>

@@ -58,6 +58,8 @@ public class GrandPrizeCandidateServiceBean {
       winner.setPrize(grandPrizeWinner.getPrizeList());
       winner.setRegistrant(grandPrizeWinner.getRegistrant());
       em.persist(winner);
+      grandPrizeWinner.setCurrent(false);
+      saveOrUpdate(grandPrizeWinner);
     } catch (Exception e) {
       log.log(Level.WARNING,
           "something wrong when claim process try to update value for email address : "
