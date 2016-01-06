@@ -76,6 +76,8 @@ public class ViewController extends HttpServlet {
           winnerResponses = gww.getWinners();
           if(winnerResponses.size() > 0) break;
         } while((System.nanoTime() / 1000000000) < timeoutConnectWS);
+        gww.forceClose();
+
         if(winnerResponses.size() > 0) {
           //transfer to winner page
 

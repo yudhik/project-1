@@ -53,7 +53,11 @@ public class GetWinnersWebsocket {
 
   @OnClose
   public void onClose(Session session, CloseReason closeReason) throws Exception {
+    if(session.isOpen()) session.close();
+  }
 
+  public void forceClose() throws Exception {
+    if(session.isOpen()) session.close();
   }
 
   @OnMessage
