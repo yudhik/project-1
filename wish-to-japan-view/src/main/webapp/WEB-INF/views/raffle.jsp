@@ -202,6 +202,14 @@
   <input type="button" class="hidden" id="playslot-wrapper" value="">
   <input type="button" class="hidden" id="play-congrats-slot-wrapper" value="">
 
+  <div class='win-wrapper'>
+	<ol id='gp-winner-list'>
+	  <li>
+		Siapapun Namanya
+		<span>JPN-JK7T9-***8B</span>
+	  </li>
+	</ol>
+  </div>
 </div>
 <script src="_asset/js/jquery.easing.1.3.js" type="text/javascript" charset="utf-8"></script>
 <script src="_asset/js/jquery.jSlots.min.js" type="text/javascript" charset="utf-8"></script>
@@ -226,6 +234,7 @@
     var displayCodePart2 = [6, 7, 8, 9, 10];
     var unileverValue = [1];
     var nameHolder = $('#jpn-name-holder');
+	var gpWinnerListHolder = $("#gp-winner-list");
 
     $("#congratulations-slot").jSlots({
       number: 16,
@@ -330,13 +339,33 @@
     }
 
     function onMessageWS(message) {
-      //{"name":"dadang sapari","voucherCode":"JPN-FQ6DT-***J4","gameState":"WAITING","isTheFirst":false,"regionCounter":0}
+		/*{
+		  "name": "eko sarwono",
+		  "voucherCode": "JPN-8MNNT-***A3",
+		  "gameState": "RUNNING",
+		  "isTheFirst": true,
+		  "winners": [
+			{
+			  "prizeName": "JPN_TICKET_1",
+			  "voucherCode": "JPNU-26NTT-***A2",
+			  "name": "sunarti .",
+			  "grandPrize": true
+			}
+		  ],
+		  "timeLeftToClaim": 0
+		}*/
       var data = JSON.parse(message.data);
       var name = data.name;
       var voucherCode = data.voucherCode;
       var gameState = data.gameState;
       var isTheFirst = data.isTheFirst;
-      var regionCounter = data.regionCounter;
+	  var winners = data.winners;
+      var regionCounter = data.regionCounter; //ini blm wil
+	  
+	  if (winners) {
+		  showWinners(winners);
+	  }
+	  
       showAndHideParts(name, voucherCode, gameState, isTheFirst, regionCounter);
       // console.log(message);
     }
@@ -386,6 +415,14 @@
         $("chosen-winner-state").html(chosenWinnerStateEnum[regionCounter]);
       }
     }
+	
+	function showWinners(winners) {
+		gpWinnerListHolder.html("");
+		
+		for (i = 0; i < winners.length; i++) {
+			gpWinnerListHolder.append("<li>" + winners[i].name + "<span>" + winners[i].voucherCode + "</span></li>");
+		}
+	}
 
     startWS();
   });

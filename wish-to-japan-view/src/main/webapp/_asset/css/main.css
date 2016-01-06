@@ -45,8 +45,8 @@ body {
 }
 
 .top-bar {
-	background: url('https://www.static-src.com/resources/images/bg_pattern_wishlist.jpg') center center !important;
-	height: 130px !important;
+	background: url('https://www.static-src.com/resources/images/bg_pattern.png') center center !important;
+	/*height: 130px !important;*/
 }
 
 input, button, submit
