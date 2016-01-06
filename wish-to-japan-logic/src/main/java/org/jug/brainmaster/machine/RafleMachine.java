@@ -102,9 +102,9 @@ public class RafleMachine {
       WinnerResponse gm = new WinnerResponse();
       gm.setName(combineName(candidate.getRegistrant().getFirstName(),
           candidate.getRegistrant().getLastName()));
-      gm.setVoucherCode(maskingVoucher(entry.getValue().getRegistrant().getVoucherCode()));
-      gm.setGrandPrize(entry.getValue().getPrizeList().getGrandPrize());
-      gm.setPrizeName(entry.getValue().getPrizeList().getName());
+      gm.setVoucherCode(maskingVoucher(candidate.getRegistrant().getVoucherCode()));
+      gm.setGrandPrize(candidate.getPrizeList().getGrandPrize());
+      gm.setPrizeName(candidate.getPrizeList().getName());
       result.add(gm);
     }
     return result;
@@ -187,8 +187,10 @@ public class RafleMachine {
 
   private List<WinnerResponse> populateWinnerData(List<Winners> allWinners) {
     List<WinnerResponse> winnersData = new ArrayList<WinnerResponse>();
-    for(Winners winner : allWinners) {
-      winnersData.add(new WinnerResponse(winner.getPrize().getGrandPrize(), combineName(winner.getRegistrant().getFirstName(), winner.getRegistrant().getLastName()), winner.getPrize().getName(), winner.getRegistrant().getVoucherCode()));
+    for (Winners winner : allWinners) {
+      winnersData.add(new WinnerResponse(winner.getPrize().getGrandPrize(),
+          combineName(winner.getRegistrant().getFirstName(), winner.getRegistrant().getLastName()),
+          winner.getPrize().getName(), winner.getRegistrant().getVoucherCode()));
     }
     return winnersData;
   }
@@ -260,7 +262,8 @@ public class RafleMachine {
           log.log(Level.FINER, "put grandprize for " + prizeList.getName() + " to "
               + grandPrizeWinner.getEmailAddress());
         }
-        rafleFakeCandidate(fakeRafleTimeout, registrantCountBeforeShowCandidate, false, regionWinner);
+        rafleFakeCandidate(fakeRafleTimeout, registrantCountBeforeShowCandidate, false,
+            regionWinner);
       }
       if (regionWinner.size() >= allGrandPrizes.size()) {
         waitingToStart = false;

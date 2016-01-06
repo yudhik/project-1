@@ -40,7 +40,8 @@ public class GrandPrizeCandidateServiceBean {
   public boolean claimPrize(String emailAddress) {
     GrandPrizeCandidate grandPrizeWinner = null;
     try {
-      grandPrizeWinner = findByEmailAddress(emailAddress);
+      grandPrizeWinner = em.createQuery(SELECT_CURRENT_CANDIDATE_WITH_MAIL, GrandPrizeCandidate.class)
+          .setParameter("emailAddress", emailAddress).getSingleResult();
     } catch (NoResultException e) {
       return false;
     }
@@ -88,10 +89,20 @@ public class GrandPrizeCandidateServiceBean {
   public GrandPrizeCandidate findByEmailAddress(String emailAddress) {
     GrandPrizeCandidate existingCandidate = em.createQuery(SELECT_CANDIDATE_WITH_MAIL, GrandPrizeCandidate.class)
         .setParameter("emailAddress", emailAddress).getSingleResult();
+    //    GrandPrizeCandidate resultCandidate = new GrandPrizeCandidate();
     if (existingCandidate != null) {
       Hibernate.initialize(existingCandidate.getRegistrant());
       Hibernate.initialize(existingCandidate.getPrizeList());
+      //      resultCandidate.setClaimed(existingCandidate.isClaimed());
+      //      resultCandidate.setCurrent(existingCandidate.isCurrent());
+      //      resultCandidate.setEmailAddress(existingCandidate.getEmailAddress());
+      //      resultCandidate.setId(existingCandidate.getId());
+      //      resultCandidate.setPrizeList(existingCandidate.getPrizeList());
+      //      resultCandidate.setRegistrant(existingCandidate.getRegistrant());
+      //    } else {
+      //      return null;
     }
+    //    return resultCandidate;
     return existingCandidate;
   }
 
