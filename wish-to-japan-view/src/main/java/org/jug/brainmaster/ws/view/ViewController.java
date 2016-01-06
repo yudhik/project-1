@@ -28,6 +28,9 @@ public class ViewController extends HttpServlet {
 
     String viewHandler = "";
     try {
+      //Check winners, create websocket
+      //check if there are GPs
+
       Date startDate = new DateTime(2016, 1, 1, 11, 0, 0).toDate();
       Date now = new Date();
       if (now.before(startDate)) {
@@ -35,6 +38,7 @@ public class ViewController extends HttpServlet {
         request.setAttribute("countdownTime", (startDate.getTime() - now.getTime()) / 1000);
         LOGGER.finer("Jam: " + request.getAttribute("countdownTime"));
       } else {
+
         viewHandler = RAFFLE_PAGE;
         LOGGER.finer("Send user to Raffling page");
       }

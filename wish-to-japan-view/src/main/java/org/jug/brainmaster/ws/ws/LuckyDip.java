@@ -51,9 +51,9 @@ public class LuckyDip{
   }
 
   @OnMessage
-  public void receiveClaim(String email, Session session) throws Exception {
+  public void receiveClaim(String email) throws Exception {
     // TODO: 1/18/2016
-    sessionObserver.checkEmail(email, session);
+    sessionObserver.checkEmail(email);
     //session.getBasicRemote().sendText(gson.toJson(subject.getStatusResponse()));
   }
 }

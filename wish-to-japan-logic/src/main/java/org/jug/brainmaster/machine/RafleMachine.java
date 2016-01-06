@@ -3,6 +3,7 @@ package org.jug.brainmaster.machine;
 import java.io.File;
 import java.io.FileReader;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -19,6 +20,7 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
+import javax.servlet.ServletContext;
 
 import org.jug.brainmaster.ejb.GrandPrizeCandidateServiceBean;
 import org.jug.brainmaster.ejb.PrizeListServiceBean;
@@ -30,6 +32,7 @@ import org.jug.brainmaster.model.Registrant;
 import org.jug.brainmaster.model.Winners;
 import org.jug.brainmaster.model.response.GameMessage;
 import org.jug.brainmaster.model.response.GameState;
+import org.jug.brainmaster.model.response.WinnerResponse;
 
 @Stateless
 @LocalBean
@@ -73,15 +76,15 @@ public class RafleMachine {
   }
 
   private void doShowRandomValue(int registrantCountBeforeShowCandidate, boolean isTheFirst,
-      int regionCounter) {
+      Map<PrizeList, GrandPrizeCandidate> regionWinner) {
     try {
       List<Registrant> registrants = registrantServiceBean
           .findFakeRegistrantToShow(RANDOM, registrantCountBeforeShowCandidate);
       for (Registrant registrant : registrants) {
         GameMessage message =
             new GameMessage(combineName(registrant.getFirstName(), registrant.getLastName()),
-                maskingVoucher(registrant.getVoucherCode()), GameState.RUNNING, isTheFirst,
-                regionCounter);
+                maskingVoucher(registrant.getVoucherCode()), GameState.RUNNING, isTheFirst, 0L);
+        message.setWinners(getCleanRegionWinner(regionWinner));
         log.log(Level.FINER, "send message to view : " + message);
         gameEvent.fire(message);
         Thread.sleep(200);
@@ -89,6 +92,23 @@ public class RafleMachine {
     } catch (InterruptedException e) {
       log.log(Level.SEVERE, "something bad happened at doShowRandomValue method", e);
     }
+  }
+
+  private List<WinnerResponse> getCleanRegionWinner(
+      Map<PrizeList, GrandPrizeCandidate> regionWinner) {
+    List<WinnerResponse> result = new ArrayList<>();
+    for (Map.Entry<PrizeList, GrandPrizeCandidate> entry : regionWinner.entrySet()) {
+      GrandPrizeCandidate candidate =
+          grandPrizeCandidateServiceBean.findById(entry.getValue().getId());
+      WinnerResponse gm = new WinnerResponse();
+      gm.setName(combineName(candidate.getRegistrant().getFirstName(),
+          candidate.getRegistrant().getLastName()));
+      gm.setVoucherCode(maskingVoucher(entry.getValue().getRegistrant().getVoucherCode()));
+      gm.setGrandPrize(entry.getValue().getPrizeList().getGrandPrize());
+      gm.setPrizeName(entry.getValue().getPrizeList().getName());
+      result.add(gm);
+    }
+    return result;
   }
 
   private List<PrizeList> getGrandAllGrandPrize() {
@@ -102,24 +122,29 @@ public class RafleMachine {
       List<Winners> winnerList = winnerServiceBean.findByPrize(prizeList);
       if (winnerList != null && winnerList.size() == 1) {
         Winners winners = winnerServiceBean.findById(winnerList.get(0).getId());
-        data.put(prizeList, new GrandPrizeCandidate(winners.getRegistrant(), winners.getPrize()));
+        GrandPrizeCandidate candidate = grandPrizeCandidateServiceBean.findByEmailAddress(winners.getRegistrant().getEmailAddress());
+        data.put(prizeList, candidate);
       }
     }
     return data;
   }
 
   private GrandPrizeCandidate getRegionWinner(GrandPrizeCandidate winners,
-      long waitForWinnerTimeout, boolean isTheFirst, int regionCounter) {
+      long waitForWinnerTimeout, boolean isTheFirst,
+      Map<PrizeList, GrandPrizeCandidate> regionWinner) {
     long waitStartTime = System.nanoTime();
     boolean claimed = false;
-    while (((System.nanoTime() - waitStartTime) / 1000000000) < waitForWinnerTimeout) {
+    long time = ((System.nanoTime() - waitStartTime) / 1000000000);
+    while (time < waitForWinnerTimeout) {
       log.log(Level.FINER, "get winner from database");
       try {
         GrandPrizeCandidate winnerToWait = grandPrizeCandidateServiceBean.findById(winners.getId());
-        gameEvent.fire(new GameMessage(combineName(winnerToWait.getRegistrant().getFirstName(),
+        GameMessage gm = new GameMessage(combineName(winnerToWait.getRegistrant().getFirstName(),
             winnerToWait.getRegistrant().getLastName()),
             maskingVoucher(winnerToWait.getRegistrant().getVoucherCode()), GameState.WAITING,
-            isTheFirst, regionCounter));
+            isTheFirst, time);
+        gm.setWinners(getCleanRegionWinner(regionWinner));
+        gameEvent.fire(gm);
         claimed = winnerToWait.isClaimed();
         if (claimed) {
           log.log(Level.FINER, "we got winner who claimed here : " + winners.getEmailAddress());
@@ -129,6 +154,7 @@ public class RafleMachine {
       } catch (InterruptedException e) {
         log.log(Level.SEVERE, "get region winner get exception", e);
       }
+      time = ((System.nanoTime() - waitStartTime) / 1000000000);
     }
     log.log(Level.FINER, "no body claim the prize");
     return null;
@@ -160,16 +186,17 @@ public class RafleMachine {
   }
 
   private void rafleFakeCandidate(long fakeRafleTimeoutInSecond,
-      int registrantCountBeforeShowCandidate, boolean isTheFirst, int regionCounter) {
+      int registrantCountBeforeShowCandidate, boolean isTheFirst,
+      Map<PrizeList, GrandPrizeCandidate> regionWinner) {
     long rafleStartTime = System.nanoTime();
     while (((System.nanoTime() - rafleStartTime) / 1000000000) < fakeRafleTimeoutInSecond) {
-      doShowRandomValue(registrantCountBeforeShowCandidate, isTheFirst, regionCounter);
+      doShowRandomValue(registrantCountBeforeShowCandidate, isTheFirst, regionWinner);
     }
   }
 
   @Asynchronous
   @TransactionAttribute(TransactionAttributeType.NEVER)
-  public void start() throws Exception {
+  public void start(ServletContext context) throws Exception {
     log.log(Level.FINER, "starting rafle machine");
     Properties prop = loadConfigurationFile();
     SimpleDateFormat dateFormat = new SimpleDateFormat(prop.getProperty(DATE_FORMAT_CONFIG_KEY));
@@ -189,40 +216,51 @@ public class RafleMachine {
     log.log(Level.FINER, regionWinner.size() + " " + allGrandPrizes.size());
     log.log(Level.FINER,
         "waiting time to start or winner to claim, except all region winner is settle the game will not start");
-    while (new Date().after(startDate) && regionWinner.size() < allGrandPrizes.size()) {
-      for (PrizeList prizeList : allGrandPrizes) {
-        boolean isTheFirst = true;
-        int counter = 0;
-        GrandPrizeCandidate grandPrizeWinner = null;
-        while (grandPrizeWinner == null) {
-          if (counter < maximumAllowedClaimCount) {
-            log.log(Level.FINER, "try to rafle fake candidate");
-            rafleFakeCandidate(fakeRafleTimeout, registrantCountBeforeShowCandidate, isTheFirst,
-                regionWinner.size());
-            log.log(Level.FINER,
-                "put current state for : " + regionWinnerCandidateMapping.get(prizeList)
-                    .get(counter).getEmailAddress());
-            grandPrizeCandidateServiceBean
-                .putCurrent(regionWinnerCandidateMapping.get(prizeList).get(counter));
-            log.log(Level.FINER, "wait for winner to clain");
-            grandPrizeWinner =
-                getRegionWinner(regionWinnerCandidateMapping.get(prizeList).get(counter),
-                    waitForWinnerTimeout, isTheFirst, regionWinner.size());
-            counter++;
-            isTheFirst = false;
-          } else {
-            grandPrizeWinner = regionWinnerCandidateMapping.get(prizeList).get(0);
-            grandPrizeCandidateServiceBean.claimPrize(grandPrizeWinner.getEmailAddress());
-            System.out.println(
-                "No body claim after MAX CANDIDATE COUNTER, put default winner value for prize : "
-                    + prizeList.getName());
+    boolean waitingToStart = true;
+    while (waitingToStart) {
+      while (new Date().after(startDate) && regionWinner.size() < allGrandPrizes.size()) {
+        waitingToStart = false;
+        for (PrizeList prizeList : allGrandPrizes) {
+          boolean isTheFirst = true;
+          int counter = 0;
+          GrandPrizeCandidate grandPrizeWinner = null;
+          while (grandPrizeWinner == null) {
+            if (counter < maximumAllowedClaimCount) {
+              log.log(Level.FINER, "try to rafle fake candidate");
+              rafleFakeCandidate(fakeRafleTimeout, registrantCountBeforeShowCandidate, isTheFirst,
+                  regionWinner);
+              log.log(Level.FINER,
+                  "put current state for : " + regionWinnerCandidateMapping.get(prizeList)
+                      .get(counter).getEmailAddress());
+              grandPrizeCandidateServiceBean
+                  .putCurrent(regionWinnerCandidateMapping.get(prizeList).get(counter));
+              log.log(Level.FINER, "wait for winner to clain");
+              grandPrizeWinner =
+                  getRegionWinner(regionWinnerCandidateMapping.get(prizeList).get(counter),
+                      waitForWinnerTimeout, isTheFirst, regionWinner);
+              counter++;
+              isTheFirst = false;
+            } else {
+              grandPrizeWinner = regionWinnerCandidateMapping.get(prizeList).get(0);
+              grandPrizeCandidateServiceBean.putCurrent(grandPrizeWinner);
+              grandPrizeCandidateServiceBean.claimPrize(grandPrizeWinner.getEmailAddress());
+              System.out.println(
+                  "No body claim after MAX CANDIDATE COUNTER, put default winner value for prize : "
+                      + prizeList.getName());
+            }
           }
+          regionWinner.put(prizeList, grandPrizeWinner);
+
+          log.log(Level.FINER,
+              "put grandprize for " + prizeList.getName() + " to " + grandPrizeWinner
+                  .getEmailAddress());
         }
-        regionWinner.put(prizeList, grandPrizeWinner);
-        log.log(Level.FINER, "put grandprize for " + prizeList.getName() + " to " + grandPrizeWinner
-            .getEmailAddress());
+      }
+      if (regionWinner.size() >= allGrandPrizes.size()) {
+        waitingToStart = false;
       }
     }
+    context.setAttribute("isEnded", true);
+    gameEvent.fire(new GameMessage(null, null, GameState.END, false, -1L));
   }
-
 }

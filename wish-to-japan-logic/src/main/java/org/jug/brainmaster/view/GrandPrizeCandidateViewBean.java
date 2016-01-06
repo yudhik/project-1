@@ -72,7 +72,7 @@ public class GrandPrizeCandidateViewBean implements Serializable {
 
   public List<GrandPrizeCandidate> getCandidates() {
     List<GrandPrizeCandidate> viewCandidates = new ArrayList<GrandPrizeCandidate>();
-    grandPrizeCandidateService.getAllCandidateWithPagination(rowSize, pageNumber).parallelStream().forEach(viewCandidate ->  {
+    grandPrizeCandidateService.getAllCandidateWithPagination(rowSize, pageNumber).forEach(viewCandidate ->  {
       viewCandidates.add(grandPrizeCandidateService.findById(viewCandidate.getId()));
     });
     return viewCandidates;

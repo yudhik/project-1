@@ -24,8 +24,11 @@ import org.jug.brainmaster.model.Winners;
 @LocalBean
 public class GrandPrizeCandidateServiceBean {
 
+  private static final String SELECT_CANDIDATE_WITH_MAIL =
+      "from GrandPrizeCandidate candidate where candidate.emailAddress = :emailAddress";
+
   private static final String SELECT_CURRENT_CANDIDATE_WITH_MAIL =
-      "from GrandPrizeCandidate candidate where candidate.emailAddress = :emailAddress and candidate.current = true";
+      SELECT_CANDIDATE_WITH_MAIL + " and candidate.current = true";
 
   @PersistenceContext
   private EntityManager em;
@@ -33,12 +36,11 @@ public class GrandPrizeCandidateServiceBean {
   @Inject
   private Logger log;
 
-  @TransactionAttribute(TransactionAttributeType.REQUIRED)
+  @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
   public boolean claimPrize(String emailAddress) {
     GrandPrizeCandidate grandPrizeWinner = null;
     try {
-      grandPrizeWinner = em.createQuery(SELECT_CURRENT_CANDIDATE_WITH_MAIL, GrandPrizeCandidate.class)
-          .setParameter("emailAddress", emailAddress).getSingleResult();
+      grandPrizeWinner = findByEmailAddress(emailAddress);
     } catch (NoResultException e) {
       return false;
     }
@@ -59,8 +61,7 @@ public class GrandPrizeCandidateServiceBean {
     } catch (Exception e) {
       log.log(Level.WARNING,
           "something wrong when claim process try to update value for email address : "
-              + emailAddress,
-              e);
+              + emailAddress, e);
       log.log(Level.SEVERE, "show stack trace to analyze error", e);
     }
     return true;
@@ -81,6 +82,17 @@ public class GrandPrizeCandidateServiceBean {
     }
   }
 
+  @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+  public GrandPrizeCandidate findByEmailAddress(String emailAddress) {
+    GrandPrizeCandidate existingCandidate = em.createQuery(SELECT_CANDIDATE_WITH_MAIL, GrandPrizeCandidate.class)
+        .setParameter("emailAddress", emailAddress).getSingleResult();
+    if (existingCandidate != null) {
+      Hibernate.initialize(existingCandidate.getRegistrant());
+      Hibernate.initialize(existingCandidate.getPrizeList());
+    }
+    return existingCandidate;
+  }
+
   @TransactionAttribute(TransactionAttributeType.REQUIRED)
   public GrandPrizeCandidate findById(Long id) {
     GrandPrizeCandidate candidate = em.find(GrandPrizeCandidate.class, id);
@@ -95,24 +107,25 @@ public class GrandPrizeCandidateServiceBean {
   public List<GrandPrizeCandidate> getAllCandidateWithPagination(int rowSize, int pageNumber) {
     List<GrandPrizeCandidate> candidates = new ArrayList<GrandPrizeCandidate>();
     int startPosition = (pageNumber - 1) * rowSize;
-    candidates = em.createQuery("from GrandPrizeCandidate candidate", GrandPrizeCandidate.class)
-        .setFirstResult(startPosition).setMaxResults(rowSize).getResultList();
+    candidates = em.createQuery("from GrandPrizeCandidate candidate ORDER BY candidate.id",
+        GrandPrizeCandidate.class).setFirstResult(startPosition).setMaxResults(rowSize)
+        .getResultList();
     return candidates;
   }
 
 
   public List<GrandPrizeCandidate> getCandidateForGrandPrize(PrizeList prizeList) {
     PrizeList existingPrizeList = em.find(PrizeList.class, prizeList.getId());
-    return em
-        .createQuery("from GrandPrizeCandidate candidate where candidate.prizeList = :prizeList",
-            GrandPrizeCandidate.class)
-        .setParameter("prizeList", existingPrizeList).getResultList();
+    return em.createQuery(
+        "from GrandPrizeCandidate candidate where candidate.prizeList = :prizeList  ORDER BY candidate.id",
+        GrandPrizeCandidate.class).setParameter("prizeList", existingPrizeList).getResultList();
   }
 
   @TransactionAttribute(TransactionAttributeType.REQUIRED)
   public void putCurrent(GrandPrizeCandidate candidate) {
-    List<GrandPrizeCandidate> candidates = em.createQuery("from GrandPrizeCandidate", GrandPrizeCandidate.class).getResultList();
-    for(GrandPrizeCandidate grandPrizeCandidate : candidates) {
+    List<GrandPrizeCandidate> candidates =
+        em.createQuery("from GrandPrizeCandidate", GrandPrizeCandidate.class).getResultList();
+    for (GrandPrizeCandidate grandPrizeCandidate : candidates) {
       grandPrizeCandidate.setCurrent(false);
       em.persist(grandPrizeCandidate);
     }

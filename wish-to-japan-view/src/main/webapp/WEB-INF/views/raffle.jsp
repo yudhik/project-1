@@ -235,6 +235,7 @@
     var unileverValue = [1];
     var nameHolder = $('#jpn-name-holder');
 	var gpWinnerListHolder = $("#gp-winner-list");
+    var hasRunOnce = false;
 
     $("#congratulations-slot").jSlots({
       number: 16,
@@ -354,19 +355,26 @@
 		  ],
 		  "timeLeftToClaim": 0
 		}*/
+      //{"name":"dadang sapari","voucherCode":"JPN-FQ6DT-***J4","gameState":"WAITING","isTheFirst":false,"regionCounter":0}
+
+      if(message.data.gameState == "END"){
+        window.location = "/";
+      }
+
       var data = JSON.parse(message.data);
       var name = data.name;
       var voucherCode = data.voucherCode;
       var gameState = data.gameState;
       var isTheFirst = data.isTheFirst;
 	  var winners = data.winners;
-      var regionCounter = data.regionCounter; //ini blm wil
+      var regionCounter = data.regionCounter;
+      var timeLeftToClaim = data.timeLeftToClaim;
 	  
 	  if (winners) {
 		  showWinners(winners);
 	  }
 	  
-      showAndHideParts(name, voucherCode, gameState, isTheFirst, regionCounter);
+      showAndHideParts(name, voucherCode, gameState, isTheFirst, regionCounter, timeLeftToClaim);
       // console.log(message);
     }
 
@@ -382,13 +390,15 @@
       showElement(elem);
     }
 
-    function showAndHideParts(name, voucherCode, gameState, isTheFirst, regionCounter) {
-
+    function showAndHideParts(name, voucherCode, gameState, isTheFirst, regionCounter,
+                              timeLeftToClaim) {
+      setTimer((300 - timeLeftToClaim), $('#claiming-countdown'));
       console.log(gameState);
 
       switch (gameState) {
         case "RUNNING" :
         {
+          hasRunOnce = false;
           if (isTheFirst) {
             hideAllBut(RUNNING);
           } else {
@@ -402,7 +412,13 @@
         }
         case "WAITING" :
         {
-          getCurrent(voucherCode, name);
+          hideAllBut(CLAIMING);
+          if (!hasRunOnce) {
+            getCurrent(voucherCode, name);
+            runSlot();
+            hasRunOnce = true;
+          }
+
           break;
         }
         case "END" :
@@ -423,6 +439,33 @@
 			gpWinnerListHolder.append("<li>" + winners[i].name + "<span>" + winners[i].voucherCode + "</span></li>");
 		}
 	}
+
+    function setTimer(seconds, selector) {
+      var finalDisplayTime = "";
+      var day = Math.floor(seconds / (3600 * 24));
+      var hour = Math.floor((seconds / 3600) % 24);
+      var min = Math.floor((seconds / 60) % 60);
+      var sec = Math.floor(seconds % 60);
+
+      finalDisplayTime += showOrHideTimerPart(day, "hari");
+      finalDisplayTime += showOrHideTimerPart(hour, "jam");
+      finalDisplayTime += showOrHideTimerPart(min, "menit");
+      finalDisplayTime += showOrHideTimerPart(sec, "detik");
+
+      if (finalDisplayTime == "") {
+        finalDisplayTime = "&nbsp;"
+      }
+
+      selector.html(finalDisplayTime);
+    }
+    function showOrHideTimerPart(part, partString) {
+      if (part > 0) {
+        return part + " " + partString + " ";
+      }
+      return "";
+    }
+
+
 
     startWS();
   });

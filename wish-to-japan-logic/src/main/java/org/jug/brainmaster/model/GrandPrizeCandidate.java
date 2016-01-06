@@ -16,115 +16,116 @@ import javax.persistence.Table;
 @Table(name = "grand_prize_candidates")
 public class GrandPrizeCandidate implements Serializable {
 
-  private static final long serialVersionUID = 5231362627404666741L;
+	private static final long serialVersionUID = 5231362627404666741L;
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "registrant_id")
-  private Registrant registrant;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "registrant_id")
+	private Registrant registrant;
 
-  @Column(name = "email_address")
-  private String emailAddress;
+	@Column(name = "email_address")
+	private String emailAddress;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "prizelist_id")
-  private PrizeList prizeList;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "prizelist_id")
+	private PrizeList prizeList;
 
-  @Column
-  private boolean current = false;
+	@Column
+	private boolean current = false;
 
-  @Column
-  private boolean claimed = false;
+	@Column
+	private boolean claimed = false;
 
-  public GrandPrizeCandidate() {
-    // Nothing to do here
-  }
+	public GrandPrizeCandidate() {
+		// Nothing to do here
+	}
 
-  public GrandPrizeCandidate(Registrant registrant, PrizeList prizeList) {
-    this.registrant = registrant;
-    this.prizeList = prizeList;
-    if(registrant != null && registrant.getEmailAddress() != null) {
-      this.emailAddress = registrant.getEmailAddress();
-    }
-  }
+	public GrandPrizeCandidate(Registrant registrant, PrizeList prizeList) {
+		this.registrant = registrant;
+		this.prizeList = prizeList;
+		if (registrant != null && registrant.getEmailAddress() != null) {
+			this.emailAddress = registrant.getEmailAddress();
+		}
+	}
 
-  @Override
-  public boolean equals(Object obj) {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (getClass() != obj.getClass())
-      return false;
-    GrandPrizeCandidate other = (GrandPrizeCandidate) obj;
-    if (id != other.id)
-      return false;
-    return true;
-  }
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		GrandPrizeCandidate other = (GrandPrizeCandidate) obj;
+		if (id != other.id)
+			return false;
+		return true;
+	}
 
-  public String getEmailAddress() {
-    return emailAddress;
-  }
+	public String getEmailAddress() {
+		return emailAddress;
+	}
 
-  public Long getId() {
-    return id;
-  }
+	public Long getId() {
+		return id;
+	}
 
-  public PrizeList getPrizeList() {
-    return prizeList;
-  }
+	public PrizeList getPrizeList() {
+		return prizeList;
+	}
 
-  public Registrant getRegistrant() {
-    return registrant;
-  }
+	public Registrant getRegistrant() {
+		return registrant;
+	}
 
-  @Override
-  public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + (int) (id ^ (id >>> 32));
-    return result;
-  }
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (int) (id ^ (id >>> 32));
+		return result;
+	}
 
-  public boolean isClaimed() {
-    return claimed;
-  }
+	public boolean isClaimed() {
+		return claimed;
+	}
 
-  public boolean isCurrent() {
-    return current;
-  }
+	public boolean isCurrent() {
+		return current;
+	}
 
-  public void setClaimed(boolean claimed) {
-    this.claimed = claimed;
-  }
+	public void setClaimed(boolean claimed) {
+		this.claimed = claimed;
+	}
 
-  public void setCurrent(boolean current) {
-    this.current = current;
-  }
+	public void setCurrent(boolean current) {
+		this.current = current;
+	}
 
-  public void setEmailAddress(String emailAddress) {
-    this.emailAddress = emailAddress;
-  }
+	public void setEmailAddress(String emailAddress) {
+		this.emailAddress = emailAddress;
+	}
 
-  public void setId(Long id) {
-    this.id = id;
-  }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-  public void setPrizeList(PrizeList prizeList) {
-    this.prizeList = prizeList;
-  }
+	public void setPrizeList(PrizeList prizeList) {
+		this.prizeList = prizeList;
+	}
 
-  public void setRegistrant(Registrant registrant) {
-    this.registrant = registrant;
-  }
+	public void setRegistrant(Registrant registrant) {
+		this.registrant = registrant;
+	}
 
-  @Override
-  public String toString() {
-    return "WinnerCandidate [id=" + id + ", registrant=" + registrant + ", prizeList=" + prizeList
-        + ", current=" + current + ", claimed=" + claimed + "]";
-  }
+	@Override
+	public String toString() {
+		return "WinnerCandidate [id=" + id + ", registrant=" + registrant
+				+ ", prizeList=" + prizeList + ", current=" + current
+				+ ", claimed=" + claimed + "]";
+	}
 
 }
