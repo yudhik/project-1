@@ -28,7 +28,7 @@ import org.jug.brainmaster.model.PrizeList;
 
 /**
  * Backing bean for PrizeList entities.
- * <p/>
+ * <p>
  * This class provides CRUD functionality for all PrizeList entities. It focuses purely on Java EE 6
  * standards (e.g. <tt>&#64;ConversationScoped</tt> for state management,
  * <tt>PersistenceContext</tt> for persistence, <tt>CriteriaBuilder</tt> for searches) rather than

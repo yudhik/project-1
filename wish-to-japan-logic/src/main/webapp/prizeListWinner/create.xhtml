@@ -24,7 +24,7 @@
         <h:outputLabel for="prizeListWinnerBeanPrizeListWinnerPrize" value="Prize:" />
         <h:panelGroup>
           <h:selectOneMenu converter="#{prizeListBean.converter}" id="prizeListWinnerBeanPrizeListWinnerPrize"
-            value="#{prizeListWinnerBean.prizeListWinner.prize}">
+            value="#{winnerViewBean.prizeList}">
             <f:selectItem />
             <f:selectItems itemLabel="#{forgeview:display(_item)}" itemValue="#{_item}" value="#{prizeListBean.all}"
               var="_item" />
@@ -32,38 +32,15 @@
           <h:message for="prizeListWinnerBeanPrizeListWinnerPrize" styleClass="error" />
         </h:panelGroup>
         <h:outputText />
-        <h:outputLabel for="prizeListWinnerBeanPrizeListWinnerShowOrder" value="Show Order:" />
+        <h:outputLabel for="prizeListWinnerBeanPrizeListCandidateCandidate" value="Candidate voucher code:" />
         <h:panelGroup>
-          <h:inputText id="prizeListWinnerBeanPrizeListWinnerShowOrder"
-            value="#{prizeListWinnerBean.prizeListWinner.showOrder}" />
-          <h:message for="prizeListWinnerBeanPrizeListWinnerShowOrder" styleClass="error" />
-        </h:panelGroup>
-        <h:outputText />
-        <h:outputLabel for="prizeListWinnerBeanPrizeListWinnerWinner" value="Winner:" />
-        <h:panelGroup>
-          <h:selectOneMenu styleClass="chosen-select" converter="#{registrantBean.converter}"
-            id="prizeListWinnerBeanPrizeListWinnerWinner" value="#{prizeListWinnerBean.prizeListWinner.winner}">
-            <f:selectItem />
-            <f:selectItems itemLabel="#{forgeview:display(_item)}" itemValue="#{_item}" value="#{registrantBean.all}"
-              var="_item" />
-          </h:selectOneMenu>
-          <h:message for="prizeListWinnerBeanPrizeListWinnerWinner" styleClass="error" />
-        </h:panelGroup>
-        <h:outputText />
-        <h:outputLabel for="prizeListWinnerBeanPrizeListWinnerWithCandidate" value="With Candidate:" />
-        <h:panelGroup>
-          <h:selectOneMenu id="prizeListWinnerBeanPrizeListWinnerWithCandidate"
-            value="#{prizeListWinnerBean.prizeListWinner.withCandidate}">
-            <f:selectItem />
-            <f:selectItem itemLabel="Yes" itemValue="true" />
-            <f:selectItem itemLabel="No" itemValue="false" />
-          </h:selectOneMenu>
-          <h:message for="prizeListWinnerBeanPrizeListWinnerWithCandidate" styleClass="error" />
+          <h:inputText id="prizeListWinnerBeanPrizeListCandidateCandidate" value="#{winnerViewBean.registrant}" converter="#{grandPrizeCandidateViewBean.registrantConverter}" />
+          <h:message for="prizeListWinnerBeanPrizeListCandidateCandidate" styleClass="error" />
         </h:panelGroup>
         <h:outputText />
       </h:panelGrid>
       <div class="buttons">
-        <h:commandLink value="Save" action='#{prizeListWinnerBean.update}' styleClass="btn btn-primary" />
+        <h:commandLink value="Save" action='#{winnerViewBean.saveOrUpdate}' styleClass="btn btn-primary" />
         <c:choose>
           <c:when test='#{!empty prizeListWinnerBean.id}'>
             <h:link value="Cancel" outcome="view" styleClass="btn btn-primary">

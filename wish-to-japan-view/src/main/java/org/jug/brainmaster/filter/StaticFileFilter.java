@@ -1,5 +1,7 @@
 package org.jug.brainmaster.filter;
 
+import org.jug.brainmaster.ws.startup.ApplicationConfig;
+
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,6 +21,9 @@ public class StaticFileFilter implements Filter {
   @Inject
   private Logger log;
 
+  @Inject
+  private ApplicationConfig applicationConfig;
+
   @Override
   public void destroy() {
   }
@@ -34,12 +39,14 @@ public class StaticFileFilter implements Filter {
       //do nothing, let it resolve itself
     } else {
       log.log(Level.INFO, "MASUK PAGE");
-      String useWss = System.getProperty("useWss", "true");
-      String viewHost = System.getProperty("viewHost", "localhost:8080");
-      String logicHost = System.getProperty("logicHost", "localhost:8181");
+      Boolean useWss = applicationConfig.useWss();
+      String viewHost = applicationConfig.getViewHost();
+      String logicHost = applicationConfig.getLogicHost();
+      int winnerClaimTimeout = applicationConfig.getWinnerTimeout();
       request.setAttribute("viewHost", viewHost);
       request.setAttribute("logicHost", logicHost);
       request.setAttribute("useWss", useWss);
+      request.setAttribute("winnerClaimTimeout", winnerClaimTimeout);
       request.getRequestDispatcher("/pages" + path).forward(request, response);
     }
   }

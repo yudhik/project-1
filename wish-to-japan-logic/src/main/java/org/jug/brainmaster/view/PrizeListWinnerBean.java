@@ -3,8 +3,11 @@ package org.jug.brainmaster.view;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.annotation.Resource;
+import javax.ejb.EJB;
 import javax.ejb.SessionContext;
 import javax.ejb.Stateful;
 import javax.enterprise.context.Conversation;
@@ -24,12 +27,15 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import org.jug.brainmaster.ejb.WinnerServiceBean;
+import org.jug.brainmaster.model.GrandPrizeCandidate;
 import org.jug.brainmaster.model.PrizeList;
+import org.jug.brainmaster.model.Registrant;
 import org.jug.brainmaster.model.Winners;
 
 /**
  * Backing bean for PrizeListWinner entities.
- * <p/>
+ * <p>
  * This class provides CRUD functionality for all PrizeListWinner entities. It
  * focuses purely on Java EE 6 standards (e.g. <tt>&#64;ConversationScoped</tt>
  * for state management, <tt>PersistenceContext</tt> for persistence,
@@ -51,11 +57,14 @@ public class PrizeListWinnerBean implements Serializable {
   private Long id;
 
   private Winners prizeListWinner;
+  private PrizeList prizeList;
+  private Registrant registrant;
 
   @Inject
   private Conversation conversation;
 
-  @PersistenceContext(unitName = "wish-to-paris-persistence-unit", type = PersistenceContextType.EXTENDED)
+  @PersistenceContext(unitName = "wish-to-paris-persistence-unit",
+      type = PersistenceContextType.EXTENDED)
   private EntityManager entityManager;
 
   private int page;
@@ -68,6 +77,13 @@ public class PrizeListWinnerBean implements Serializable {
 
   @Resource
   private SessionContext sessionContext;
+
+  @EJB
+  private WinnerServiceBean winnerServiceBean;
+
+  @Inject
+  private Logger log;
+
 
   private Winners add = new Winners();
 
@@ -92,8 +108,7 @@ public class PrizeListWinnerBean implements Serializable {
       this.entityManager.flush();
       return "search?faces-redirect=true";
     } catch (Exception e) {
-      FacesContext.getCurrentInstance().addMessage(null,
-          new FacesMessage(e.getMessage()));
+      FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(e.getMessage()));
       return null;
     }
   }
@@ -110,37 +125,36 @@ public class PrizeListWinnerBean implements Serializable {
   public Winners getAdd() {
     return this.add;
   }
+
   public Winners getAdded() {
     Winners added = this.add;
     this.add = new Winners();
     return added;
   }
+
   public List<Winners> getAll() {
 
-    CriteriaQuery<Winners> criteria = this.entityManager
-        .getCriteriaBuilder().createQuery(Winners.class);
-    return this.entityManager.createQuery(
-        criteria.select(criteria.from(Winners.class)))
+    CriteriaQuery<Winners> criteria =
+        this.entityManager.getCriteriaBuilder().createQuery(Winners.class);
+    return this.entityManager.createQuery(criteria.select(criteria.from(Winners.class)))
         .getResultList();
   }
 
   public Converter getConverter() {
 
-    final PrizeListWinnerBean ejbProxy = this.sessionContext
-        .getBusinessObject(PrizeListWinnerBean.class);
+    final PrizeListWinnerBean ejbProxy =
+        this.sessionContext.getBusinessObject(PrizeListWinnerBean.class);
 
     return new Converter() {
 
       @Override
-      public Object getAsObject(FacesContext context,
-          UIComponent component, String value) {
+      public Object getAsObject(FacesContext context, UIComponent component, String value) {
 
         return ejbProxy.findById(Long.valueOf(value));
       }
 
       @Override
-      public String getAsString(FacesContext context,
-          UIComponent component, Object value) {
+      public String getAsString(FacesContext context, UIComponent component, Object value) {
 
         if (value == null) {
           return "";
@@ -200,39 +214,29 @@ public class PrizeListWinnerBean implements Serializable {
 
     CriteriaQuery<Long> countCriteria = builder.createQuery(Long.class);
     Root<Winners> root = countCriteria.from(Winners.class);
-    countCriteria = countCriteria.select(builder.count(root)).where(
-        getSearchPredicates(root));
-    this.count = this.entityManager.createQuery(countCriteria)
-        .getSingleResult();
+    countCriteria = countCriteria.select(builder.count(root)).where(getSearchPredicates(root));
+    this.count = this.entityManager.createQuery(countCriteria).getSingleResult();
 
     // Populate this.pageItems
 
-    CriteriaQuery<Winners> criteria = builder
-        .createQuery(Winners.class);
+    CriteriaQuery<Winners> criteria = builder.createQuery(Winners.class);
     root = criteria.from(Winners.class);
-    TypedQuery<Winners> query = this.entityManager
-        .createQuery(criteria.select(root).where(
-            getSearchPredicates(root)));
-    query.setFirstResult(this.page * getPageSize()).setMaxResults(
-        getPageSize());
+    TypedQuery<Winners> query =
+        this.entityManager.createQuery(criteria.select(root).where(getSearchPredicates(root)));
+    query.setFirstResult(this.page * getPageSize()).setMaxResults(getPageSize());
     this.pageItems = query.getResultList();
   }
 
   public void retrieve() {
 
-    if (FacesContext.getCurrentInstance().isPostback()) {
-      return;
-    }
-
-    if (this.conversation.isTransient()) {
-      this.conversation.begin();
-      this.conversation.setTimeout(1800000L);
-    }
-
-    if (this.id == null) {
-      this.prizeListWinner = this.example;
+    if(id != null) {
+      log.log(Level.INFO,"get existing candidate");
+      prizeListWinner = winnerServiceBean.findById(id);
     } else {
-      this.prizeListWinner = findById(getId());
+      log.log(Level.INFO,"create new candidate");
+      prizeListWinner = new Winners();
+      registrant = new Registrant();
+      prizeList = new PrizeList();
     }
   }
 
@@ -270,6 +274,7 @@ public class PrizeListWinnerBean implements Serializable {
 
   }
 
+
   public String update() {
     this.conversation.end();
 
@@ -279,12 +284,10 @@ public class PrizeListWinnerBean implements Serializable {
         return "search?faces-redirect=true";
       } else {
         this.entityManager.persist(this.prizeListWinner);
-        return "view?faces-redirect=true&id="
-        + this.prizeListWinner.getId();
+        return "view?faces-redirect=true&id=" + this.prizeListWinner.getId();
       }
     } catch (Exception e) {
-      FacesContext.getCurrentInstance().addMessage(null,
-          new FacesMessage(e.getMessage()));
+      FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(e.getMessage()));
       return null;
     }
   }

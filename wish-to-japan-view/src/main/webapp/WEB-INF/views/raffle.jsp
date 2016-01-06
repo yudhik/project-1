@@ -202,6 +202,10 @@
   <input type="button" class="hidden" id="playslot-wrapper" value="">
   <input type="button" class="hidden" id="play-congrats-slot-wrapper" value="">
 
+  <div class='win-wrapper'>
+    <ol id='gp-winner-list'>
+    </ol>
+  </div>
 </div>
 <script src="_asset/js/jquery.easing.1.3.js" type="text/javascript" charset="utf-8"></script>
 <script src="_asset/js/jquery.jSlots.min.js" type="text/javascript" charset="utf-8"></script>
@@ -222,10 +226,18 @@
     var CLAIMED = $('#claimed');
     var OTHERS = $('#other-prizes-div-holder');
     var CONGRATULATIONS = $('#congratulations-holder');
+
+    var CLAIM_EMAIL = $('#txt-claim');
+    var CLAIM_DIV = $('#txt-claim-holder');
+    var CLAIM_BUTTON = $('#btn-claim');
+
     var displayCodePart1 = [1, 2, 3, 4, 5];
     var displayCodePart2 = [6, 7, 8, 9, 10];
     var unileverValue = [1];
     var nameHolder = $('#jpn-name-holder');
+    var gpWinnerListHolder = $("#gp-winner-list");
+    var garisUngu = $("#win-wrapper");
+    var ws = null;
     var hasRunOnce = false;
 
     $("#congratulations-slot").jSlots({
@@ -331,20 +343,18 @@
     }
 
     function onMessageWS(message) {
-
-      if(message.data.gameState == "END"){
-        window.location = "/";
-      }
-
-      //{"name":"dadang sapari","voucherCode":"JPN-FQ6DT-***J4","gameState":"WAITING","isTheFirst":false,"regionCounter":0}
       var data = JSON.parse(message.data);
       var name = data.name;
       var voucherCode = data.voucherCode;
       var gameState = data.gameState;
       var isTheFirst = data.isTheFirst;
-      var regionCounter = data.regionCounter;
+      var winners = data.winners;
+      console.log(winners);
+      var regionCounter = winners.length;
+
       var timeLeftToClaim = data.timeLeftToClaim;
-      showAndHideParts(name, voucherCode, gameState, isTheFirst, regionCounter, timeLeftToClaim);
+
+      showAndHideParts(name, voucherCode, gameState, isTheFirst, regionCounter, timeLeftToClaim, winners);
       // console.log(message);
     }
 
@@ -361,9 +371,19 @@
     }
 
     function showAndHideParts(name, voucherCode, gameState, isTheFirst, regionCounter,
-                              timeLeftToClaim) {
-      setTimer((300 - timeLeftToClaim), $('#claiming-countdown'));
+                              timeLeftToClaim, winners) {
+      setTimer((winnerClaimTimeout - timeLeftToClaim), $('#claiming-countdown'));
       console.log(gameState);
+
+      if(regionCounter == 3) {
+        gameState = "RUN_OTHERS";
+      }
+
+      if (winners.length > 0) {
+        showElement(garisUngu);
+
+        showWinners(winners);
+      }
 
       switch (gameState) {
         case "RUNNING" :
@@ -391,14 +411,31 @@
 
           break;
         }
+        case "RUN_OTHERS" :
+        {
+          hideAllBut(OTHERS);
+          $("#grand-prize-state").html(regionGrandPrizeStateEnum[regionCounter]);
+          getCurrent(voucherCode, name);
+          runSlot();
+        }
         case "END" :
         {
+          location.reload();
           break;
         }
       }
       if (regionCounter > 0) {
         showElement(CHOSEN_WINNER);
-        $("chosen-winner-state").html(chosenWinnerStateEnum[regionCounter]);
+        $("#chosen-winner-state").html(chosenWinnerStateEnum[regionCounter]);
+      }
+    }
+
+    function showWinners(winners) {
+      gpWinnerListHolder.html("");
+
+      for (i = 0; i < winners.length; i++) {
+        gpWinnerListHolder.append(
+          "<li>" + winners[i].name + "<span>" + winners[i].voucherCode + "</span></li>");
       }
     }
 
@@ -420,6 +457,7 @@
 
       selector.html(finalDisplayTime);
     }
+
     function showOrHideTimerPart(part, partString) {
       if (part > 0) {
         return part + " " + partString + " ";
@@ -427,8 +465,17 @@
       return "";
     }
 
+    CLAIM_BUTTON.click(function () {
 
-
+      if (CLAIM_DIV.css("display") == "block" && CLAIM_EMAIL.val().trim() != '') {
+        //send
+        ws.send(CLAIM_EMAIL.val().trim());
+        console.log("send emel:" + CLAIM_EMAIL.val().trim())
+      } else {
+        showElement(CLAIM_DIV);
+      }
+    });
     startWS();
+
   });
 </script>

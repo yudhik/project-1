@@ -11,12 +11,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://www.blibli.com/wcsstore/Indraprastha/images/gdn/images/favicon.ico"
         rel="shortcut icon">
-  <link rel="stylesheet" href="_asset/style.css">
-  <link rel="stylesheet" href="_asset/css/main.css">
+  <link rel="stylesheet" href="../_asset/style.css">
+  <link rel="stylesheet" href="../_asset/css/main.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
-  <script src="_asset/js/sweetalert.min.js"></script>
-  <script src="_asset/js/reconnect.js"></script>
-  <script src="_asset/js/main.js"></script>
+  <script src="../_asset/js/sweetalert.min.js"></script>
+  <script src="../_asset/js/reconnect.js"></script>
+  <script src="../_asset/js/main.js"></script>
 
   <!-- set Google tag manager section-->
   <!-- Google tag manager-->
@@ -78,7 +78,7 @@
   <div class="row">
     <div class="half push-left branding">
       <a href="https://www.blibli.com/" class="logo-atas" title="go to blibli.com"><img
-        src="https://www.blibli.com/resources/images/logo-blibli.png"
+        src="https://www.static-src.com/3.5.15/resources/images/logo-blibli.png"
         alt="logo blibli | header"></a>
     </div>
   </div>
@@ -86,7 +86,7 @@
 
 <div class="row">
   <div class='header'>
-    <img src='_asset/images/header.png' alt='my big wish | blibli' style="display:block;"/>
+    <img src='../_asset/images/header.png' alt='my big wish | blibli' style="display:block;"/>
   </div>
 
   <div class="slot-wrapper container">
@@ -102,9 +102,9 @@
 <footer class="wide">
   <div class="row">
     <a id="backhome" href="https://www.blibli.com/" class="btn push-left gotohome"
-       title="go to blibli.com | footer"><img src="_asset/images/backhome.png" alt="home | footer"></a>
+       title="go to blibli.com | footer"><img src="../_asset/images/backhome.png" alt="home | footer"></a>
     <a id="backtop" class="btn push-right gototop" title="go to top | footer"><img
-      src="_asset/images/backtop.png" alt="top | footer"></a>
+      src="../_asset/images/backtop.png" alt="top | footer"></a>
     <div class="push-center text-center">
       <p>Copyright &copy; 2011-2015 Blibli.com toko online dengan sensasi belanja online store ala
         mall, All Rights Reserved</p>
@@ -114,11 +114,12 @@
 <script type="text/javascript">
   var viewHost = "<%=request.getAttribute("viewHost")%>";
   var useWss = "<%=request.getAttribute("useWss")%>";
+  var winnerClaimTimeout = <%=request.getAttribute("winnerClaimTimeout")%>
 </script>
 <script>
 
 </script>
-<script src="_asset/js/jquery.easing.1.3.js" type="text/javascript" charset="utf-8"></script>
-<script src="_asset/js/jquery.jSlots.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="../_asset/js/jquery.easing.1.3.js" type="text/javascript" charset="utf-8"></script>
+<script src="../_asset/js/jquery.jSlots.min.js" type="text/javascript" charset="utf-8"></script>
 </body>
 </html>

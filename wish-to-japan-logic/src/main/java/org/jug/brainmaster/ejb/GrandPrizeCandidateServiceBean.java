@@ -48,16 +48,18 @@ public class GrandPrizeCandidateServiceBean {
       return false;
     }
     try {
-      grandPrizeWinner.setClaimed(true);
       log.log(Level.INFO,
           "email address : " + emailAddress + " is valid try to save it as claimed");
       Hibernate.initialize(grandPrizeWinner.getPrizeList());
       Hibernate.initialize(grandPrizeWinner.getRegistrant());
-      saveOrUpdate(grandPrizeWinner);
       Winners winner = new Winners();
       winner.setPrize(grandPrizeWinner.getPrizeList());
       winner.setRegistrant(grandPrizeWinner.getRegistrant());
       em.persist(winner);
+
+      grandPrizeWinner.setClaimed(true);
+      grandPrizeWinner.setCurrent(false);
+      saveOrUpdate(grandPrizeWinner);
     } catch (Exception e) {
       log.log(Level.WARNING,
           "something wrong when claim process try to update value for email address : "
