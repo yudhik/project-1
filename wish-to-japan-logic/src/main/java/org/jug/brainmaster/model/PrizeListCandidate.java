@@ -25,11 +25,9 @@ public class PrizeListCandidate {
   @Column
   private Integer showOrder;
 
-  public PrizeListCandidate() {
-  }
+  public PrizeListCandidate() {}
 
-  public PrizeListCandidate(Registrant candidate, Integer showOrder,
-      Winners prizeListWinner) {
+  public PrizeListCandidate(Registrant candidate, Integer showOrder, Winners prizeListWinner) {
 
     this.candidate = candidate;
     this.showOrder = showOrder;
@@ -45,16 +43,12 @@ public class PrizeListCandidate {
 
     PrizeListCandidate that = (PrizeListCandidate) o;
 
-    if (prizeListWinner != null ? !prizeListWinner
-        .equals(that.prizeListWinner) : that.prizeListWinner != null)
+    if (prizeListWinner != null ? !prizeListWinner.equals(that.prizeListWinner)
+        : that.prizeListWinner != null)
       return false;
-    if (candidate != null
-        ? !candidate.equals(that.candidate)
-            : that.candidate != null)
+    if (candidate != null ? !candidate.equals(that.candidate) : that.candidate != null)
       return false;
-    return !(showOrder != null
-        ? !showOrder.equals(that.showOrder)
-            : that.showOrder != null);
+    return !(showOrder != null ? !showOrder.equals(that.showOrder) : that.showOrder != null);
 
   }
 

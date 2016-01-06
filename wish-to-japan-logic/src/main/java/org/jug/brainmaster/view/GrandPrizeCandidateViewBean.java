@@ -57,7 +57,7 @@ public class GrandPrizeCandidateViewBean implements Serializable {
       grandPrizeCandidateService.delete(candidate);
       return "search?faces-redirect=true";
     } catch (Exception e) {
-      log.log(Level.SEVERE, "can not save candidate : "+ candidate, e);
+      log.log(Level.SEVERE, "can not save candidate : " + candidate, e);
     }
     return null;
   }
@@ -72,9 +72,10 @@ public class GrandPrizeCandidateViewBean implements Serializable {
 
   public List<GrandPrizeCandidate> getCandidates() {
     List<GrandPrizeCandidate> viewCandidates = new ArrayList<GrandPrizeCandidate>();
-    grandPrizeCandidateService.getAllCandidateWithPagination(rowSize, pageNumber).forEach(viewCandidate ->  {
-      viewCandidates.add(grandPrizeCandidateService.findById(viewCandidate.getId()));
-    });
+    grandPrizeCandidateService.getAllCandidateWithPagination(rowSize, pageNumber)
+        .forEach(viewCandidate -> {
+          viewCandidates.add(grandPrizeCandidateService.findById(viewCandidate.getId()));
+        });
     return viewCandidates;
   }
 
@@ -136,11 +137,11 @@ public class GrandPrizeCandidateViewBean implements Serializable {
   }
 
   public void retrieve() {
-    if(id != null) {
-      log.log(Level.INFO,"get existing candidate");
+    if (id != null) {
+      log.log(Level.INFO, "get existing candidate");
       candidate = grandPrizeCandidateService.findById(id);
     } else {
-      log.log(Level.INFO,"create new candidate");
+      log.log(Level.INFO, "create new candidate");
       candidate = new GrandPrizeCandidate();
       registrant = new Registrant();
       prizeList = new PrizeList();
@@ -149,10 +150,10 @@ public class GrandPrizeCandidateViewBean implements Serializable {
 
   public String saveOrUpdate() {
     try {
-      if(candidate == null) {
+      if (candidate == null) {
         candidate = new GrandPrizeCandidate();
       }
-      if(id != null) {
+      if (id != null) {
         candidate = grandPrizeCandidateService.findById(id);
       }
       candidate.setPrizeList(prizeList);
@@ -161,7 +162,7 @@ public class GrandPrizeCandidateViewBean implements Serializable {
       grandPrizeCandidateService.saveOrUpdate(candidate);
       return "search?faces-redirect=true";
     } catch (Exception e) {
-      log.log(Level.SEVERE, "can not save candidate : "+ candidate, e);
+      log.log(Level.SEVERE, "can not save candidate : " + candidate, e);
     }
     return null;
   }

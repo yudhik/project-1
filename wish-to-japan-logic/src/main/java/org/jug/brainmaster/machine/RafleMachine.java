@@ -148,7 +148,7 @@ public class RafleMachine {
         gameEvent.fire(gm);
         claimed = winnerToWait.isClaimed();
         if (claimed) {
-          log.log(Level.FINER, "we got winner who claimed here : " + winners.getEmailAddress());
+          log.log(Level.FINE, "we got winner who claimed here : " + winners.getEmailAddress());
           return winnerToWait;
         }
         Thread.sleep(200);
@@ -157,7 +157,7 @@ public class RafleMachine {
       }
       time = ((System.nanoTime() - waitStartTime) / 1000000000);
     }
-    log.log(Level.FINER, "no body claim the prize");
+    log.log(Level.FINE, "no body claim the prize");
     return null;
   }
 
@@ -207,7 +207,7 @@ public class RafleMachine {
   @Asynchronous
   @TransactionAttribute(TransactionAttributeType.NEVER)
   public void start(ServletContext context) throws Exception {
-    log.log(Level.FINER, "starting rafle machine");
+    log.log(Level.FINE, "starting rafle machine");
     Properties prop = loadConfigurationFile();
     SimpleDateFormat dateFormat = new SimpleDateFormat(prop.getProperty(DATE_FORMAT_CONFIG_KEY));
     Date startDate = dateFormat.parse(prop.getProperty(START_DATE_CONFIG_KEY));
@@ -223,8 +223,7 @@ public class RafleMachine {
     Map<PrizeList, List<GrandPrizeCandidate>> regionWinnerCandidateMapping =
         populateGrandPrizeCandidate(allGrandPrizes);
     Map<PrizeList, GrandPrizeCandidate> regionWinner = getGrandPrizeWinnerData(allGrandPrizes);
-    log.log(Level.FINER, regionWinner.size() + " " + allGrandPrizes.size());
-    log.log(Level.FINER,
+    log.log(Level.FINE,
         "waiting time to start or winner to claim, except all region winner is settle the game will not start");
     boolean waitingToStart = true;
     while (waitingToStart) {
@@ -236,14 +235,14 @@ public class RafleMachine {
           GrandPrizeCandidate grandPrizeWinner = null;
           while (grandPrizeWinner == null) {
             if (counter < maximumAllowedClaimCount) {
-              log.log(Level.FINER, "try to rafle fake candidate");
+              log.log(Level.FINE, "try to rafle fake candidate");
               rafleFakeCandidate(fakeRafleTimeout, registrantCountBeforeShowCandidate, isTheFirst,
                   regionWinner);
-              log.log(Level.FINER, "put current state for : "
+              log.log(Level.FINE, "put current state for : "
                   + regionWinnerCandidateMapping.get(prizeList).get(counter).getEmailAddress());
               grandPrizeCandidateServiceBean
-              .putCurrent(regionWinnerCandidateMapping.get(prizeList).get(counter));
-              log.log(Level.FINER, "wait for winner to clain");
+                  .putCurrent(regionWinnerCandidateMapping.get(prizeList).get(counter));
+              log.log(Level.FINE, "wait for winner to clain");
               grandPrizeWinner =
                   getRegionWinner(regionWinnerCandidateMapping.get(prizeList).get(counter),
                       waitForWinnerTimeout, isTheFirst, regionWinner);
@@ -253,13 +252,13 @@ public class RafleMachine {
               grandPrizeWinner = regionWinnerCandidateMapping.get(prizeList).get(0);
               grandPrizeCandidateServiceBean.putCurrent(grandPrizeWinner);
               grandPrizeCandidateServiceBean.claimPrize(grandPrizeWinner.getEmailAddress());
-              System.out.println(
+              log.log(Level.FINE,
                   "No body claim after MAX CANDIDATE COUNTER, put default winner value for prize : "
                       + prizeList.getName());
             }
           }
           regionWinner.put(prizeList, grandPrizeWinner);
-          log.log(Level.FINER, "put grandprize for " + prizeList.getName() + " to "
+          log.log(Level.FINE, "put grandprize for " + prizeList.getName() + " to "
               + grandPrizeWinner.getEmailAddress());
         }
         rafleFakeCandidate(fakeRafleTimeout, registrantCountBeforeShowCandidate, false,

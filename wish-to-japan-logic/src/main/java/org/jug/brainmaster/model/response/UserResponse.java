@@ -4,8 +4,7 @@ public class UserResponse {
   private String name;
   private String voucherCode;
 
-  public UserResponse() {
-  }
+  public UserResponse() {}
 
   public String getName() {
 
@@ -32,9 +31,6 @@ public class UserResponse {
 
   @Override
   public String toString() {
-    return "UserResponse{" +
-        "name='" + name + '\'' +
-        ", voucherCode='" + voucherCode + '\'' +
-        '}';
+    return "UserResponse{" + "name='" + name + '\'' + ", voucherCode='" + voucherCode + '\'' + '}';
   }
 }

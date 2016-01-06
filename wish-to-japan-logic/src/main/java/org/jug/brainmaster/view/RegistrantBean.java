@@ -178,17 +178,17 @@ public class RegistrantBean implements Serializable {
     Root<Registrant> root = countCriteria.from(Registrant.class);
     countCriteria = countCriteria.select(builder.count(root));
     Long totalRecord = this.entityManager.createQuery(countCriteria).getSingleResult();
-    //get count
+    // get count
     Double startIndex = 0.0;
-    if(totalRecord > 2000) {
-      startIndex = Math.floor(Math.random() * (totalRecord-2000));
+    if (totalRecord > 2000) {
+      startIndex = Math.floor(Math.random() * (totalRecord - 2000));
     } else {
       startIndex = 0.0;
     }
 
     CriteriaQuery<Registrant> criteria = builder.createQuery(Registrant.class);
-    TypedQuery<Registrant> query =
-        this.entityManager.createQuery(criteria.select(root)).setFirstResult(startIndex.intValue()).setMaxResults(2000);
+    TypedQuery<Registrant> query = this.entityManager.createQuery(criteria.select(root))
+        .setFirstResult(startIndex.intValue()).setMaxResults(2000);
     return query.getResultList();
   }
 
@@ -207,8 +207,8 @@ public class RegistrantBean implements Serializable {
     }
     String firstName = this.example.getFirstName();
     if (firstName != null && !"".equals(firstName)) {
-      predicatesList.add(builder
-          .like(builder.lower(root.<String>get("firstName")), '%' + firstName.toLowerCase() + '%'));
+      predicatesList.add(builder.like(builder.lower(root.<String>get("firstName")),
+          '%' + firstName.toLowerCase() + '%'));
     }
     String voucherCode = this.example.getVoucherCode();
     if (voucherCode != null && !"".equals(voucherCode)) {
@@ -217,13 +217,13 @@ public class RegistrantBean implements Serializable {
     }
     String lastName = this.example.getLastName();
     if (lastName != null && !"".equals(lastName)) {
-      predicatesList.add(builder
-          .like(builder.lower(root.<String>get("lastName")), '%' + lastName.toLowerCase() + '%'));
+      predicatesList.add(builder.like(builder.lower(root.<String>get("lastName")),
+          '%' + lastName.toLowerCase() + '%'));
     }
     String orderId = this.example.getOrderId();
     if (orderId != null && !"".equals(orderId)) {
-      predicatesList.add(builder
-          .like(builder.lower(root.<String>get("orderId")), '%' + orderId.toLowerCase() + '%'));
+      predicatesList.add(builder.like(builder.lower(root.<String>get("orderId")),
+          '%' + orderId.toLowerCase() + '%'));
     }
     Double totalProduct = this.example.getTotalProduct();
     if (totalProduct != null) {
@@ -260,13 +260,14 @@ public class RegistrantBean implements Serializable {
   @Transactional
   public void parseAndSaveRegistrant(InputStream inputStream) {
     try {
-      //SELECT ev.voucher_codex, eo.order_idx, eo.email_addressx, eo.first_namex, eo.last_namex, eo.total_product, eo.time_placed
+      // SELECT ev.voucher_codex, eo.order_idx, eo.email_addressx, eo.first_namex, eo.last_namex,
+      // eo.total_product, eo.time_placed
 
       final Reader reader = new InputStreamReader(inputStream);
-      final Iterable<CSVRecord> records = CSVFormat.EXCEL.withHeader(
-          new String[] {"voucher_code", "order_id", "email_address", "first_name", "last_name",
-              "total_product", "time_placed", "play_session"}).withSkipHeaderRecord()
-          .withDelimiter(';').parse(reader);
+      final Iterable<CSVRecord> records = CSVFormat.EXCEL
+          .withHeader(new String[] {"voucher_code", "order_id", "email_address", "first_name",
+              "last_name", "total_product", "time_placed", "play_session"})
+          .withSkipHeaderRecord().withDelimiter(';').parse(reader);
       for (final CSVRecord csvRecord : records) {
         if (findById(csvRecord.get("voucher_code")) == null) {
           Registrant registrant = new Registrant();
@@ -281,7 +282,7 @@ public class RegistrantBean implements Serializable {
         }
       }
     } catch (Exception e) {
-      LOGGER.log(Level.SEVERE, e.getMessage(),e);
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
       throw new RuntimeException(e);
     }
   }

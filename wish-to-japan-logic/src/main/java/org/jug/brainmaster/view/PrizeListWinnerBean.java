@@ -36,11 +36,10 @@ import org.jug.brainmaster.model.Winners;
 /**
  * Backing bean for PrizeListWinner entities.
  * <p>
- * This class provides CRUD functionality for all PrizeListWinner entities. It
- * focuses purely on Java EE 6 standards (e.g. <tt>&#64;ConversationScoped</tt>
- * for state management, <tt>PersistenceContext</tt> for persistence,
- * <tt>CriteriaBuilder</tt> for searches) rather than introducing a CRUD
- * framework or custom base class.
+ * This class provides CRUD functionality for all PrizeListWinner entities. It focuses purely on
+ * Java EE 6 standards (e.g. <tt>&#64;ConversationScoped</tt> for state management,
+ * <tt>PersistenceContext</tt> for persistence, <tt>CriteriaBuilder</tt> for searches) rather than
+ * introducing a CRUD framework or custom base class.
  */
 
 @Named
@@ -229,11 +228,11 @@ public class PrizeListWinnerBean implements Serializable {
 
   public void retrieve() {
 
-    if(id != null) {
-      log.log(Level.INFO,"get existing candidate");
+    if (id != null) {
+      log.log(Level.INFO, "get existing candidate");
       prizeListWinner = winnerServiceBean.findById(id);
     } else {
-      log.log(Level.INFO,"create new candidate");
+      log.log(Level.INFO, "create new candidate");
       prizeListWinner = new Winners();
       registrant = new Registrant();
       prizeList = new PrizeList();
@@ -241,8 +240,8 @@ public class PrizeListWinnerBean implements Serializable {
   }
 
   /*
-   * Support listing and POSTing back PrizeListWinner entities (e.g. from
-   * inside an HtmlSelectOneMenu)
+   * Support listing and POSTing back PrizeListWinner entities (e.g. from inside an
+   * HtmlSelectOneMenu)
    */
 
   public String search() {

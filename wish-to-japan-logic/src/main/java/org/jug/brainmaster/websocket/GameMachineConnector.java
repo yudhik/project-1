@@ -44,16 +44,18 @@ public class GameMachineConnector {
 
   @OnOpen
   public void monitorLuckyDip(Session session) throws Exception {
-    log.log(Level.FINER, "A client connected :" + session.getId() + ", register it as a game listener");
+    log.log(Level.FINER,
+        "A client connected :" + session.getId() + ", register it as a game listener");
     try {
       if (isEnded != null) {
-        session.getBasicRemote().sendText(new GameMessage(null, null, GameState.END, false, -1L).toJSON());
+        session.getBasicRemote()
+            .sendText(new GameMessage(null, null, GameState.END, false, -1L).toJSON());
         session.setMaxIdleTimeout(100);
         session.close();
       } else {
         gameMessageListenerServiceBean.addListener(session);
       }
-    }catch (Exception e) {
+    } catch (Exception e) {
       log.log(Level.SEVERE, "exception when opening connection from client", e);
     }
   }

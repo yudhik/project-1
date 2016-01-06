@@ -39,17 +39,23 @@ public class GrandPrizeCandidateServiceBean {
   @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
   public boolean claimPrize(String emailAddress) {
     GrandPrizeCandidate grandPrizeWinner = null;
+    long start = System.nanoTime();
     try {
-      grandPrizeWinner = em.createQuery(SELECT_CURRENT_CANDIDATE_WITH_MAIL, GrandPrizeCandidate.class)
-          .setParameter("emailAddress", emailAddress).getSingleResult();
+      grandPrizeWinner =
+          em.createQuery(SELECT_CURRENT_CANDIDATE_WITH_MAIL, GrandPrizeCandidate.class)
+              .setParameter("emailAddress", emailAddress).getSingleResult();
     } catch (NoResultException e) {
+      log.log(Level.FINE, "select NO_RESULT candidate with mail : " + emailAddress + ", for "
+          + (System.nanoTime() - start) / 1000000 + " millis");
       return false;
     }
     if (grandPrizeWinner == null) {
+      log.log(Level.FINE, "select NULL candidate with mail : " + emailAddress + ", for "
+          + (System.nanoTime() - start) / 1000000 + " millis");
       return false;
     }
     try {
-      log.log(Level.INFO,
+      log.log(Level.FINE,
           "email address : " + emailAddress + " is valid try to save it as claimed");
       Hibernate.initialize(grandPrizeWinner.getPrizeList());
       Hibernate.initialize(grandPrizeWinner.getRegistrant());
@@ -61,10 +67,13 @@ public class GrandPrizeCandidateServiceBean {
       grandPrizeWinner.setClaimed(true);
       grandPrizeWinner.setCurrent(false);
       saveOrUpdate(grandPrizeWinner);
+      log.log(Level.FINE, "select VALID candidate with mail : " + emailAddress + ", for "
+          + (System.nanoTime() - start) / 1000000 + " millis");
     } catch (Exception e) {
       log.log(Level.WARNING,
           "something wrong when claim process try to update value for email address : "
-              + emailAddress, e);
+              + emailAddress,
+          e);
       log.log(Level.SEVERE, "show stack trace to analyze error", e);
     }
     return true;
@@ -87,22 +96,23 @@ public class GrandPrizeCandidateServiceBean {
 
   @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
   public GrandPrizeCandidate findByEmailAddress(String emailAddress) {
-    GrandPrizeCandidate existingCandidate = em.createQuery(SELECT_CANDIDATE_WITH_MAIL, GrandPrizeCandidate.class)
-        .setParameter("emailAddress", emailAddress).getSingleResult();
-    //    GrandPrizeCandidate resultCandidate = new GrandPrizeCandidate();
+    GrandPrizeCandidate existingCandidate =
+        em.createQuery(SELECT_CANDIDATE_WITH_MAIL, GrandPrizeCandidate.class)
+            .setParameter("emailAddress", emailAddress).getSingleResult();
+    // GrandPrizeCandidate resultCandidate = new GrandPrizeCandidate();
     if (existingCandidate != null) {
       Hibernate.initialize(existingCandidate.getRegistrant());
       Hibernate.initialize(existingCandidate.getPrizeList());
-      //      resultCandidate.setClaimed(existingCandidate.isClaimed());
-      //      resultCandidate.setCurrent(existingCandidate.isCurrent());
-      //      resultCandidate.setEmailAddress(existingCandidate.getEmailAddress());
-      //      resultCandidate.setId(existingCandidate.getId());
-      //      resultCandidate.setPrizeList(existingCandidate.getPrizeList());
-      //      resultCandidate.setRegistrant(existingCandidate.getRegistrant());
-      //    } else {
-      //      return null;
+      // resultCandidate.setClaimed(existingCandidate.isClaimed());
+      // resultCandidate.setCurrent(existingCandidate.isCurrent());
+      // resultCandidate.setEmailAddress(existingCandidate.getEmailAddress());
+      // resultCandidate.setId(existingCandidate.getId());
+      // resultCandidate.setPrizeList(existingCandidate.getPrizeList());
+      // resultCandidate.setRegistrant(existingCandidate.getRegistrant());
+      // } else {
+      // return null;
     }
-    //    return resultCandidate;
+    // return resultCandidate;
     return existingCandidate;
   }
 
@@ -120,9 +130,10 @@ public class GrandPrizeCandidateServiceBean {
   public List<GrandPrizeCandidate> getAllCandidateWithPagination(int rowSize, int pageNumber) {
     List<GrandPrizeCandidate> candidates = new ArrayList<GrandPrizeCandidate>();
     int startPosition = (pageNumber - 1) * rowSize;
-    candidates = em.createQuery("from GrandPrizeCandidate candidate ORDER BY candidate.id",
-        GrandPrizeCandidate.class).setFirstResult(startPosition).setMaxResults(rowSize)
-        .getResultList();
+    candidates = em
+        .createQuery("from GrandPrizeCandidate candidate ORDER BY candidate.id",
+            GrandPrizeCandidate.class)
+        .setFirstResult(startPosition).setMaxResults(rowSize).getResultList();
     return candidates;
   }
 
@@ -167,7 +178,6 @@ public class GrandPrizeCandidateServiceBean {
       candidate = existingCandidate;
     }
     em.persist(candidate);
-    em.flush();
   }
 
 }

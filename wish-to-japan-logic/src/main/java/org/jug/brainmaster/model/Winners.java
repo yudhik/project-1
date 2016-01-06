@@ -14,8 +14,8 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "winners_list", uniqueConstraints = {@UniqueConstraint(
-    columnNames = {Winners.COLUMN_PRIZE_ID, Winners.COLUMN_REGISTRANT_ID})})
+@Table(name = "winners_list", uniqueConstraints = {
+    @UniqueConstraint(columnNames = {Winners.COLUMN_PRIZE_ID, Winners.COLUMN_REGISTRANT_ID})})
 public class Winners implements Serializable {
 
   private static final long serialVersionUID = -280867261110554136L;

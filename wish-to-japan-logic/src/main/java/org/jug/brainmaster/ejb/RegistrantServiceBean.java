@@ -34,10 +34,12 @@ public class RegistrantServiceBean {
   }
 
   @TransactionAttribute(TransactionAttributeType.REQUIRED)
-  public List<Registrant> findFakeRegistrantToShow(final Random random,int maxResult) {
-    Long totalRegistrant = em.createQuery("select count(registrant.voucherCode) from Registrant registrant", Long.class).getSingleResult();
+  public List<Registrant> findFakeRegistrantToShow(final Random random, int maxResult) {
+    Long totalRegistrant = em
+        .createQuery("select count(registrant.voucherCode) from Registrant registrant", Long.class)
+        .getSingleResult();
     int randomStartPosition = random.nextInt(totalRegistrant.intValue());
-    while(totalRegistrant.intValue() - randomStartPosition < maxResult) {
+    while (totalRegistrant.intValue() - randomStartPosition < maxResult) {
       randomStartPosition = random.nextInt(totalRegistrant.intValue());
     }
     return em.createQuery("from Registrant registrant", Registrant.class)

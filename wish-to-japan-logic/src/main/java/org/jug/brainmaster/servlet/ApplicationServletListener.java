@@ -29,7 +29,7 @@ public class ApplicationServletListener implements ServletContextListener {
   @Override
   public void contextInitialized(ServletContextEvent sce) {
     applicationResources.setServletContext(sce.getServletContext());
-    sce.getServletContext().setAttribute("waitingToStart",true);
+    sce.getServletContext().setAttribute("waitingToStart", true);
     try {
       rafleMachine.start(sce.getServletContext());
     } catch (Exception e) {
