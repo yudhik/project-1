@@ -1,5 +1,6 @@
 <%@ page import="org.jug.brainmaster.model.response.WinnerResponse" %>
 <%@ page import="java.util.List" %>
+<%@ page session="false"%>
 <div class="win-wrapper">
   <a class='btn' href='/pemenang-periode-1'>Lihat Pemenang Periode 1</a>
   

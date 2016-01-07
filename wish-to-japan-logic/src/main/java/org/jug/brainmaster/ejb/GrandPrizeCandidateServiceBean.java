@@ -1,10 +1,9 @@
 package org.jug.brainmaster.ejb;
 
-import org.hibernate.Hibernate;
-import org.jug.brainmaster.model.GrandPrizeCandidate;
-import org.jug.brainmaster.model.PrizeList;
-import org.jug.brainmaster.model.Registrant;
-import org.jug.brainmaster.model.Winners;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -14,10 +13,12 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.hibernate.Hibernate;
+import org.jug.brainmaster.model.GrandPrizeCandidate;
+import org.jug.brainmaster.model.PrizeList;
+import org.jug.brainmaster.model.Registrant;
+import org.jug.brainmaster.model.Winners;
 
 @Stateless
 @LocalBean
@@ -42,7 +43,7 @@ public class GrandPrizeCandidateServiceBean {
     try {
       grandPrizeWinner =
           em.createQuery(SELECT_CURRENT_CANDIDATE_WITH_MAIL, GrandPrizeCandidate.class)
-              .setParameter("emailAddress", emailAddress).getSingleResult();
+          .setParameter("emailAddress", emailAddress).getSingleResult();
     } catch (NoResultException e) {
       log.log(Level.FINE, "select NO_RESULT candidate with mail : " + emailAddress + ", for "
           + (System.nanoTime() - start) / 1000000 + " millis");
@@ -72,10 +73,21 @@ public class GrandPrizeCandidateServiceBean {
       log.log(Level.WARNING,
           "something wrong when claim process try to update value for email address : "
               + emailAddress,
-          e);
+              e);
       log.log(Level.SEVERE, "show stack trace to analyze error", e);
     }
     return true;
+  }
+
+  @TransactionAttribute(TransactionAttributeType.REQUIRED)
+  public void clearCurrent() {
+    List<GrandPrizeCandidate> candidates =
+        em.createQuery("from GrandPrizeCandidate", GrandPrizeCandidate.class).getResultList();
+    for (GrandPrizeCandidate grandPrizeCandidate : candidates) {
+      grandPrizeCandidate.setCurrent(false);
+      em.persist(grandPrizeCandidate);
+    }
+    em.flush();
   }
 
   @TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -97,7 +109,7 @@ public class GrandPrizeCandidateServiceBean {
   public GrandPrizeCandidate findByEmailAddress(String emailAddress) {
     GrandPrizeCandidate existingCandidate =
         em.createQuery(SELECT_CANDIDATE_WITH_MAIL, GrandPrizeCandidate.class)
-            .setParameter("emailAddress", emailAddress).getSingleResult();
+        .setParameter("emailAddress", emailAddress).getSingleResult();
     // GrandPrizeCandidate resultCandidate = new GrandPrizeCandidate();
     if (existingCandidate != null) {
       Hibernate.initialize(existingCandidate.getRegistrant());
@@ -125,6 +137,7 @@ public class GrandPrizeCandidateServiceBean {
     return candidate;
   }
 
+
   @TransactionAttribute(TransactionAttributeType.REQUIRED)
   public List<GrandPrizeCandidate> getAllCandidateWithPagination(int rowSize, int pageNumber) {
     List<GrandPrizeCandidate> candidates = new ArrayList<GrandPrizeCandidate>();
@@ -136,7 +149,6 @@ public class GrandPrizeCandidateServiceBean {
     return candidates;
   }
 
-
   public List<GrandPrizeCandidate> getCandidateForGrandPrize(PrizeList prizeList) {
     PrizeList existingPrizeList = em.find(PrizeList.class, prizeList.getId());
     return em.createQuery(
@@ -146,13 +158,6 @@ public class GrandPrizeCandidateServiceBean {
 
   @TransactionAttribute(TransactionAttributeType.REQUIRED)
   public void putCurrent(GrandPrizeCandidate candidate) {
-    List<GrandPrizeCandidate> candidates =
-        em.createQuery("from GrandPrizeCandidate", GrandPrizeCandidate.class).getResultList();
-    for (GrandPrizeCandidate grandPrizeCandidate : candidates) {
-      grandPrizeCandidate.setCurrent(false);
-      em.persist(grandPrizeCandidate);
-    }
-    em.flush();
     GrandPrizeCandidate existingCandidate = findById(candidate.getId());
     if (existingCandidate != null) {
       existingCandidate.setCurrent(true);

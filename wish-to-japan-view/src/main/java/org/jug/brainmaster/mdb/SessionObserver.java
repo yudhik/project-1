@@ -1,9 +1,8 @@
 package org.jug.brainmaster.mdb;
 
-import com.google.gson.Gson;
-import org.jug.brainmaster.model.response.GameMessage;
-import org.jug.brainmaster.ws.startup.ApplicationConfig;
-import org.jug.brainmaster.ws.ws.GameMessageListenerServiceBean;
+import java.net.URI;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.annotation.Resource;
 import javax.ejb.Singleton;
@@ -23,9 +22,12 @@ import javax.websocket.OnError;
 import javax.websocket.OnMessage;
 import javax.websocket.Session;
 import javax.websocket.WebSocketContainer;
-import java.net.URI;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.jug.brainmaster.model.response.GameMessage;
+import org.jug.brainmaster.ws.startup.ApplicationConfig;
+import org.jug.brainmaster.ws.ws.GameMessageListenerServiceBean;
+
+import com.google.gson.Gson;
 
 @Singleton
 @ClientEndpoint
@@ -88,7 +90,7 @@ public class SessionObserver {
         this.serverSession = container.connectToServer(this, uri);
         this.timerService.createSingleActionTimer(SessionObserver.SESSION_CHECKING_INTERVAL,
             new TimerConfig("schedule next checking interval", false));
-        this.log.info("connected to server session");
+        this.log.fine("connected to server session");
       } catch (Exception e) {
         this.timerService.createSingleActionTimer(SessionObserver.SESSION_CHECKING_INTERVAL,
             new TimerConfig("schedule next checking interval", false));
@@ -100,7 +102,7 @@ public class SessionObserver {
   @OnClose
   @TransactionAttribute(TransactionAttributeType.NEVER)
   public void onClose(Session session, CloseReason closeReason) {
-    log.info("Session close invoked, reason : " + closeReason.getReasonPhrase());
+    log.fine("Session close invoked, reason : " + closeReason.getReasonPhrase());
     timerService.createSingleActionTimer(SESSION_CHECKING_INTERVAL,
         new TimerConfig("schedule next checking interval", false));
     serverSession = null;

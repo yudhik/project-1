@@ -1,9 +1,10 @@
 package org.jug.brainmaster.ws.ws;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import org.jug.brainmaster.model.response.WinnerResponse;
-import org.jug.brainmaster.ws.startup.ApplicationConfig;
+import java.lang.reflect.Type;
+import java.net.URI;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.websocket.ClientEndpoint;
 import javax.websocket.CloseReason;
@@ -12,32 +13,39 @@ import javax.websocket.OnClose;
 import javax.websocket.OnMessage;
 import javax.websocket.Session;
 import javax.websocket.WebSocketContainer;
-import java.lang.reflect.Type;
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Logger;
+
+import org.jug.brainmaster.model.response.WinnerResponse;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 @ClientEndpoint
 public class GetWinnersWebsocket {
-  private ApplicationConfig applicationConfig;
+  private static final Logger LOG = Logger.getLogger(GetWinnersWebsocket.class.getName());
 
-  public GetWinnersWebsocket(ApplicationConfig applicationConfig) {
-    this.applicationConfig = applicationConfig;
-  }
-
+  private static final WebSocketContainer CONTAINER = ContainerProvider.getWebSocketContainer();
+  private String logicHost;
   private Gson gson = new Gson();
-  private Logger log = Logger.getLogger(GetWinnersWebsocket.class.getName());
   private Session session;
   private boolean getMessage = false;
+  private List<WinnerResponse> winners = null;
 
-  private List<WinnerResponse> winners = new ArrayList<>();
+  public GetWinnersWebsocket(String logicHost) {
+    this.logicHost = logicHost;
+  }
 
-  public void connectToServer() throws Exception{
-    WebSocketContainer container = ContainerProvider.getWebSocketContainer();
-    container.setAsyncSendTimeout(200L);
-    URI uri = new URI("ws://" + applicationConfig.getLogicHost() + "/getWinners");
-    session = container.connectToServer(this, uri);
+  public void connectToServer() throws Exception {
+    CONTAINER.setAsyncSendTimeout(200L);
+    CONTAINER.setDefaultMaxSessionIdleTimeout(1000L);
+    URI uri = new URI("ws://" + logicHost + "/getWinners");
+    if(session == null || !session.isOpen()) {
+      session = CONTAINER.connectToServer(this, uri);
+    }
+  }
+
+  public void forceClose() throws Exception {
+    if (session.isOpen())
+      session.close();
   }
 
   public boolean getState() {
@@ -51,25 +59,22 @@ public class GetWinnersWebsocket {
     return winners;
   }
 
-  @OnClose
-  public void onClose(Session session, CloseReason closeReason) throws Exception {
-    if(session.isOpen()) session.close();
+  public boolean isGetMessage() {
+    return getMessage;
   }
 
-  public void forceClose() throws Exception {
-    if(session.isOpen()) session.close();
+  @OnClose
+  public void onClose(Session session, CloseReason closeReason) throws Exception {
+    if (session.isOpen())
+      session.close();
   }
 
   @OnMessage
   public void onMessage(String text) {
     getMessage = true;
-    Type listOfWinnerType = new TypeToken<List<WinnerResponse>>() {
-    }.getType();
+    Type listOfWinnerType = new TypeToken<List<WinnerResponse>>() {}.getType();
+    LOG.log(Level.FINE, "receive message from server : " + text);
     this.winners = gson.fromJson(text, listOfWinnerType);
-  }
-
-  public boolean isGetMessage() {
-    return getMessage;
   }
 
   public void setGetMessage(boolean getMessage) {

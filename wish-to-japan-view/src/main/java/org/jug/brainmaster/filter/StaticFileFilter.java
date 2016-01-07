@@ -1,6 +1,8 @@
 package org.jug.brainmaster.filter;
 
-import org.jug.brainmaster.ws.startup.ApplicationConfig;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.inject.Inject;
 import javax.servlet.Filter;
@@ -11,12 +13,14 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.jug.brainmaster.ws.startup.ApplicationConfig;
 
 public class StaticFileFilter implements Filter {
+
+  @SuppressWarnings("unused")
   private RequestDispatcher defaultRequestDispatcher;
+
   @Inject
   private Logger log;
 
@@ -32,9 +36,9 @@ public class StaticFileFilter implements Filter {
       throws IOException, ServletException {
     HttpServletRequest req = (HttpServletRequest) request;
     String path = req.getRequestURI().substring(req.getContextPath().length());
-    log.log(Level.INFO, "Path:" + path);
+    log.log(Level.FINEST, "Path:" + path);
     if (path.equals("/")) {
-      log.log(Level.INFO, "MASUK PAGE");
+      log.log(Level.FINEST, "MASUK PAGE");
       Boolean useWss = applicationConfig.useWss();
       String viewHost = applicationConfig.getViewHost();
       String logicHost = applicationConfig.getLogicHost();
@@ -45,7 +49,7 @@ public class StaticFileFilter implements Filter {
       request.setAttribute("winnerClaimTimeout", winnerClaimTimeout);
       request.getRequestDispatcher("/pages/").forward(request, response);
     } else if (path.equals("/pemenang-periode-1")) {
-      log.log(Level.INFO, "MASUK PAGE PERIODE 1");
+      log.log(Level.FINEST, "MASUK PAGE PERIODE 1");
       request.getRequestDispatcher("/static/").forward(request, response);
     } else {
       chain.doFilter(request, response);
@@ -58,4 +62,4 @@ public class StaticFileFilter implements Filter {
     this.defaultRequestDispatcher =
         filterConfig.getServletContext().getNamedDispatcher("staticFileFilter");
   }
-}  
+}
