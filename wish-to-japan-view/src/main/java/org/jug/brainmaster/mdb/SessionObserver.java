@@ -65,7 +65,7 @@ public class SessionObserver {
   @Timeout
   @TransactionAttribute(TransactionAttributeType.NEVER)
   public void checkServerSession(Timer timer) {
-    log.info("invoking timeout");
+    log.fine("invoking timeout");
     getServerSession();
   }
 

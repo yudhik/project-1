@@ -1,7 +1,7 @@
 <%@ page import="org.jug.brainmaster.model.response.WinnerResponse" %>
 <%@ page import="java.util.List" %>
 <div class="win-wrapper">
-  <a class='btn' href=''>Lihat Pemenang Periode 1</a>
+  <a class='btn' href='/pemenang-periode-1'>Lihat Pemenang Periode 1</a>
   
   <h2 class="title">
     <div class='winner-qty' id='japan-winner-qty'></div>
