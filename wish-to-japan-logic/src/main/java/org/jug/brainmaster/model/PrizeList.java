@@ -27,8 +27,7 @@ public class PrizeList implements Serializable {
   @Column(name = IS_GRAND_PRIZE_COLUMN, nullable = false)
   private Boolean grandPrize = true;
 
-  public PrizeList() {
-  }
+  public PrizeList() {}
 
   public PrizeList(String name) {
     this.name = name;
@@ -85,6 +84,6 @@ public class PrizeList implements Serializable {
 
   @Override
   public String toString() {
-    return "PrizeList [id=" + id + ", name=" + name + ", grand prize=" + grandPrize +"]";
+    return "PrizeList [id=" + id + ", name=" + name + ", grand prize=" + grandPrize + "]";
   }
 }

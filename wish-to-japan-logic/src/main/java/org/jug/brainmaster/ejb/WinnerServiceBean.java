@@ -32,9 +32,9 @@ public class WinnerServiceBean {
 
   @TransactionAttribute(TransactionAttributeType.REQUIRED)
   public void delete(Winners winners) {
-    if(winners != null) {
+    if (winners != null) {
       Winners existingWinners = em.find(Winners.class, winners.getId());
-      if(existingWinners != null) {
+      if (existingWinners != null) {
         em.remove(existingWinners);
       }
     }
@@ -43,7 +43,7 @@ public class WinnerServiceBean {
   @TransactionAttribute(TransactionAttributeType.REQUIRED)
   public Winners findById(Long id) {
     Winners winners = em.find(Winners.class, id);
-    if(winners != null) {
+    if (winners != null) {
       Hibernate.initialize(winners.getPrize());
       Hibernate.initialize(winners.getRegistrant());
     }
@@ -52,8 +52,7 @@ public class WinnerServiceBean {
 
   @TransactionAttribute(TransactionAttributeType.REQUIRED)
   public List<Winners> findByPrize(PrizeList prizeList) {
-    return em
-        .createQuery("from Winners winners where winners.prize = :prizeList", Winners.class)
+    return em.createQuery("from Winners winners where winners.prize = :prizeList", Winners.class)
         .setParameter("prizeList", prizeList).getResultList();
   }
 
@@ -66,17 +65,20 @@ public class WinnerServiceBean {
 
   @TransactionAttribute(TransactionAttributeType.REQUIRED)
   public void generateRandomWinner(PrizeList prizeList, Integer winnerSize) {
-    Long totalRegistrant = em.createQuery("select count(registrant.voucherCode) from Registrant registrant", Long.class).getSingleResult();
-    //    random.setSeed(totalRegistrant);
-    log.log(Level.INFO, "total registrant : " + totalRegistrant);
+    Long totalRegistrant = em
+        .createQuery("select count(registrant.voucherCode) from Registrant registrant", Long.class)
+        .getSingleResult();
+    // random.setSeed(totalRegistrant);
+    log.log(Level.FINER, "total registrant : " + totalRegistrant);
     while (winnerSize > 0) {
       PrizeList existingPrizeList = em.getReference(PrizeList.class, prizeList.getId());
       Registrant registrant = null;
-      while(registrant == null) {
+      while (registrant == null) {
         int position = Math.abs(RANDOM.nextInt(totalRegistrant.intValue()));
-        log.log(Level.INFO, "position : " + position);
-        registrant = em.createQuery("from Registrant registrant", Registrant.class).setFirstResult(position).setMaxResults(1).getSingleResult();
-        if(findByRegistrant(registrant).size() > 0) {
+        log.log(Level.FINER, "position : " + position);
+        registrant = em.createQuery("from Registrant registrant", Registrant.class)
+            .setFirstResult(position).setMaxResults(1).getSingleResult();
+        if (findByRegistrant(registrant).size() > 0) {
           registrant = null;
         }
       }
@@ -90,8 +92,8 @@ public class WinnerServiceBean {
   @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
   public List<Winners> getAllWinners() {
     List<Winners> result = em.createQuery("from Winners winners", Winners.class).getResultList();
-    if(result != null) {
-      for(Winners winner : result) {
+    if (result != null) {
+      for (Winners winner : result) {
         Hibernate.initialize(winner.getPrize());
         Hibernate.initialize(winner.getRegistrant());
       }
@@ -101,9 +103,9 @@ public class WinnerServiceBean {
 
   @TransactionAttribute(TransactionAttributeType.REQUIRED)
   public void saveOrUpdate(Winners winners) {
-    if(winners != null) {
+    if (winners != null) {
       Winners existingWinners = null;
-      if(winners.getId() == null) {
+      if (winners.getId() == null) {
         log.log(Level.FINEST, "Create new Winners");
         existingWinners = new Winners();
       } else {
@@ -111,7 +113,8 @@ public class WinnerServiceBean {
         existingWinners = em.find(Winners.class, winners.getId());
       }
       PrizeList prizeList = em.getReference(PrizeList.class, winners.getPrize().getId());
-      Registrant registrant = em.getReference(Registrant.class, winners.getRegistrant().getVoucherCode());
+      Registrant registrant =
+          em.getReference(Registrant.class, winners.getRegistrant().getVoucherCode());
       existingWinners.setPrize(prizeList);
       existingWinners.setRegistrant(registrant);
       em.persist(existingWinners);

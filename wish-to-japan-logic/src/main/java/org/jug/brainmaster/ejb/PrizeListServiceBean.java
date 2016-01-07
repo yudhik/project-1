@@ -24,12 +24,14 @@ public class PrizeListServiceBean {
 
   @TransactionAttribute(TransactionAttributeType.REQUIRED)
   public List<PrizeList> findAllGrandPrize() {
-    return em.createQuery("from PrizeList pl where pl.grandPrize = true", PrizeList.class).getResultList();
+    return em.createQuery("from PrizeList pl where pl.grandPrize = true", PrizeList.class)
+        .getResultList();
   }
 
   @TransactionAttribute(TransactionAttributeType.REQUIRED)
   public List<PrizeList> findAllNonGrandPrize() {
-    return em.createQuery("from PrizeList pl where pl.grandPrize = false", PrizeList.class).getResultList();
+    return em.createQuery("from PrizeList pl where pl.grandPrize = false", PrizeList.class)
+        .getResultList();
   }
 
   @TransactionAttribute(TransactionAttributeType.NEVER)
@@ -39,17 +41,18 @@ public class PrizeListServiceBean {
 
   @TransactionAttribute(TransactionAttributeType.NEVER)
   public PrizeList findByName(String name) {
-    return em.createQuery("from PrizeList prizeList where prizeList.name = :name", PrizeList.class).setParameter("name", name).getSingleResult();
+    return em.createQuery("from PrizeList prizeList where prizeList.name = :name", PrizeList.class)
+        .setParameter("name", name).getSingleResult();
   }
 
   @TransactionAttribute(TransactionAttributeType.REQUIRED)
   public void saveOrUpdate(PrizeList prizeList) {
-    if(prizeList != null) {
+    if (prizeList != null) {
       PrizeList existingPrizeList = null;
       if (prizeList.getId() != null) {
         existingPrizeList = findById(prizeList.getId());
       }
-      if(existingPrizeList != null) {
+      if (existingPrizeList != null) {
         existingPrizeList.setGrandPrize(prizeList.getGrandPrize());
         existingPrizeList.setName(prizeList.getName());
       } else {

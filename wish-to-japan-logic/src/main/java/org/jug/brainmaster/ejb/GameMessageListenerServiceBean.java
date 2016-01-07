@@ -25,7 +25,9 @@ public class GameMessageListenerServiceBean {
 
   public void publishEvent(@Observes GameMessage message) throws Exception {
     for (Session session : SESSION_LISTENERS) {
-      session.getBasicRemote().sendText(message.toJSON());
+      if (session.isOpen()) {
+        session.getAsyncRemote().sendText(message.toJSON());
+      }
     }
   }
 

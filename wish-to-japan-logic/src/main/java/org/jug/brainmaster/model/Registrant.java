@@ -16,7 +16,8 @@ import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
 @Entity
-@Table(name = "registrant", indexes = {@Index(name="email_idx", columnList = Registrant.EMAIL_ADDRESS_COLUMN)})
+@Table(name = "registrant",
+    indexes = {@Index(name = "email_idx", columnList = Registrant.EMAIL_ADDRESS_COLUMN)})
 public class Registrant implements Serializable {
 
   // SELECT ev.voucher_codex, eo.order_idx, eo.email_addressx, eo.first_namex, eo.last_namex,
