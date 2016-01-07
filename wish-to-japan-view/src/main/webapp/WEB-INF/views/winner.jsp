@@ -1,6 +1,8 @@
 <%@ page import="org.jug.brainmaster.model.response.WinnerResponse" %>
 <%@ page import="java.util.List" %>
 <div class="win-wrapper">
+  <a class='btn' href=''>Lihat Pemenang Periode 1</a>
+  
   <h2 class="title">
     <div class='winner-qty' id='japan-winner-qty'></div>
     Pemenang Liburan Gratis ke Jepang

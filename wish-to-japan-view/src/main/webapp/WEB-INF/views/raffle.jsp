@@ -203,6 +203,7 @@
   <input type="button" class="hidden" id="play-congrats-slot-wrapper" value="">
 
   <div class='win-wrapper'>
+	<h2 class='title center'>Daftar Pemenang Grand Prize Gratis ke Jepang</h2>
     <ol id='gp-winner-list'>
     </ol>
   </div>
