@@ -381,8 +381,9 @@
 
       if (winners.length > 0) {
         showElement(garisUngu);
-
         showWinners(winners);
+      } else {
+        hide(garisUngu)
       }
 
       switch (gameState) {
@@ -417,6 +418,7 @@
           $("#grand-prize-state").html(regionGrandPrizeStateEnum[regionCounter]);
           getCurrent(voucherCode, name);
           runSlot();
+          break;
         }
         case "END" :
         {

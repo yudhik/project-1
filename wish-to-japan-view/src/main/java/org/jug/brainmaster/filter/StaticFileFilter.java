@@ -2,10 +2,6 @@ package org.jug.brainmaster.filter;
 
 import org.jug.brainmaster.ws.startup.ApplicationConfig;
 
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import javax.inject.Inject;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -15,6 +11,9 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class StaticFileFilter implements Filter {
   private RequestDispatcher defaultRequestDispatcher;
@@ -38,6 +37,9 @@ public class StaticFileFilter implements Filter {
       log.info("do nothing because path:" + path.toString());
       //do nothing, let it resolve itself
     } else {
+      if(path.startsWith("/pemenang-periode-1")) {
+        request.setAttribute("REQUEST_WINNER_1_PAGE", true);
+      }
       log.log(Level.INFO, "MASUK PAGE");
       Boolean useWss = applicationConfig.useWss();
       String viewHost = applicationConfig.getViewHost();

@@ -1,11 +1,9 @@
 package org.jug.brainmaster.mdb;
 
 import com.google.gson.Gson;
-import org.jug.brainmaster.model.request.EmailCheckRequest;
 import org.jug.brainmaster.model.response.GameMessage;
-import org.jug.brainmaster.model.response.GameState;
 import org.jug.brainmaster.ws.startup.ApplicationConfig;
-import org.jug.brainmaster.ws.ws.DataSubject;
+import org.jug.brainmaster.ws.ws.GameMessageListenerServiceBean;
 
 import javax.annotation.Resource;
 import javax.ejb.Singleton;
@@ -15,6 +13,7 @@ import javax.ejb.TimerConfig;
 import javax.ejb.TimerService;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import javax.websocket.ClientEndpoint;
 import javax.websocket.CloseReason;
@@ -37,10 +36,10 @@ public class SessionObserver {
 
   @Inject
   ApplicationConfig applicationConfig;
-
   @Inject
-  DataSubject dataSubject;
-
+  GameMessageListenerServiceBean gameMessageListenerServiceBean;
+  @Inject
+  private Event<GameMessage> gameEvent;
   @Inject
   private Gson gson;
 
@@ -56,10 +55,10 @@ public class SessionObserver {
   public void checkEmail(String email) {
     try {
       if (serverSession != null) {
-        serverSession.getBasicRemote().sendText(email);
+        serverSession.getAsyncRemote().sendText(email);
       }
     } catch (Exception e) {
-      log.log(Level.SEVERE, "Something bad happen! : " + e.getStackTrace(), e);
+      log.log(Level.SEVERE, "Something bad happen when trying to claim! : " + e.getStackTrace(), e);
     }
   }
 
@@ -111,11 +110,8 @@ public class SessionObserver {
   @TransactionAttribute(TransactionAttributeType.NEVER)
   public void onMessage(String text) {
     try {
-      //todo no Gson
       GameMessage sr = gson.fromJson(text, GameMessage.class);
-      this.dataSubject.setStatusResponse(sr);
-
-      //TODO filter list of winners
+      gameEvent.fire(sr);
     } catch (Exception e) {
       log.log(Level.SEVERE, "Something bad happen! : " + e.getStackTrace(), e);
     }

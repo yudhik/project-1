@@ -1,5 +1,9 @@
 package org.jug.brainmaster.ws.startup;
 
+import javax.annotation.PostConstruct;
+import javax.faces.bean.ApplicationScoped;
+import javax.inject.Inject;
+import javax.inject.Named;
 import java.io.File;
 import java.io.FileReader;
 import java.text.SimpleDateFormat;
@@ -8,14 +12,7 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.annotation.PostConstruct;
-import javax.faces.bean.ApplicationScoped;
-import javax.faces.bean.ManagedBean;
-import javax.inject.Inject;
-import javax.inject.Named;
-
-//TODO apaan lagi ini :( stress ya si willy
-@ManagedBean(eager = true)
+//TODO apaan lagi ini :( stress ya si willy |  Done, sudah direview kembali untuk @Named dan @ManagedBean
 @ApplicationScoped
 @Named
 public class ApplicationConfig {

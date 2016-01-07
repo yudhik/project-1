@@ -1,5 +1,25 @@
 package org.jug.brainmaster.machine;
 
+import org.jug.brainmaster.ejb.GrandPrizeCandidateServiceBean;
+import org.jug.brainmaster.ejb.PrizeListServiceBean;
+import org.jug.brainmaster.ejb.RegistrantServiceBean;
+import org.jug.brainmaster.ejb.WinnerServiceBean;
+import org.jug.brainmaster.model.GrandPrizeCandidate;
+import org.jug.brainmaster.model.PrizeList;
+import org.jug.brainmaster.model.Registrant;
+import org.jug.brainmaster.model.Winners;
+import org.jug.brainmaster.model.response.GameMessage;
+import org.jug.brainmaster.model.response.GameState;
+import org.jug.brainmaster.model.response.WinnerResponse;
+
+import javax.ejb.Asynchronous;
+import javax.ejb.LocalBean;
+import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
+import javax.enterprise.event.Event;
+import javax.inject.Inject;
+import javax.servlet.ServletContext;
 import java.io.File;
 import java.io.FileReader;
 import java.text.SimpleDateFormat;
@@ -12,27 +32,6 @@ import java.util.Properties;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javax.ejb.Asynchronous;
-import javax.ejb.LocalBean;
-import javax.ejb.Stateless;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
-import javax.enterprise.event.Event;
-import javax.inject.Inject;
-import javax.servlet.ServletContext;
-
-import org.jug.brainmaster.ejb.GrandPrizeCandidateServiceBean;
-import org.jug.brainmaster.ejb.PrizeListServiceBean;
-import org.jug.brainmaster.ejb.RegistrantServiceBean;
-import org.jug.brainmaster.ejb.WinnerServiceBean;
-import org.jug.brainmaster.model.GrandPrizeCandidate;
-import org.jug.brainmaster.model.PrizeList;
-import org.jug.brainmaster.model.Registrant;
-import org.jug.brainmaster.model.Winners;
-import org.jug.brainmaster.model.response.GameMessage;
-import org.jug.brainmaster.model.response.GameState;
-import org.jug.brainmaster.model.response.WinnerResponse;
 
 @Stateless
 @LocalBean
@@ -68,7 +67,8 @@ public class RafleMachine {
   @Inject
   private Logger log;
 
-  public RafleMachine() throws Exception {}
+  public RafleMachine() throws Exception {
+  }
 
   private String combineName(String firstName, String lastName) {
     return firstName + " " + lastName;
@@ -77,8 +77,8 @@ public class RafleMachine {
   private void doShowRandomValue(int registrantCountBeforeShowCandidate, boolean isTheFirst,
       Map<PrizeList, GrandPrizeCandidate> regionWinner) {
     try {
-      List<Registrant> registrants = registrantServiceBean.findFakeRegistrantToShow(RANDOM,
-          registrantCountBeforeShowCandidate);
+      List<Registrant> registrants = registrantServiceBean
+          .findFakeRegistrantToShow(RANDOM, registrantCountBeforeShowCandidate);
       for (Registrant registrant : registrants) {
         GameMessage message =
             new GameMessage(combineName(registrant.getFirstName(), registrant.getLastName()),
@@ -139,9 +139,8 @@ public class RafleMachine {
       log.log(Level.FINER, "get winner from database");
       try {
         GrandPrizeCandidate winnerToWait = grandPrizeCandidateServiceBean.findById(winners.getId());
-        GameMessage gm = new GameMessage(
-            combineName(winnerToWait.getRegistrant().getFirstName(),
-                winnerToWait.getRegistrant().getLastName()),
+        GameMessage gm = new GameMessage(combineName(winnerToWait.getRegistrant().getFirstName(),
+            winnerToWait.getRegistrant().getLastName()),
             maskingVoucher(winnerToWait.getRegistrant().getVoucherCode()), GameState.WAITING,
             isTheFirst, time);
         gm.setWinners(getCleanRegionWinner(regionWinner));
@@ -163,8 +162,9 @@ public class RafleMachine {
 
   private Properties loadConfigurationFile() throws Exception {
     Properties applicationProperties = new Properties();
-    FileReader reader = new FileReader(System.getProperty(JBOSS_CONFIG_DIRECTORY_KEY)
-        + File.separator + APPLICATION_CONFIG_FILENAME);
+    FileReader reader = new FileReader(
+        System.getProperty(JBOSS_CONFIG_DIRECTORY_KEY) + File.separator
+            + APPLICATION_CONFIG_FILENAME);
     applicationProperties.load(reader);
     return applicationProperties;
   }
@@ -179,8 +179,8 @@ public class RafleMachine {
     Map<PrizeList, List<GrandPrizeCandidate>> regionWinnerCandidateMapping =
         new HashMap<PrizeList, List<GrandPrizeCandidate>>();
     for (PrizeList prizeList : allGrandPrizes) {
-      regionWinnerCandidateMapping.put(prizeList,
-          grandPrizeCandidateServiceBean.getCandidateForGrandPrize(prizeList));
+      regionWinnerCandidateMapping
+          .put(prizeList, grandPrizeCandidateServiceBean.getCandidateForGrandPrize(prizeList));
     }
     return regionWinnerCandidateMapping;
   }
@@ -238,8 +238,9 @@ public class RafleMachine {
               log.log(Level.FINE, "try to rafle fake candidate");
               rafleFakeCandidate(fakeRafleTimeout, registrantCountBeforeShowCandidate, isTheFirst,
                   regionWinner);
-              log.log(Level.FINE, "put current state for : "
-                  + regionWinnerCandidateMapping.get(prizeList).get(counter).getEmailAddress());
+              log.log(Level.FINE,
+                  "put current state for : " + regionWinnerCandidateMapping.get(prizeList)
+                      .get(counter).getEmailAddress());
               grandPrizeCandidateServiceBean
                   .putCurrent(regionWinnerCandidateMapping.get(prizeList).get(counter));
               log.log(Level.FINE, "wait for winner to clain");
@@ -258,11 +259,11 @@ public class RafleMachine {
             }
           }
           regionWinner.put(prizeList, grandPrizeWinner);
-          log.log(Level.FINE, "put grandprize for " + prizeList.getName() + " to "
-              + grandPrizeWinner.getEmailAddress());
+          log.log(Level.FINE,
+              "put grandprize for " + prizeList.getName() + " to " + grandPrizeWinner
+                  .getEmailAddress());
         }
-        rafleFakeCandidate(fakeRafleTimeout, registrantCountBeforeShowCandidate, false,
-            regionWinner);
+        rafleFakeCandidate(300, registrantCountBeforeShowCandidate, false, regionWinner);
       }
       if (regionWinner.size() >= allGrandPrizes.size()) {
         waitingToStart = false;

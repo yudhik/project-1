@@ -1,7 +1,6 @@
 package org.jug.brainmaster.ejb;
 
-import java.util.List;
-import java.util.Random;
+import org.jug.brainmaster.model.Registrant;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -9,8 +8,8 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-
-import org.jug.brainmaster.model.Registrant;
+import java.util.List;
+import java.util.Random;
 
 @Stateless
 @LocalBean

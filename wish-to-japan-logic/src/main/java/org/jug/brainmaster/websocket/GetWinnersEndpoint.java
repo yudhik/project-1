@@ -1,8 +1,6 @@
 package org.jug.brainmaster.websocket;
 
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.jug.brainmaster.model.response.WinnerResponse;
 
 import javax.inject.Inject;
 import javax.websocket.OnClose;
@@ -10,8 +8,9 @@ import javax.websocket.OnError;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
-
-import org.jug.brainmaster.model.response.WinnerResponse;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @ServerEndpoint(value = "/getWinners")
 public class GetWinnersEndpoint {

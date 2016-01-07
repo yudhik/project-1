@@ -1,8 +1,6 @@
 package org.jug.brainmaster.view;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import org.jug.brainmaster.model.PrizeList;
 
 import javax.annotation.Resource;
 import javax.ejb.SessionContext;
@@ -23,8 +21,9 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-
-import org.jug.brainmaster.model.PrizeList;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Backing bean for PrizeList entities.

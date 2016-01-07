@@ -1,15 +1,15 @@
 package org.jug.brainmaster.machine;
 
+import org.joda.time.DateTime;
+import org.jug.brainmaster.model.GrandPrizeCandidate;
+import org.jug.brainmaster.model.RegionType;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-
-import org.joda.time.DateTime;
-import org.jug.brainmaster.model.GrandPrizeCandidate;
-import org.jug.brainmaster.model.RegionType;
 
 public class RafleMachinePrototype {
 

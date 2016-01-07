@@ -1,12 +1,12 @@
 package org.jug.brainmaster.view;
 
+import javax.persistence.Id;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import javax.persistence.Id;
 
 /**
  * Utilities for working with Java Server Faces views.
