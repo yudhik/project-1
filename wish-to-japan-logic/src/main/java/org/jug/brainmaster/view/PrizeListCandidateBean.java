@@ -1,8 +1,8 @@
 package org.jug.brainmaster.view;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import org.jug.brainmaster.model.PrizeListCandidate;
+import org.jug.brainmaster.model.Registrant;
+import org.jug.brainmaster.model.Winners;
 
 import javax.annotation.Resource;
 import javax.ejb.SessionContext;
@@ -23,10 +23,9 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-
-import org.jug.brainmaster.model.PrizeListCandidate;
-import org.jug.brainmaster.model.Winners;
-import org.jug.brainmaster.model.Registrant;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Backing bean for PrizeListCandidate entities.

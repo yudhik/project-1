@@ -1,10 +1,9 @@
 package org.jug.brainmaster.model.request;
 
-import java.io.Serializable;
+import org.hibernate.validator.constraints.Email;
 
 import javax.validation.constraints.NotNull;
-
-import org.hibernate.validator.constraints.Email;
+import java.io.Serializable;
 
 public class ClaimRequest implements Serializable {
 

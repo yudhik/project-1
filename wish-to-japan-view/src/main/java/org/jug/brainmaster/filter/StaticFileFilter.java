@@ -2,10 +2,6 @@ package org.jug.brainmaster.filter;
 
 import org.jug.brainmaster.ws.startup.ApplicationConfig;
 
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import javax.inject.Inject;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -15,6 +11,9 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class StaticFileFilter implements Filter {
   private RequestDispatcher defaultRequestDispatcher;
@@ -33,11 +32,8 @@ public class StaticFileFilter implements Filter {
       throws IOException, ServletException {
     HttpServletRequest req = (HttpServletRequest) request;
     String path = req.getRequestURI().substring(req.getContextPath().length());
-
-    if (path.startsWith("/_asset")) {
-      log.info("do nothing because path:" + path.toString());
-      //do nothing, let it resolve itself
-    } else {
+    log.log(Level.INFO, "Path:" + path);
+    if (path.equals("/")) {
       log.log(Level.INFO, "MASUK PAGE");
       Boolean useWss = applicationConfig.useWss();
       String viewHost = applicationConfig.getViewHost();
@@ -47,13 +43,19 @@ public class StaticFileFilter implements Filter {
       request.setAttribute("logicHost", logicHost);
       request.setAttribute("useWss", useWss);
       request.setAttribute("winnerClaimTimeout", winnerClaimTimeout);
-      request.getRequestDispatcher("/pages" + path).forward(request, response);
+      request.getRequestDispatcher("/pages/").forward(request, response);
+    } else if (path.equals("/pemenang-periode-1")) {
+      log.log(Level.INFO, "MASUK PAGE PERIODE 1");
+      request.getRequestDispatcher("/static/").forward(request, response);
+    } else {
+      chain.doFilter(request, response);
     }
   }
 
+
   @Override
   public void init(FilterConfig filterConfig) throws ServletException {
-//    this.defaultRequestDispatcher =
-//        filterConfig.getServletContext().getNamedDispatcher("staticFileFilter");
+    this.defaultRequestDispatcher =
+        filterConfig.getServletContext().getNamedDispatcher("staticFileFilter");
   }
 }  

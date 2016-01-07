@@ -1,14 +1,13 @@
 package org.jug.brainmaster.util;
 
 
-import java.util.logging.Logger;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.InjectionPoint;
 import javax.inject.Singleton;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import java.util.logging.Logger;
 
 public class ResourceProducer {
 

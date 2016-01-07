@@ -203,6 +203,7 @@
   <input type="button" class="hidden" id="play-congrats-slot-wrapper" value="">
 
   <div class='win-wrapper'>
+	<h2 class='title center'>Daftar Pemenang Grand Prize Gratis ke Jepang</h2>
     <ol id='gp-winner-list'>
     </ol>
   </div>
@@ -381,8 +382,9 @@
 
       if (winners.length > 0) {
         showElement(garisUngu);
-
         showWinners(winners);
+      } else {
+        hide(garisUngu)
       }
 
       switch (gameState) {
@@ -417,6 +419,7 @@
           $("#grand-prize-state").html(regionGrandPrizeStateEnum[regionCounter]);
           getCurrent(voucherCode, name);
           runSlot();
+          break;
         }
         case "END" :
         {

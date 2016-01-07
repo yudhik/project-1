@@ -1,7 +1,6 @@
 package org.jug.brainmaster.ejb;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.jug.brainmaster.model.response.GameMessage;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Singleton;
@@ -9,8 +8,8 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.enterprise.event.Observes;
 import javax.websocket.Session;
-
-import org.jug.brainmaster.model.response.GameMessage;
+import java.util.ArrayList;
+import java.util.List;
 
 @Singleton
 @LocalBean

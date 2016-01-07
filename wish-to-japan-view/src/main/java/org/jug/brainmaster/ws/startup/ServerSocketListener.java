@@ -1,20 +1,12 @@
 package org.jug.brainmaster.ws.startup;
 
-import java.io.File;
-import java.io.FileReader;
-import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import com.google.gson.Gson;
+import org.jug.brainmaster.mdb.SessionObserver;
 
 import javax.inject.Inject;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-
-import org.jug.brainmaster.mdb.SessionObserver;
-
-import org.jug.brainmaster.ws.ws.DataSubject;
-
-import com.google.gson.Gson;
+import java.util.logging.Logger;
 
 public class ServerSocketListener implements ServletContextListener {
 

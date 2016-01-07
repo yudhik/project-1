@@ -89,7 +89,7 @@
     <img src='../_asset/images/header.png' alt='my big wish | blibli' style="display:block;"/>
   </div>
 
-  <div class="slot-wrapper container">
+  <div class="slot-wrapper container" style="margin: -25px auto 0;">
     <%
       String pg = "views/" + request.getAttribute("viewPage").toString() + ".jsp";
     %>

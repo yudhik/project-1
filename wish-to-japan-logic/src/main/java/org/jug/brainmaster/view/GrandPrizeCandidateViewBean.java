@@ -1,10 +1,11 @@
 package org.jug.brainmaster.view;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.jug.brainmaster.ejb.GrandPrizeCandidateServiceBean;
+import org.jug.brainmaster.ejb.PrizeListServiceBean;
+import org.jug.brainmaster.ejb.RegistrantServiceBean;
+import org.jug.brainmaster.model.GrandPrizeCandidate;
+import org.jug.brainmaster.model.PrizeList;
+import org.jug.brainmaster.model.Registrant;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
@@ -12,13 +13,11 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.inject.Inject;
-
-import org.jug.brainmaster.ejb.GrandPrizeCandidateServiceBean;
-import org.jug.brainmaster.ejb.PrizeListServiceBean;
-import org.jug.brainmaster.ejb.RegistrantServiceBean;
-import org.jug.brainmaster.model.GrandPrizeCandidate;
-import org.jug.brainmaster.model.PrizeList;
-import org.jug.brainmaster.model.Registrant;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @ManagedBean
 @RequestScoped

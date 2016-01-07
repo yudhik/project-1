@@ -1,14 +1,13 @@
 package org.jug.brainmaster.servlet;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.jug.brainmaster.machine.RafleMachine;
+import org.jug.brainmaster.websocket.ApplicationResources;
 
 import javax.inject.Inject;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-
-import org.jug.brainmaster.machine.RafleMachine;
-import org.jug.brainmaster.websocket.ApplicationResources;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ApplicationServletListener implements ServletContextListener {
 

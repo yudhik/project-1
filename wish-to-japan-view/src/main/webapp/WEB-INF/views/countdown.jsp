@@ -1,4 +1,3 @@
-<%@ page import="java.util.Date" %>
 <div class="bg-awan">
   <div class="transparant"></div>
 
@@ -14,6 +13,9 @@
     var pageOpenTime = ${countdownTime};
 
     setInterval(function () {
+      if(pageOpenTime == 0) {
+        location.reload();
+      }
       setTimer(pageOpenTime, $("#pre-raffle-countdown"))
     }, 1000);
     function setTimer(seconds, selector) {

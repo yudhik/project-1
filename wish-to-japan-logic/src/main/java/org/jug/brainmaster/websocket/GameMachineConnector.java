@@ -1,7 +1,10 @@
 package org.jug.brainmaster.websocket;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.jug.brainmaster.ejb.GameMessageListenerServiceBean;
+import org.jug.brainmaster.ejb.GrandPrizeCandidateServiceBean;
+import org.jug.brainmaster.model.request.ClaimRequest;
+import org.jug.brainmaster.model.response.GameMessage;
+import org.jug.brainmaster.model.response.GameState;
 
 import javax.inject.Inject;
 import javax.websocket.OnClose;
@@ -10,12 +13,8 @@ import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
-
-import org.jug.brainmaster.ejb.GameMessageListenerServiceBean;
-import org.jug.brainmaster.ejb.GrandPrizeCandidateServiceBean;
-import org.jug.brainmaster.model.request.ClaimRequest;
-import org.jug.brainmaster.model.response.GameMessage;
-import org.jug.brainmaster.model.response.GameState;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @ServerEndpoint(value = "/gameMachineConnector")
 public class GameMachineConnector {

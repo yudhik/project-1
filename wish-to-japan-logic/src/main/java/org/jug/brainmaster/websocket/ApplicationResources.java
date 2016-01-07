@@ -1,12 +1,11 @@
 package org.jug.brainmaster.websocket;
 
-import java.util.List;
+import org.jug.brainmaster.model.response.WinnerResponse;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;
 import javax.servlet.ServletContext;
-
-import org.jug.brainmaster.model.response.WinnerResponse;
+import java.util.List;
 
 @ApplicationScoped
 public class ApplicationResources {
