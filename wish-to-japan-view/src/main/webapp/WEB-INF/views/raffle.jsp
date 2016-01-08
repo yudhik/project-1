@@ -283,7 +283,6 @@
     });
 
     function getCurrent(voucherCode, name) {
-      console.log(voucherCode + ", " + name);
       var codeParts = voucherCode.split("-");
       var jpnOrJpnu = codeParts[0];
 
@@ -312,7 +311,6 @@
         }
         destination[i] = charAtIdx;
       }
-      console.log(destination);
     }
 
     function hide(el) {
@@ -351,13 +349,11 @@
       var gameState = data.gameState;
       var isTheFirst = data.isTheFirst;
       var winners = data.winners;
-      console.log(winners);
       var regionCounter = winners.length;
 
       var timeLeftToClaim = data.timeLeftToClaim;
 
       showAndHideParts(name, voucherCode, gameState, isTheFirst, regionCounter, timeLeftToClaim, winners);
-      // console.log(message);
     }
 
     function hideAllBut(elem) {
@@ -375,8 +371,6 @@
     function showAndHideParts(name, voucherCode, gameState, isTheFirst, regionCounter,
                               timeLeftToClaim, winners) {
       setTimer((winnerClaimTimeout - timeLeftToClaim), $('#claiming-countdown'));
-      console.log(gameState);
-
       if(regionCounter == 3) {
         gameState = "RUN_OTHERS";
       }
@@ -472,9 +466,7 @@
     CLAIM_BUTTON.click(function () {
 
       if (CLAIM_DIV.css("display") == "block" && CLAIM_EMAIL.val().trim() != '') {
-        //send
         ws.send(CLAIM_EMAIL.val().trim());
-        console.log("send emel:" + CLAIM_EMAIL.val().trim())
       } else {
         showElement(CLAIM_DIV);
       }
