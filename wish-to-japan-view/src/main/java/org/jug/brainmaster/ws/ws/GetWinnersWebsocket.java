@@ -35,6 +35,7 @@ public class GetWinnersWebsocket {
   }
 
   public void connectToServer() throws Exception {
+    LOG.log(Level.FINE, "Trying to open GetWinnersWebsocket!");
     CONTAINER.setAsyncSendTimeout(200L);
     CONTAINER.setDefaultMaxSessionIdleTimeout(1000L);
     URI uri = new URI("ws://" + logicHost + "/getWinners");
@@ -46,6 +47,10 @@ public class GetWinnersWebsocket {
   public void forceClose() throws Exception {
     if (session.isOpen())
       session.close();
+  }
+
+  public Session getSession() {
+    return session;
   }
 
   public boolean getState() {

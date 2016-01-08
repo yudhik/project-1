@@ -67,7 +67,6 @@ public class SessionObserver {
   @Timeout
   @TransactionAttribute(TransactionAttributeType.NEVER)
   public void checkServerSession(Timer timer) {
-    log.fine("invoking timeout");
     getServerSession();
   }
 
@@ -90,7 +89,7 @@ public class SessionObserver {
         this.serverSession = container.connectToServer(this, uri);
         this.timerService.createSingleActionTimer(SessionObserver.SESSION_CHECKING_INTERVAL,
             new TimerConfig("schedule next checking interval", false));
-        this.log.fine("connected to server session");
+        this.log.log(Level.INFO, "connected to server session");
       } catch (Exception e) {
         this.timerService.createSingleActionTimer(SessionObserver.SESSION_CHECKING_INTERVAL,
             new TimerConfig("schedule next checking interval", false));
@@ -102,7 +101,7 @@ public class SessionObserver {
   @OnClose
   @TransactionAttribute(TransactionAttributeType.NEVER)
   public void onClose(Session session, CloseReason closeReason) {
-    log.fine("Session close invoked, reason : " + closeReason.getReasonPhrase());
+    log.log(Level.FINEST, "Session close invoked, reason : " + closeReason.getReasonPhrase());
     timerService.createSingleActionTimer(SESSION_CHECKING_INTERVAL,
         new TimerConfig("schedule next checking interval", false));
     serverSession = null;

@@ -45,12 +45,12 @@ public class GrandPrizeCandidateServiceBean {
           em.createQuery(SELECT_CURRENT_CANDIDATE_WITH_MAIL, GrandPrizeCandidate.class)
           .setParameter("emailAddress", emailAddress).getSingleResult();
     } catch (NoResultException e) {
-      log.log(Level.FINE, "select NO_RESULT candidate with mail : " + emailAddress + ", for "
+      log.log(Level.FINER, "select NO_RESULT candidate with mail : " + emailAddress + ", for "
           + (System.nanoTime() - start) / 1000000 + " millis");
       return false;
     }
     if (grandPrizeWinner == null) {
-      log.log(Level.FINE, "select NULL candidate with mail : " + emailAddress + ", for "
+      log.log(Level.FINER, "select NULL candidate with mail : " + emailAddress + ", for "
           + (System.nanoTime() - start) / 1000000 + " millis");
       return false;
     }

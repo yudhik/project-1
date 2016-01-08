@@ -37,12 +37,10 @@ public class LuckyDip {
 
   @OnError
   public void errorHandler(Session session, Throwable e) throws Exception {
-    log.log(Level.SEVERE, "Error happened on Session: " + session.getId(), e);
-    if (session.isOpen()) {
-      session.close();
-    }
+    log.log(Level.FINER, "Error happened on Session: " + session.getId(), e);
+    session.close();
     log.log(Level.FINER, "Detaching session: " + session.getId());
-   // gameMessageListenerServiceBean.detachSession(session);
+    gameMessageListenerServiceBean.detachSession(session);
   }
 
   @OnOpen

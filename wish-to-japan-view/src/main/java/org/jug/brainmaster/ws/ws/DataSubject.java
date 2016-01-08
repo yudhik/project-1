@@ -39,7 +39,6 @@ public class DataSubject {
 
   public void notifyAllObservers() {
     for (Observer observer : this.observers) {
-      log.info("OBSERVER UPDATE CALLED");
       observer.update();
     }
   }
