@@ -57,7 +57,7 @@ public class ApplicationConfig {
   public List<WinnerResponse> getWinnerResponses() {
     if(winnerResponses == null || winnerResponses.size() == 0) {
       GetWinnersWebsocket winnerWebSocketClient = new GetWinnersWebsocket(getLogicHost());
-      long timeoutConnectWS = 500000000L;
+      long timeoutConnectWS = 300000000L;
       try {
         winnerWebSocketClient.connectToServer();
       } catch (Exception e) {
@@ -66,7 +66,12 @@ public class ApplicationConfig {
       }
       long waitingForResponseStart = System.nanoTime();
       while ((System.nanoTime() - waitingForResponseStart) < timeoutConnectWS && winnerResponses == null) {
-        winnerResponses = winnerWebSocketClient.getWinners();
+        List<WinnerResponse> result = winnerWebSocketClient.getWinners();
+        if(result != null && result.size() > 0) {
+          winnerResponses = result;
+        } else {
+          winnerResponses = null;
+        }
       }
     }
     if(winnerResponses != null) {
