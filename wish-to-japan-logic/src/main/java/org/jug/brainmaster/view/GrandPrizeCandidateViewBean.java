@@ -137,10 +137,10 @@ public class GrandPrizeCandidateViewBean implements Serializable {
 
   public void retrieve() {
     if (id != null) {
-      log.log(Level.INFO, "get existing candidate");
+      log.log(Level.FINER, "get existing candidate");
       candidate = grandPrizeCandidateService.findById(id);
     } else {
-      log.log(Level.INFO, "create new candidate");
+      log.log(Level.FINER, "create new candidate");
       candidate = new GrandPrizeCandidate();
       registrant = new Registrant();
       prizeList = new PrizeList();

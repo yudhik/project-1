@@ -86,7 +86,7 @@ public class GameMessage implements Serializable {
     jsonStringBuilder.append("{\"name\":\"").append(name).append("\"");
     jsonStringBuilder.append(", \"voucherCode\":\"").append(voucherCode).append("\"");
     jsonStringBuilder.append(", \"gameState\":\"").append(gameState).append("\"");
-    jsonStringBuilder.append(", \"isTheFirst\":\"").append(isTheFirst).append("\"");
+    jsonStringBuilder.append(", \"isTheFirst\":").append(isTheFirst);
     jsonStringBuilder.append(", \"timeLeftToClaim\":").append(timeLeftToClaim);
     jsonStringBuilder.append(", \"winners\":[");
     if (winners != null) {

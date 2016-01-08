@@ -227,10 +227,10 @@ public class PrizeListWinnerBean implements Serializable {
   public void retrieve() {
 
     if (id != null) {
-      log.log(Level.INFO, "get existing candidate");
+      log.log(Level.FINER, "get existing candidate");
       prizeListWinner = winnerServiceBean.findById(id);
     } else {
-      log.log(Level.INFO, "create new candidate");
+      log.log(Level.FINER, "create new candidate");
       prizeListWinner = new Winners();
       registrant = new Registrant();
       prizeList = new PrizeList();

@@ -30,6 +30,7 @@ public class ApplicationConfig {
   private static final String LOGIC_HOST = "wish.to.japan.logic.host.url";
 
   private Properties properties;
+  private GetWinnersWebsocket winnerWebSocketClient;
   private List<WinnerResponse> winnerResponses;
 
   @Inject
@@ -55,22 +56,34 @@ public class ApplicationConfig {
   }
 
   public List<WinnerResponse> getWinnerResponses() {
-    if(winnerResponses == null || winnerResponses.size() == 0) {
-      GetWinnersWebsocket winnerWebSocketClient = new GetWinnersWebsocket(getLogicHost());
-      long timeoutConnectWS = 500000000L;
+    log.log(Level.FINER, "try get winner from response");
+    if (winnerResponses == null || winnerResponses.size() == 0) {
+      log.log(Level.FINER, "winner still null");
+      long timeoutConnectWS = 10000000L;
       try {
-        winnerWebSocketClient.connectToServer();
+        if (winnerWebSocketClient.getSession() == null || !winnerWebSocketClient.getSession()
+            .isOpen()) {
+          winnerWebSocketClient.connectToServer();
+        }
       } catch (Exception e) {
-        log.log(Level.SEVERE, "can not connect to winner server, logic host : "+ getLogicHost(), e);
+        log.log(Level.SEVERE, "can not connect to winner server, logic host : " + getLogicHost(),
+            e);
         return null;
       }
       long waitingForResponseStart = System.nanoTime();
-      while ((System.nanoTime() - waitingForResponseStart) < timeoutConnectWS && winnerResponses == null) {
-        winnerResponses = winnerWebSocketClient.getWinners();
+      while ((System.nanoTime() - waitingForResponseStart) < timeoutConnectWS
+          && winnerResponses == null) {
+        log.log(Level.FINER, "getting result from socket");
+        List<WinnerResponse> result = winnerWebSocketClient.getWinners();
+        if (result != null && result.size() > 0) {
+          winnerResponses = result;
+        } else {
+          winnerResponses = null;
+        }
       }
     }
-    if(winnerResponses != null) {
-      log.log(Level.FINER, "winner size : "+ winnerResponses.size());
+    if (winnerResponses != null) {
+      log.log(Level.FINER, "winner size : " + winnerResponses.size());
     } else {
       log.log(Level.FINER, "winner is null ");
     }
@@ -81,14 +94,19 @@ public class ApplicationConfig {
     return Integer.parseInt(properties.getProperty(WINNER_TIMEOUT));
   }
 
+  //  public GetWinnersWebsocket getWinnerWebSocketClient() {
+  //    return winnerWebSocketClient;
+  //  }
+
   @PostConstruct
-  private void postConstruct () {
+  private void postConstruct() {
     try {
       properties = new Properties();
       FileReader reader = new FileReader(
           System.getProperty(JBOSS_CONFIG_DIRECTORY_KEY) + File.separator
-          + APPLICATION_CONFIG_FILENAME);
+              + APPLICATION_CONFIG_FILENAME);
       properties.load(reader);
+      winnerWebSocketClient = new GetWinnersWebsocket(getLogicHost());
     } catch (Exception e) {
       throw new RuntimeException(e);
     }

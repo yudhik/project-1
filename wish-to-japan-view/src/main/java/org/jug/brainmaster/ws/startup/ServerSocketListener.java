@@ -1,5 +1,6 @@
 package org.jug.brainmaster.ws.startup;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.inject.Inject;
@@ -29,7 +30,7 @@ public class ServerSocketListener implements ServletContextListener {
   }
 
   private void createSession() {
-    log.info("trying to establish session to server");
+    log.log(Level.FINER, "trying to establish session to server");
     this.sessionObserver.getServerSession();
   }
 

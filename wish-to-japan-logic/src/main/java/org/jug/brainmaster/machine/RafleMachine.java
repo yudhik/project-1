@@ -266,7 +266,7 @@ public class RafleMachine {
               "put grandprize for " + prizeList.getName() + " to " + grandPrizeWinner
               .getEmailAddress());
         }
-        rafleFakeCandidate(300, registrantCountBeforeShowCandidate, false, regionWinner);
+        rafleFakeCandidate(fakeRafleTimeout, registrantCountBeforeShowCandidate, false, regionWinner);
       }
       if (regionWinner.size() >= allGrandPrizes.size()) {
         waitingToStart = false;

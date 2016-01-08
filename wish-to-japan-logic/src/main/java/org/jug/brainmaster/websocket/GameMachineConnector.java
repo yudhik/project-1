@@ -1,20 +1,24 @@
 package org.jug.brainmaster.websocket;
 
-import org.jug.brainmaster.ejb.GameMessageListenerServiceBean;
-import org.jug.brainmaster.ejb.GrandPrizeCandidateServiceBean;
-import org.jug.brainmaster.model.request.ClaimRequest;
-import org.jug.brainmaster.model.response.GameMessage;
-import org.jug.brainmaster.model.response.GameState;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.inject.Inject;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
 import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.jug.brainmaster.ejb.GameMessageListenerServiceBean;
+import org.jug.brainmaster.ejb.GrandPrizeCandidateServiceBean;
+import org.jug.brainmaster.model.request.ClaimRequest;
+import org.jug.brainmaster.model.response.GameMessage;
+import org.jug.brainmaster.model.response.GameState;
 
 @ServerEndpoint(value = "/gameMachineConnector")
 public class GameMachineConnector {
@@ -30,6 +34,9 @@ public class GameMachineConnector {
 
   @Inject
   private GrandPrizeCandidateServiceBean grandPrizeCandidateServiceBean;
+
+  @Inject
+  private Validator validator;
 
   @OnClose
   public void destroy(Session session) throws Exception {
@@ -48,7 +55,7 @@ public class GameMachineConnector {
     try {
       if (isEnded != null) {
         session.getBasicRemote()
-            .sendText(new GameMessage(null, null, GameState.END, false, -1L).toJSON());
+        .sendText(new GameMessage(null, null, GameState.END, false, -1L).toJSON());
         session.setMaxIdleTimeout(100);
         session.close();
       } else {
@@ -67,6 +74,9 @@ public class GameMachineConnector {
   @OnMessage
   public void onMessage(String message) throws Exception {
     ClaimRequest request = new ClaimRequest(message);
-    grandPrizeCandidateServiceBean.claimPrize(request.getEmailAddress());
+    Set<ConstraintViolation<ClaimRequest>> validateResult = validator.validate(request);
+    if(validateResult.isEmpty()) {
+      grandPrizeCandidateServiceBean.claimPrize(request.getEmailAddress());
+    }
   }
 }
