@@ -56,7 +56,7 @@ public class ViewController extends HttpServlet {
         request.setAttribute("countdownTime", (startDate.getTime() - now.getTime()) / 1000);
       } else {
         List<WinnerResponse> winnerResponses = applicationConfig.getWinnerResponses();
-        if (winnerResponses == null) {
+        if (winnerResponses == null || winnerResponses.size() == 0) {
           log.log(Level.FINER, "Send user to Raffling page");
           viewHandler = RAFFLE_PAGE;
         } else {
