@@ -1,3 +1,4 @@
+<%@ page session="false"%>
 <!DOCTYPE html>
 <html prefix="og: http://ogp.me/ns#">
 <head>
@@ -83,7 +84,7 @@
   <div class="row">
     <div class="half push-left branding">
       <a href="https://www.blibli.com/" class="logo-atas" title="go to blibli.com"><img
-        src="https://www.blibli.com/resources/images/logo-blibli.png"
+        src="_asset/images/logo-blibli.png"
         alt="logo blibli | header"></a>
     </div>
   </div>

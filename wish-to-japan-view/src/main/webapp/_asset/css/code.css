@@ -18,7 +18,7 @@ header {
 	top: 0 !important;
 	z-index: 100 !important;
 	padding: 10px 0 0 !important;
-	background-image: url('https://www.static-src.com/resources/images/bg_pattern.png') !important;
+	background-image: url('../images/bg_pattern.png') !important;
     background-repeat: repeat-x !important;
     border-bottom: 3px solid #ccc !important;
 	height: 100% !important;

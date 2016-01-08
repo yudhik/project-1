@@ -1,19 +1,17 @@
 package org.jug.brainmaster.ws.startup;
 
-import com.google.gson.Gson;
-import org.jug.brainmaster.mdb.SessionObserver;
+import java.util.logging.Logger;
 
 import javax.inject.Inject;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-import java.util.logging.Logger;
+
+import org.jug.brainmaster.mdb.SessionObserver;
 
 public class ServerSocketListener implements ServletContextListener {
 
   @Inject
   private Logger log;
-  @Inject
-  private Gson gson;
   @Inject
   private SessionObserver sessionObserver;
 

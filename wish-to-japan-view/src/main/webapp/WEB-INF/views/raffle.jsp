@@ -1,3 +1,4 @@
+<%@ page session="false"%>
 <div class="bg-awan">
   <div class="transparant"></div>
 
