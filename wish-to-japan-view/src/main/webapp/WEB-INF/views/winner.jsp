@@ -6,7 +6,7 @@
   
   <h2 class="title">
     <div class='winner-qty' id='japan-winner-qty'></div>
-    Pemenang Liburan Gratis ke Jepang
+    3 Pemenang Liburan Gratis ke Jepang
   </h2>
   <ol id='japan-winner-list'>
     <%
@@ -24,7 +24,7 @@
 
   <h2>
     <div class='winner-qty' id='macbook-winner-qty'></div>
-    pemenang apple macbook pro
+    3 pemenang apple macbook pro
   </h2>
   <ol id='macbook-winner-list'>
     <%
@@ -39,7 +39,7 @@
 
   <h2>
     <div class='winner-qty' id='fujifilm-winner-qty'></div>
-    pemenang kamera fujifilm x-m1
+    3 pemenang kamera fujifilm x-m1
   </h2>
   <ol id='fujifilm-winner-list'>
     <%
@@ -54,7 +54,7 @@
 
   <h2>
     <div class='winner-qty' id='lenovo-winner-qty'></div>
-    pemenang lenovo phab plus
+    3 pemenang lenovo phab plus
   </h2>
   <ol id='lenovo-winner-list'>
     <%
@@ -69,7 +69,7 @@
 
   <h2>
     <div class='winner-qty' id='meizu-winner-qty'></div>
-    pemenang meizu m2
+    50 pemenang meizu m2
   </h2>
   <table width="100%" cellpadding="0" cellspacing="0" id='meizu-winner-table'>
     <tr>
