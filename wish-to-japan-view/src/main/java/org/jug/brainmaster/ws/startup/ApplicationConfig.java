@@ -30,6 +30,7 @@ public class ApplicationConfig {
   private static final String LOGIC_HOST = "wish.to.japan.logic.host.url";
 
   private Properties properties;
+  private GetWinnersWebsocket winnerWebSocketClient;
   private List<WinnerResponse> winnerResponses;
 
   @Inject
@@ -56,21 +57,23 @@ public class ApplicationConfig {
 
   public List<WinnerResponse> getWinnerResponses() {
     if(winnerResponses == null || winnerResponses.size() == 0) {
-      GetWinnersWebsocket winnerWebSocketClient = new GetWinnersWebsocket(getLogicHost());
-      long timeoutConnectWS = 300000000L;
-      try {
-        winnerWebSocketClient.connectToServer();
-      } catch (Exception e) {
-        log.log(Level.SEVERE, "can not connect to winner server, logic host : "+ getLogicHost(), e);
-        return null;
-      }
-      long waitingForResponseStart = System.nanoTime();
-      while ((System.nanoTime() - waitingForResponseStart) < timeoutConnectWS && winnerResponses == null) {
-        List<WinnerResponse> result = winnerWebSocketClient.getWinners();
-        if(result != null && result.size() > 0) {
-          winnerResponses = result;
-        } else {
-          winnerResponses = null;
+      if(winnerWebSocketClient.getSession() == null) {
+        long timeoutConnectWS = 200000000L;
+        try {
+          winnerWebSocketClient.connectToServer();
+        } catch (Exception e) {
+          log.log(Level.SEVERE, "can not connect to winner server, logic host : "+ getLogicHost(), e);
+          return null;
+        }
+        long waitingForResponseStart = System.nanoTime();
+        while ((System.nanoTime() - waitingForResponseStart) < timeoutConnectWS && winnerResponses == null) {
+          log.log(Level.FINER, "getting result from socket");
+          List<WinnerResponse> result = winnerWebSocketClient.getWinners();
+          if(result != null && result.size() > 0) {
+            winnerResponses = result;
+          } else {
+            winnerResponses = null;
+          }
         }
       }
     }
@@ -86,6 +89,10 @@ public class ApplicationConfig {
     return Integer.parseInt(properties.getProperty(WINNER_TIMEOUT));
   }
 
+  //  public GetWinnersWebsocket getWinnerWebSocketClient() {
+  //    return winnerWebSocketClient;
+  //  }
+
   @PostConstruct
   private void postConstruct () {
     try {
@@ -94,6 +101,7 @@ public class ApplicationConfig {
           System.getProperty(JBOSS_CONFIG_DIRECTORY_KEY) + File.separator
           + APPLICATION_CONFIG_FILENAME);
       properties.load(reader);
+      winnerWebSocketClient = new GetWinnersWebsocket(getLogicHost());
     } catch (Exception e) {
       throw new RuntimeException(e);
     }

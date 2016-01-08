@@ -48,6 +48,10 @@ public class GetWinnersWebsocket {
       session.close();
   }
 
+  public Session getSession() {
+    return session;
+  }
+
   public boolean getState() {
     if (session == null) {
       return false;
