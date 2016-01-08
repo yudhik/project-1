@@ -67,6 +67,7 @@ public class ApplicationConfig {
       long waitingForResponseStart = System.nanoTime();
       while ((System.nanoTime() - waitingForResponseStart) < timeoutConnectWS && winnerResponses == null) {
         List<WinnerResponse> result = winnerWebSocketClient.getWinners();
+        log.log(Level.INFO, "" + winnerWebSocketClient.getWinners());
         if(result != null && result.size() > 0) {
           winnerResponses = result;
         } else {

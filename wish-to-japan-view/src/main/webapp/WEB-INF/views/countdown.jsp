@@ -20,7 +20,6 @@
       setTimer(pageOpenTime, $("#pre-raffle-countdown"))
     }, 1000);
     function setTimer(seconds, selector) {
-      console.log(seconds);
       var finalDisplayTime = "";
       var day = Math.floor(seconds / (3600 * 24));
       var hour = Math.floor((seconds / 3600) % 24);
