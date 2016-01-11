@@ -14,8 +14,6 @@
         rel="shortcut icon">
   <link rel="stylesheet" href="../_asset/common.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
-  <script async src="../_asset/js/reconnect.js"></script>
-  <script async src="../_asset/js/main.min.js"></script async>
 
   <!-- set Google tag manager section-->
   <!-- Google tag manager-->
@@ -24,6 +22,7 @@
             style="display:none;visibility:hidden"></iframe>
   </noscript>
   <script>(function (w, d, s, l, i) {
+    w[l] = w[l] || [];
     w[l].push({'gtm.start': new Date().getTime(), event: 'gtm.js'});
     var f = d.getElementsByTagName(s)[0], j = d.createElement(
       s), dl = l != 'dataLayer' ? '&l=' + l : '';
@@ -110,6 +109,8 @@
     </div>
   </div>
 </footer>
+<script src="../_asset/js/reconnect.js"></script>
+<script src="../_asset/js/main.min.js"></script>
 <script type="text/javascript">
   var viewHost = "<%=request.getAttribute("viewHost")%>";
   var useWss = "<%=request.getAttribute("useWss")%>";

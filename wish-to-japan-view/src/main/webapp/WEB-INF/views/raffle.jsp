@@ -209,8 +209,8 @@
     </ol>
   </div>
 </div>
-<script async src="../_asset/js/jquery.easing.1.3.min.js" type="text/javascript" charset="utf-8"></script>
-<script async src="../_asset/js/jquery.jSlots.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="../_asset/js/jquery.easing.1.3.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="../_asset/js/jquery.jSlots.min.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript">
 
   $(document).ready(function () {
