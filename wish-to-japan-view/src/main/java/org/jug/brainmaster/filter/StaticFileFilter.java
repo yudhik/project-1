@@ -1,8 +1,6 @@
 package org.jug.brainmaster.filter;
 
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.jug.brainmaster.ws.startup.ApplicationConfig;
 
 import javax.inject.Inject;
 import javax.servlet.Filter;
@@ -13,8 +11,9 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
-
-import org.jug.brainmaster.ws.startup.ApplicationConfig;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class StaticFileFilter implements Filter {
 
