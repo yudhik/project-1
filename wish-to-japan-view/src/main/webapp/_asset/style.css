@@ -1,16 +1,11 @@
-@import "css/base.css";
-@import "css/typo.css";
-@import "css/code.css";
-
-@import "css/tables.css";
-@import "css/forms.css";
-
-@import "css/buttons.css";
-
-@import "css/grid.css";
-
-@import "css/goodies.css";
-
-@import "css/responsive.css";
-@import "css/googlefont.css";
-@import "css/sweetalert.css";
+@import "css/base.min.css";
+@import "css/typo.min.css";
+@import "css/code.min.css";
+@import "css/tables.min.css";
+@import "css/forms.min.css";
+@import "css/buttons.min.css";
+@import "css/grid.min.css";
+@import "css/goodies.min.css";
+@import "css/responsive.min.css";
+@import "css/googlefont.min.css";
+@import "css/main.min.css";

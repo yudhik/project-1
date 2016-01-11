@@ -12,12 +12,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://www.blibli.com/wcsstore/Indraprastha/images/gdn/images/favicon.ico"
         rel="shortcut icon">
-  <link rel="stylesheet" href="../_asset/style.css">
-  <link rel="stylesheet" href="../_asset/css/main.css">
+  <link rel="stylesheet" href="../_asset/common.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
-  <script src="../_asset/js/sweetalert.min.js"></script>
-  <script src="../_asset/js/reconnect.js"></script>
-  <script src="../_asset/js/main.js"></script>
+  <script async src="../_asset/js/reconnect.js"></script>
+  <script async src="../_asset/js/main.min.js"></script async>
 
   <!-- set Google tag manager section-->
   <!-- Google tag manager-->
@@ -117,10 +115,5 @@
   var useWss = "<%=request.getAttribute("useWss")%>";
   var winnerClaimTimeout = <%=request.getAttribute("winnerClaimTimeout")%>
 </script>
-<script>
-
-</script>
-<script src="../_asset/js/jquery.easing.1.3.js" type="text/javascript" charset="utf-8"></script>
-<script src="../_asset/js/jquery.jSlots.min.js" type="text/javascript" charset="utf-8"></script>
 </body>
 </html>
