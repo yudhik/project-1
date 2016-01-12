@@ -1,5 +1,4 @@
 jQuery(document).ready(function(){
-	
 	//Back to top
 	jQuery('.gototop').click(function () {
 		jQuery('body,html').animate({
@@ -7,6 +6,4 @@ jQuery(document).ready(function(){
 		}, 800);
 		return false;
 	});
-	
-	
 });

@@ -209,9 +209,8 @@
     </ol>
   </div>
 </div>
-<script src="_asset/js/jquery.easing.1.3.js" type="text/javascript" charset="utf-8"></script>
-<script src="_asset/js/jquery.jSlots.min.js" type="text/javascript" charset="utf-8"></script>
-
+<script src="../_asset/js/jquery.easing.1.3.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="../_asset/js/jquery.jSlots.min.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript">
 
   $(document).ready(function () {
@@ -219,7 +218,7 @@
     var chosenWinnerStateEnum = ["", "Satu", "Dua", "Tiga", "Empat", "Lima"];
     var regionGrandPrizeStateEnum = ["Pertama", "Kedua", "Ketiga", "Keempat", "Kelima"];
     var SLOT_INTERVAL = 20;
-    var UNILEVER_SLOT_INTERVAL = 500;
+    var UNILEVER_SLOT_INTERVAL = 200;
 
     var CHOSEN_WINNER = $('#chosen-winner');
     var RUNNING = $('#running');

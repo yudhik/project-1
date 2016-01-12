@@ -9,10 +9,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="http://www.blibli.com/wcsstore/Indraprastha/images/gdn/images/favicon.ico"
         rel="shortcut icon">
-  <link rel="stylesheet" href="_asset/style.css">
-  <link rel="stylesheet" href="_asset/css/main.css">
+  <link rel="stylesheet" href="../_asset/common.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
-  <script src="_asset/js/sweetalert.min.js"></script>
 
   <style type='text/css'>
     .winner-qty {

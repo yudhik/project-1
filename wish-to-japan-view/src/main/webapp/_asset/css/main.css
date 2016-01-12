@@ -681,6 +681,14 @@ input, button, submit
 }
 #btn-claim {
 	border-radius: 8px;
+	-webkit-user-select: none;  /* Chrome all / Safari all */
+	-moz-user-select: none;     /* Firefox all */
+	-ms-user-select: none;      /* IE 10+ */
+	user-select: none;          /* Likely future */
+}
+
+#btn-claim:active {
+	box-shadow: inset 0 3px 5px rgba(0,0,0,.125)
 }
 
 .hitungmundur {

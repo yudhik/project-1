@@ -6,7 +6,7 @@
  *
  * TERMS OF USE - jQuery Easing
  * 
- * Open source under the BSD License. 
+ * Open source under the BSD License.
  * 
  * Copyright © 2008 George McGinley Smith
  * All rights reserved.

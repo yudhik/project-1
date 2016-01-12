@@ -8,3 +8,5 @@ target
 */boot.log.*
 */data/db.mv.db
 *.log
+*/node_modules/*
+wish-to-japan-view/src/main/webapp/_asset/node_modules/

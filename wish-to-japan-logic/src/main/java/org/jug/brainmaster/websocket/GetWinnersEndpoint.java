@@ -44,7 +44,7 @@ public class GetWinnersEndpoint {
     for (WinnerResponse winner : listOfWinner) {
       jsonWinnerBuilder.append("{");
       jsonWinnerBuilder.append("\"name\":\"").append(winner.getName()).append("\"");
-      jsonWinnerBuilder.append(", \"voucherCode\":\"").append(winner.getVoucherCode()).append("\"");
+      jsonWinnerBuilder.append(", \"voucherCode\":\"").append(maskingVoucher(winner.getVoucherCode())).append("\"");
       jsonWinnerBuilder.append(", \"grandPrize\":\"").append(winner.isGrandPrize()).append("\"");
       jsonWinnerBuilder.append(", \"prizeName\":\"").append(winner.getPrizeName()).append("\"");
       jsonWinnerBuilder.append("}");
@@ -54,6 +54,11 @@ public class GetWinnersEndpoint {
     }
     jsonWinnerBuilder.append("]");
     return jsonWinnerBuilder.toString();
+  }
+
+  private String maskingVoucher(String voucherCode) {
+    return voucherCode.substring(0, voucherCode.lastIndexOf("-") + 1).concat("***")
+        .concat(voucherCode.substring(voucherCode.length() - 2));
   }
 
   @OnError
