@@ -218,7 +218,7 @@
     var chosenWinnerStateEnum = ["", "Satu", "Dua", "Tiga", "Empat", "Lima"];
     var regionGrandPrizeStateEnum = ["Pertama", "Kedua", "Ketiga", "Keempat", "Kelima"];
     var SLOT_INTERVAL = 20;
-    var UNILEVER_SLOT_INTERVAL = 500;
+    var UNILEVER_SLOT_INTERVAL = 200;
 
     var CHOSEN_WINNER = $('#chosen-winner');
     var RUNNING = $('#running');
