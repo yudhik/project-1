@@ -33,7 +33,10 @@ public class ViewController extends HttpServlet {
       if (now.before(startDate)) {
         viewHandler = COUNTDOWN_PAGE;
         request.setAttribute("countdownTime", (startDate.getTime() - now.getTime()) / 1000);
-        LOGGER.info("Jam: " + request.getAttribute("countdownTime"));
+        LOGGER.finer("Jam: " + request.getAttribute("countdownTime"));
+      } else {
+        viewHandler = RAFFLE_PAGE;
+        LOGGER.finer("Send user to Raffling page");
       }
       request.setAttribute("viewPage", viewHandler);
       request.getRequestDispatcher("/WEB-INF/scaffold.jsp").forward(request, response);

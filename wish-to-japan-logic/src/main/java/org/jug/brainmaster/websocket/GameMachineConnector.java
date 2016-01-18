@@ -1,7 +1,10 @@
 package org.jug.brainmaster.websocket;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import com.google.gson.Gson;
+import org.jug.brainmaster.ejb.GameMessageListenerServiceBean;
+import org.jug.brainmaster.ejb.GrandPrizeCandidateServiceBean;
+import org.jug.brainmaster.model.request.ClaimRequest;
+import org.jug.brainmaster.model.request.EmailCheckRequest;
 
 import javax.inject.Inject;
 import javax.websocket.OnClose;
@@ -10,13 +13,13 @@ import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
-
-import org.jug.brainmaster.ejb.GameMessageListenerServiceBean;
-import org.jug.brainmaster.ejb.GrandPrizeCandidateServiceBean;
-import org.jug.brainmaster.model.request.ClaimRequest;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @ServerEndpoint("/gameMachineConnector")
 public class GameMachineConnector {
+  @Inject
+  private Gson gson;
 
   @Inject
   private Logger log;
@@ -38,7 +41,8 @@ public class GameMachineConnector {
 
   @OnOpen
   public void monitorLuckyDip(Session session) throws Exception {
-    log.log(Level.FINER, "A client connected :" + session.getId() + ", register it as a game listener");
+    log.log(Level.FINER,
+        "A client connected :" + session.getId() + ", register it as a game listener");
     gameMessageListenerServiceBean.addListener(session);
   }
 
@@ -48,10 +52,9 @@ public class GameMachineConnector {
   }
 
   @OnMessage
-  public void onMessage(String message) throws Exception {
+  public void onMessage(String message, Session session) throws Exception {
+    EmailCheckRequest emailCheckRequest = gson.fromJson(message, EmailCheckRequest.class);
     ClaimRequest request = new ClaimRequest(message);
     grandPrizeCandidateServiceBean.claimPrize(request.getEmailAddress());
   }
-
-
 }

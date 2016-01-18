@@ -30,16 +30,10 @@
 				<f:param name="id" value="#{prizeListWinnerBean.prizeListWinner.prize.id}"/>
 			</h:link>
 			<h:outputText/>
-			<h:outputLabel for="prizeListWinnerBeanPrizeListWinnerShowOrder" value="Show Order:"/>
-			<h:outputText id="prizeListWinnerBeanPrizeListWinnerShowOrder" value="#{prizeListWinnerBean.prizeListWinner.showOrder}"/>
-			<h:outputText/>
 			<h:outputLabel for="prizeListWinnerBeanPrizeListWinnerWinner" value="Winner:"/>
-			<h:link id="prizeListWinnerBeanPrizeListWinnerWinner" outcome="/registrant/view" rendered="#{!empty prizeListWinnerBean.prizeListWinner.winner}" value="#{prizeListWinnerBean.prizeListWinner.winner}">
-				<f:param name="id" value="#{prizeListWinnerBean.prizeListWinner.winner.voucherCode}"/>
+			<h:link id="prizeListWinnerBeanPrizeListWinnerWinner" outcome="/registrant/view" rendered="#{!empty prizeListWinnerBean.prizeListWinner.registrant}" value="#{prizeListWinnerBean.prizeListWinner.registrant}">
+				<f:param name="id" value="#{prizeListWinnerBean.prizeListWinner.registrant.voucherCode}"/>
 			</h:link>
-			<h:outputText/>
-			<h:outputLabel for="prizeListWinnerBeanPrizeListWinnerWithCandidate" value="With Candidate:"/>
-			<h:outputText id="prizeListWinnerBeanPrizeListWinnerWithCandidate" value="#{prizeListWinnerBean.prizeListWinner.withCandidate}"/>
 			<h:outputText/>
 		</h:panelGrid>
 

@@ -1,9 +1,13 @@
 <%@ page import="java.util.Date" %>
-<div id='pre-raffle-countdown-holder' class="hitungmundur" style="display: block;">
-  <p>
-    Bersiaplah! Pengundian pemenang akan dimulai dalam
-  </p>
-  <p><span id='pre-raffle-countdown' class='countdown'></span></p>
+<div class="bg-awan">
+  <div class="transparant"></div>
+
+  <div id='pre-raffle-countdown-holder' class="hitungmundur" style="display: block;">
+    <p>
+      Bersiaplah! Pengundian pemenang akan dimulai dalam
+    </p>
+    <p><span id='pre-raffle-countdown' class='countdown'></span></p>
+  </div>
 </div>
 <script>
   $(document).ready(function () {

@@ -20,6 +20,9 @@ import javax.websocket.OnMessage;
 import javax.websocket.Session;
 import javax.websocket.WebSocketContainer;
 
+import org.jug.brainmaster.model.request.EmailCheckRequest;
+import org.jug.brainmaster.model.response.EmailCheckResponse;
+import org.jug.brainmaster.model.response.GameMessage;
 import org.jug.brainmaster.ws.response.StatusResponse;
 import org.jug.brainmaster.ws.ws.DataSubject;
 
@@ -47,12 +50,22 @@ public class SessionObserver {
 
   private Session serverSession;
 
+  public void checkEmail(String email, Session session) {
+    try {
+      if (serverSession != null) {
+        EmailCheckRequest emailCheckRequest = new EmailCheckRequest(email, session.getId());
+        serverSession.getBasicRemote().sendText(gson.toJson(emailCheckRequest));
+      }
+    } catch (Exception e) {
+      log.log(Level.SEVERE, "Something bad happen! : " + e.getStackTrace(), e);
+    }
+  }
+
   @Timeout
   public void checkServerSession(Timer timer) {
     log.info("invoking timeout");
     getServerSession();
   }
-
 
   @OnError
   public void errHandler(Session session, Throwable err) throws Exception {
@@ -65,7 +78,7 @@ public class SessionObserver {
     if (this.serverSession == null) {
       try {
         WebSocketContainer container = ContainerProvider.getWebSocketContainer();
-        URI uri = new URI("ws://" + SessionObserver.host + "/luckyDip");
+        URI uri = new URI("ws://" + SessionObserver.host + "/gameMachineConnector");
         this.serverSession = container.connectToServer(this, uri);
         this.timerService.createSingleActionTimer(SessionObserver.SESSION_CHECKING_INTERVAL,
             new TimerConfig("schedule next checking interval", false));
@@ -83,20 +96,19 @@ public class SessionObserver {
     log.info("Session close invoked, reason : " + closeReason.getReasonPhrase());
     timerService.createSingleActionTimer(SESSION_CHECKING_INTERVAL,
         new TimerConfig("schedule next checking interval", false));
-    serverSession=null;
+    serverSession = null;
   }
 
   @OnMessage
   public void onMessage(String text) {
     try {
-      //      log.info("received message : " + text);
-      StatusResponse sr = gson.fromJson(text, StatusResponse.class);
+      //todo no Gson
+      GameMessage sr = gson.fromJson(text, GameMessage.class);
       this.dataSubject.setStatusResponse(sr);
     } catch (Exception e) {
       log.log(Level.SEVERE, "Something bad happen! : " + e.getStackTrace(), e);
     }
   }
-
 
   public void setServerSession(Session serverSession) {
     this.serverSession = serverSession;

@@ -187,6 +187,7 @@
     </pluginManagement>
   </build>
   <modules>
+    <module>wish-to-japan-dto</module>
     <module>wish-to-japan-logic</module>
     <module>wish-to-japan-view</module>
     <!-- <module>perf-test</module> -->

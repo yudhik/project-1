@@ -1,16 +1,16 @@
 package org.jug.brainmaster.ws.ws;
 
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Logger;
+import org.jug.brainmaster.model.response.EmailCheckResponse;
+import org.jug.brainmaster.model.response.GameMessage;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.inject.Inject;
-
-import org.jug.brainmaster.ws.response.StatusResponse;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Logger;
 
 
 @Startup
@@ -19,7 +19,7 @@ public class DataSubject {
   @Inject
   private Logger log;
 
-  private StatusResponse statusResponse;
+  private GameMessage statusResponse;
 
   private List<Observer> observers = new ArrayList<Observer>();
 
@@ -31,10 +31,10 @@ public class DataSubject {
     this.observers.remove(observer);
   }
 
-  public StatusResponse getStatusResponse() {
+  public GameMessage getStatusResponse() {
     return this.statusResponse;
   }
-
+  
   public void notifyAllObservers() {
     for (Observer observer : this.observers) {
       log.info("OBSERVER UPDATE CALLED");
@@ -47,7 +47,7 @@ public class DataSubject {
     System.out.println("Initialization success.");
   }
 
-  public void setStatusResponse(StatusResponse statusResponse) {
+  public void setStatusResponse(GameMessage statusResponse) {
     this.statusResponse = statusResponse;
     notifyAllObservers();
   }

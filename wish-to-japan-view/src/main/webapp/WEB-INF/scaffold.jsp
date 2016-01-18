@@ -70,7 +70,8 @@
   <style type='text/css'>
   </style>
 
-  <!--[if lt IE 9]><script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  <!--[if lt IE 9]>
+  <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 </head>
 <body>
 <header id="branding" class="wide top-bar">
@@ -89,16 +90,12 @@
   </div>
 
   <div class="slot-wrapper container">
-
-    <div class="bg-awan">
-      <div class="transparant"></div>
-      <%
-        String pg = "views/" + request.getAttribute("viewPage").toString() + ".jsp";
-      %>
-      <jsp:include page='<%=pg%>' flush="true">
-        <jsp:param name="request" value="request"/>
-      </jsp:include>
-    </div>
+    <%
+      String pg = "views/" + request.getAttribute("viewPage").toString() + ".jsp";
+    %>
+    <jsp:include page='<%=pg%>' flush="true">
+      <jsp:param name="request" value="request"/>
+    </jsp:include>
   </div>
 </div>
 
