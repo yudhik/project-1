@@ -8,6 +8,7 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
 import org.jug.brainmaster.machine.RafleMachine;
+import org.jug.brainmaster.websocket.ApplicationResources;
 
 public class ApplicationServletListener implements ServletContextListener {
 
@@ -17,6 +18,9 @@ public class ApplicationServletListener implements ServletContextListener {
   @Inject
   private RafleMachine rafleMachine;
 
+  @Inject
+  private ApplicationResources applicationResources;
+
   @Override
   public void contextDestroyed(ServletContextEvent sce) {
 
@@ -24,8 +28,10 @@ public class ApplicationServletListener implements ServletContextListener {
 
   @Override
   public void contextInitialized(ServletContextEvent sce) {
+    applicationResources.setServletContext(sce.getServletContext());
+    sce.getServletContext().setAttribute("waitingToStart",true);
     try {
-      rafleMachine.start();
+      rafleMachine.start(sce.getServletContext());
     } catch (Exception e) {
       log.log(Level.SEVERE, "can not initialize machine", e);
     }
